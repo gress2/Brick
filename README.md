@@ -1,5 +1,7 @@
 # AST
 
+## Setup
+
 ### Building
 ```Bash
 mkdir build && cd build
@@ -16,4 +18,12 @@ make
 ### Running unit tests
 ```Bash
 ./Release/bin/unit_tests
+```
+
+## Generating and viewing graph visualizations
+```parser``` and ```transformer``` can both output .gv graph descriptor files. 
+These files may be used to generate PostScript files which are then viewable.
+
+```Bash
+./scripts/viz <PATH TO .GV FILE>
 ```
