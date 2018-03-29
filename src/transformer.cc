@@ -3,13 +3,16 @@
 #include "brick.hpp"
 #include "cxxopts.hpp"
 
-int main() {
+int main(int argc, const char** argv) {
+
     cxxopts::Options options("Transformer", "Find potential AST transformations.");
     options.add_options()
-      ("input", "Path to an AST file to be transformed")
-    ;    
+      ("input", "Path to an AST file to be transformed", cxxopts::value<std::string>())
+    ;
+    auto args = options.parse(argc, argv);
+    std::string input_file = args["input"].as<std::string>();
 
-    Brick::AST::Reader reader("shit.ast");
+    Brick::AST::Reader reader(input_file);
 
     Brick::AST::AST ast = reader.read();
     ast.print();

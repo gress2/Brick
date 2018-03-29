@@ -9,18 +9,19 @@ namespace Brick::AST
 
 class Reader {
 private:
-  std::fstream fs_; 
+  std::ifstream ifs_; 
 public:
   Reader(std::string);
   AST read(); 
 };
 
-Reader::Reader(std::string input_file) : fs_(std::fstream(input_file, std::fstream::in)) {}
+Reader::Reader(std::string input_file) : ifs_(std::ifstream(input_file)) {}
 
 AST Reader::read() {
   AST ast;
-
-
+  for (std::string line; getline(ifs_, line);) {
+    std::cout << line << std::endl;
+  }
   return ast;
 }
 

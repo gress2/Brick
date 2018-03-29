@@ -11,10 +11,11 @@ namespace Brick::AST
 class AST {
 private:
   std::string data_; // TODO: not strings
-  std::vector<std::unique_ptr<AST>> children_;
+  std::vector<AST> children_;
 public:
   AST();
   void print();
+  ~AST() = default;
 };
 
 AST::AST() : data_("") {}
@@ -23,7 +24,7 @@ AST::AST() : data_("") {}
 void AST::print() {
   std::cout << data_ << std::endl;
   for (auto& child : children_) {
-    child->print();
+    child.print();
   } 
 }
 
