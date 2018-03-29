@@ -2,7 +2,7 @@
 # given a path to a .gv file, create a .ps
 # file and open
 
-fname=$(echo $1 | cut -f 1 -d '.')
+fname="${1%.*}"
 dot -Tps ${fname}.gv -o ${fname}.ps
 if hash xdg-open 2>/dev/null; then
   # linux

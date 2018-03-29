@@ -1,4 +1,4 @@
-# AST
+# Brick
 
 ## Setup
 
