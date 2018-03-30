@@ -14,9 +14,9 @@ int main(int argc, const char** argv) {
 
     Brick::AST::Reader reader(input_file);
 
-    Brick::AST::AST ast = reader.read();
-    ast.print();
+    Brick::AST::Tree tree = reader.read();
+    tree.print();
 
     Brick::TreeBase::TreeBase tree_base;
-    Brick::Transformer::Transformer transformer(ast, tree_base);
+    Brick::Transformer::Transformer transformer(tree, tree_base);
 }
