@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 
-#include "AST/key.hpp"
+#include "AST/hashed.hpp"
 #include "AST/bfs_iterator.hpp"
 #include "AST/dfs_iterator.hpp"
 
@@ -17,19 +17,19 @@ class tree {
   public:
     using children_type = Children<tree<T, Children>>;
     using value_type = T;
-    using key_type = key<T>;
+    using hashed_type = hashed<T>;
     using dfs_iterator_type = dfs_iterator<tree>;
     using bfs_iterator_type = bfs_iterator<tree>;
   private:
     children_type children_;
     tree* parent_;
-    key_type key_;
+    hashed_type hashed_;
   public:
     explicit tree(tree*, value_type);
     tree(tree&&) = default;
     tree& operator=(tree&&) = default;
-    constexpr key_type get_key() const noexcept;
-    void set_key(key_type) noexcept;
+    constexpr hashed_type get_hashed() const noexcept;
+    void set_hashed(hashed_type) noexcept;
     constexpr value_type get_value() const;
     void set_value(const value_type&);
     constexpr tree* get_parent() const noexcept;
@@ -45,27 +45,27 @@ class tree {
 
 template <class T, template <class...> class C>
 tree<T, C>::tree(tree<T, C>* parent, value_type value)
-  : parent_(parent), key_(key_type(value))
+  : parent_(parent), hashed_(hashed_type(value))
 {}
 
 template <class T, template <class...> class C>
-constexpr typename tree<T, C>::key_type tree<T, C>::get_key() const noexcept {
-  return key_;
+constexpr typename tree<T, C>::hashed_type tree<T, C>::get_hashed() const noexcept {
+  return hashed_;
 }
 
 template <class T, template <class...> class C>
-void tree<T, C>::set_key(tree<T, C>::key_type key) noexcept {
-  key_ = key;
+void tree<T, C>::set_hashed(tree<T, C>::hashed_type hashed) noexcept {
+  hashed_ = hashed;
 }
 
 template <class T, template <class...> class C>
 constexpr typename tree<T, C>::value_type tree<T, C>::get_value() const {
-  return static_cast<value_type>(key_);
+  return static_cast<value_type>(hashed_);
 }
 
 template <class T, template <class...> class C>
 void tree<T, C>::set_value(const tree<T, C>::value_type& value) {
-  key_ = tree::key_type(value);
+  hashed_ = value;
 }
 
 template <class T, template <class...> class C>
