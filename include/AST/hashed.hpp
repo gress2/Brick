@@ -17,10 +17,10 @@ namespace brick::AST
     public:
       explicit constexpr hashed(const T&);
       explicit constexpr hashed(T&&);
-      hashed(hashed&&) = default;
+//      hashed(hashed&&) = default;
       hashed& operator=(const T&);
       hashed& operator=(T&&);
-      hashed& operator=(hashed&&) = default;
+//      hashed& operator=(hashed&&) = default;
       explicit constexpr operator T() const;
       constexpr hash_type operator()() const noexcept;
       hash_type operator()(const T&);

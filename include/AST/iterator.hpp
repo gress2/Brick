@@ -11,7 +11,7 @@ namespace brick::AST
       // TODO: typedefs
       using difference_type = std::ptrdiff_t;
       using value_type = Tree;
-    private:
+    protected:
       Tree* tree_;
     public:
       iterator();

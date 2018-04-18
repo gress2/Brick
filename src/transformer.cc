@@ -12,7 +12,7 @@ int main(int argc, const char** argv) {
     auto args = options.parse(argc, argv);
     std::string input_file = args["input"].as<std::string>();
 
-    brick::AST::tree<std::string> tree(nullptr, std::string{""});
+    brick::AST::tree<std::string> tree(std::string{""});
 
     brick::tree_base::tree_base tree_base;
     brick::transformer::transformer<decltype(tree), decltype(tree_base)> transformer(tree, tree_base);

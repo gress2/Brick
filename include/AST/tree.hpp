@@ -8,6 +8,7 @@
 #include "AST/hashed.hpp"
 #include "AST/bfs_iterator.hpp"
 #include "AST/dfs_iterator.hpp"
+#include "AST/shit_iterator.hpp"
 
 namespace brick::AST
 {
@@ -20,14 +21,15 @@ class tree {
     using hashed_type = hashed<T>;
     using dfs_iterator_type = dfs_iterator<tree>;
     using bfs_iterator_type = bfs_iterator<tree>;
+    using shiterator_type = shiterator<tree>;
   private:
     children_type children_;
     tree* parent_;
     hashed_type hashed_;
   public:
-    explicit tree(tree*, value_type);
-    tree(tree&&) = default;
-    tree& operator=(tree&&) = default;
+    explicit tree(value_type, tree* = nullptr);
+    // tree(tree&&) = default;
+    //tree& operator=(tree&&) = default;
     constexpr hashed_type get_hashed() const noexcept;
     void set_hashed(hashed_type) noexcept;
     constexpr value_type get_value() const;
@@ -36,15 +38,19 @@ class tree {
     void set_parent(tree*) noexcept;
     children_type& children();
     const children_type& children() const;
+    tree& add_child(tree);
+    tree& add_child(const T&);
+    tree& add_child(T&&);
     dfs_iterator_type begin_dfs();
     dfs_iterator_type end_dfs();
     bfs_iterator_type begin_bfs();
     bfs_iterator_type end_bfs();
+    shiterator_type begin_shiterator();
     bool operator==(const tree& other) const;
 };
 
 template <class T, template <class...> class C>
-tree<T, C>::tree(tree<T, C>* parent, value_type value)
+tree<T, C>::tree(value_type value, tree<T, C>* parent)
   : parent_(parent), hashed_(hashed_type(value))
 {}
 
@@ -89,6 +95,31 @@ const typename tree<T, C>::children_type& tree<T, C>::children() const {
 }
 
 template <class T, template <class...> class C>
+tree<T, C>& tree<T, C>::add_child(tree<T, C> child) {
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  child.set_parent(this);
+  children_.push_back(child); 
+  return children_.back();
+} 
+
+template <class T, template <class...> class C>
+tree<T, C>& tree<T, C>::add_child(const T& child_value) {
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  children_.push_back(tree{child_value, this});
+  return children_.back();
+}
+
+template <class T, template <class...> class C>
+tree<T, C>& tree<T, C>::add_child(T&& child_value) {
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  std::cout << children_.size() << std::endl;
+  tree umm = tree(std::move(child_value), this);
+  children_.push_back(umm);
+  std::cout << "u wot" << std::endl;
+  return children_.back();
+}
+
+template <class T, template <class...> class C>
 typename tree<T, C>::dfs_iterator_type tree<T, C>::begin_dfs() {
   return dfs_iterator_type(this);
 }
@@ -106,6 +137,11 @@ typename tree<T, C>::bfs_iterator_type tree<T, C>::begin_bfs() {
 template <class T, template <class...> class C>
 typename tree<T, C>::bfs_iterator_type tree<T, C>::end_bfs() {
   return bfs_iterator_type(this);
+}
+
+template <class T, template <class...> class C>
+typename tree<T, C>::shiterator_type tree<T, C>::begin_shiterator() {
+  return shiterator_type(this);
 }
 
 template <class T, template <class...> class C>
