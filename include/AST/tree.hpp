@@ -125,22 +125,22 @@ void tree<T, C>::add_child(T&& child_value) {
 
 template <class T, template <class...> class C>
 typename tree<T, C>::dfs_iterator_type tree<T, C>::begin_dfs() {
-  return dfs_iterator_type(this);
+  return dfs_iterator_type(this, this);
 }
 
 template <class T, template <class...> class C>
 typename tree<T, C>::dfs_iterator_type tree<T, C>::end_dfs() {
-  return dfs_iterator_type(this);
+  return dfs_iterator_type(nullptr, this);
 }
 
 template <class T, template <class...> class C>
 typename tree<T, C>::bfs_iterator_type tree<T, C>::begin_bfs() {
-  return bfs_iterator_type(this, this);
+  return bfs_iterator_type(this);
 }
 
 template <class T, template <class...> class C>
 typename tree<T, C>::bfs_iterator_type tree<T, C>::end_bfs() {
-  return bfs_iterator_type(nullptr, this);
+  return bfs_iterator_type(this);
 }
 
 template <class T, template <class...> class C>

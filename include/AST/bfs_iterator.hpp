@@ -10,17 +10,12 @@ namespace brick::AST
     protected:
       using brick::AST::iterator<Tree>::tree_;
       using brick::AST::iterator<Tree>::root_;
-    private:
-      bool is_last();
-      std::size_t position();
     public:
       bfs_iterator(Tree*, Tree*);
       bfs_iterator operator++(int);
       bfs_iterator& operator++();
       bfs_iterator operator--(int);
       bfs_iterator& operator--();
-      bool operator==(const bfs_iterator&) const;
-      bool operator!=(const bfs_iterator&) const;
   };
 
   template <class Tree>
@@ -30,71 +25,67 @@ namespace brick::AST
 
   template <class Tree>
   bfs_iterator<Tree> bfs_iterator<Tree>::operator++(int) {
-    return *this;
+    bfs_iterator<Tree> copy = *this;
+    ++(*this);
+    return copy;
+  }
+
+  template <class Tree>
+  Tree* bfs_iterator<Tree>::probe() {
+    // if possible probe right
+    
+    // start from lhs 
   }
 
   template <class Tree>
   bfs_iterator<Tree>& bfs_iterator<Tree>::operator++() {
-    // if the current node has no children
-    if (tree_->children().empty()) {
-      // if this is not the last child in a vector of children
-      if (!is_last()) {
-        tree_ = &(tree_->get_parent()->get_child(position() + 1));
-      } else {
-        bfs_iterator tmp = *this;
-        while (tmp.is_last()) {
-          if (tmp.tree_ == this->root_) {
-            this->tree_ = nullptr;
-            return *this;
-          }
-          tmp = bfs_iterator(tmp.tree_->get_parent(), this->root_);
-        }
-        tree_ = &(tmp.tree_->get_parent()->get_child(tmp.position() + 1));
-      }
-    } else {
-      // if the current node has children
+    if (tree_ == root_) {
       tree_ = &(tree_->children()[0]);
+      return *this;
     }
-
-    return *this;
+    if (!is_last()) {
+      tree_ = &(tree_->get_parent()->children()[position() + 1]);
+      return *this;
+    } else {
+      bfs_iterator tmp = *this;
+      std::size_t levels_up = 0;
+      std::size_t cur_pos = tmp.position();
+      while (tmp.is_last() && tmp.get_parent() != root_) {
+        cur_pos = tmp.position();
+        tmp = bfs_iterator(tmp.get_parent(), root_); 
+        levels_up++;
+      }
+      std::size_t target_depth = levels_up;
+      // we either hit root or we can go right
+      // if we're root, check if we came up from its right most child
+      if (cur_pos == tmp.children().size() - 1) {
+        // right-most, so we're searching for something deeper
+        target_depth++;
+      }
+      
+       
+    }
   }
 
   template <class Tree>
   bfs_iterator<Tree> bfs_iterator<Tree>::operator--(int) {
-    return *this;
+    bfs_iterator<Tree> copy = *this;
+    --(*this);
+    return copy;
   }
 
   template <class Tree>
   bfs_iterator<Tree>& bfs_iterator<Tree>::operator--() {
+    // first, handle the case where the end iterator is being decremented
+    if (tree_ == nullptr) {
+      tree_ = root_;
+      while (!tree_->children().empty()) {
+        tree_ = &tree_->children()[tree_->children().size() - 1];
+      } 
+      return *this;
+    }
     return *this;
   }
-
-  template <class Tree>
-  std::size_t bfs_iterator<Tree>::position() {
-    if (tree_->get_parent()) {
-      auto& parent_children = tree_->get_parent()->children();
-      return std::distance(&*std::begin(parent_children), tree_);
-    } else {
-      return 0;
-    }
-  }
-
-  template <class Tree>
-  bool bfs_iterator<Tree>::is_last() {
-    return tree_->get_parent() == nullptr ||
-      ((position() + 1) == tree_->get_parent()->children().size());
-  }
-
-  template <class Tree>
-  bool bfs_iterator<Tree>::operator==(const bfs_iterator<Tree>& other) const {
-    return root_ == other.root_ && tree_ == other.tree_;
-  }
-
-  template <class Tree>
-  bool bfs_iterator<Tree>::operator!=(const bfs_iterator<Tree>& other) const {
-    return !this->operator==(other);
-  }
-
 }
 
 #endif
