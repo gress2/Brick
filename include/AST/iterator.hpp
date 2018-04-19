@@ -13,26 +13,28 @@ namespace brick::AST
       using value_type = Tree;
     protected:
       Tree* tree_;
+      Tree* root_;
     public:
-      iterator();
-      iterator(Tree*);
+      iterator(Tree*, Tree*);
       value_type& operator*() const;
+      value_type* operator->() const;
   };
 
   template <class Tree>
-  iterator<Tree>::iterator()
-    : tree_(nullptr)
-  {}
-
-  template <class Tree>
-  iterator<Tree>::iterator(Tree* tree)
-    : tree_(tree)
+  iterator<Tree>::iterator(Tree* tree, Tree* root)
+    : tree_(tree), root_(root)
   {}
 
   template <class Tree>
   Tree& iterator<Tree>::operator*() const {
     return *tree_;
   }
+
+  template <class Tree>
+  Tree* iterator<Tree>::operator->() const {
+    return tree_;
+  }
+
 }
 
 #endif
