@@ -1,6 +1,8 @@
 #ifndef BRICK_AST_BFS_ITERATOR_HPP
 #define BRICK_AST_BFS_ITERATOR_HPP
 
+#include <queue>
+
 #include "AST/iterator.hpp"
 
 namespace brick::AST
@@ -16,6 +18,8 @@ namespace brick::AST
       bfs_iterator& operator++();
       bfs_iterator operator--(int);
       bfs_iterator& operator--();
+    private:
+      std::vector<Tree*> traversal();
   };
 
   template <class Tree>
@@ -30,6 +34,7 @@ namespace brick::AST
     return copy;
   }
 
+  /*
   template <class Tree>
   Tree* bfs_iterator<Tree>::probe() {
     // if possible probe right
@@ -42,8 +47,7 @@ namespace brick::AST
     if (tree_ == root_) {
       tree_ = &(tree_->children()[0]);
       return *this;
-    }
-    if (!is_last()) {
+    } if (!is_last()) {
       tree_ = &(tree_->get_parent()->children()[position() + 1]);
       return *this;
     } else {
@@ -62,10 +66,50 @@ namespace brick::AST
         // right-most, so we're searching for something deeper
         target_depth++;
       }
-      
-       
     }
+    */
+
+  template <class Tree>
+  std::vector<Tree*> bfs_iterator<Tree>::traversal() {
+    std::vector<Tree*> ordering;
+    std::queue<Tree*> q;
+    Tree* traverse;
+    
+    q.push(this->root_);
+
+    while (!q.empty()) {
+      traverse = q.front();
+      ordering.push_back(traverse);
+      q.pop();
+     
+      auto& children = traverse->children();
+      for (auto it = children.begin(); it != children.end(); ++it) {
+        auto& child = *it;
+        q.push(&child);
+      }
+    }
+    return ordering;
   }
+
+  template <class Tree>
+  bfs_iterator<Tree>& bfs_iterator<Tree>::operator++() {
+    auto trav = this->traversal(); 
+    Tree* next = nullptr;
+    bool upNext = false;
+    for (auto it = trav.begin(); it != trav.end(); ++it) {
+      if (upNext) {
+        next = *it;
+        break;
+      }
+      if (*it == this->tree_) {
+        upNext = true; 
+      }
+    }
+    
+    this->tree_ = next;
+    return *this;
+  }
+  
 
   template <class Tree>
   bfs_iterator<Tree> bfs_iterator<Tree>::operator--(int) {
@@ -76,16 +120,29 @@ namespace brick::AST
 
   template <class Tree>
   bfs_iterator<Tree>& bfs_iterator<Tree>::operator--() {
-    // first, handle the case where the end iterator is being decremented
-    if (tree_ == nullptr) {
-      tree_ = root_;
-      while (!tree_->children().empty()) {
-        tree_ = &tree_->children()[tree_->children().size() - 1];
-      } 
-      return *this;
+    auto trav = this->traversal(); 
+
+    if (this->tree_ == nullptr) {
+      this->tree_ = trav[trav.size() - 1];
+      return *this; 
     }
+
+    Tree* next = this->root_;
+    bool upNext = false;
+    for (auto it = trav.rbegin(); it != trav.rend(); ++it) {
+      if (upNext) {
+        next = *it;
+        break;
+      }
+      if (*it == this->tree_) {
+        upNext = true; 
+      }
+    }
+  
+    this->tree_ = next;
     return *this;
   }
+
 }
 
 #endif
