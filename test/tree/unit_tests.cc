@@ -6,15 +6,9 @@
 template <class T>
 using tree = brick::AST::tree<T>;
 
-class TreeFixture : public ::testing::Test {
-  protected:
-    virtual void SetUp() {}
-    tree<std::string> root_{"root"};
-};
 
-TEST_F(TreeFixture, DFSIncrementTest1) {
+TEST(DFSIncrementTest, BasicCase1) {
   using t = tree<std::string>;
-
   t t0("0");
   t0.add_child("1");
   t0.add_child("4");
@@ -31,9 +25,8 @@ TEST_F(TreeFixture, DFSIncrementTest1) {
   ASSERT_EQ(correct, test);
 }
 
-TEST_F(TreeFixture, DFSIncrementTest2) {
+TEST(DFSIncrementTest, BasicCase2) {
   using t = tree<std::string>;
-
   t t0("0");
   t0.add_child("1");
   t& t1 = t0.get_child(0);
@@ -50,16 +43,14 @@ TEST_F(TreeFixture, DFSIncrementTest2) {
   ASSERT_EQ(correct, test);
 }
 
-TEST_F(TreeFixture, DFSIncrementTest3) {
+TEST(DFSIncrementTest, MediumCase) {
   using t = tree<int>;
-
   t t0(0);
   t0.add_child(1);
   t0.add_child(5);
   t0.add_child(7);
   t& t1 = t0.get_child(0);
-  t1.add_child(2);
-  t1.add_child(3);
+  t1.add_child(2); t1.add_child(3);
   t& t3 = t1.get_child(1);
   t3.add_child(4);
   t& t5 = t0.get_child(1);
@@ -77,9 +68,8 @@ TEST_F(TreeFixture, DFSIncrementTest3) {
   ASSERT_EQ(correct, test);
 }
 
-TEST_F(TreeFixture, DFSDecrementTest1) {
+TEST(DFSDecrementTest, BasicCase1) {
   using t = tree<std::string>;
-
   t t0("0");
   t0.add_child("1");
   t0.add_child("4");
@@ -100,9 +90,8 @@ TEST_F(TreeFixture, DFSDecrementTest1) {
   ASSERT_EQ(correct, test);
 }
 
-TEST_F(TreeFixture, DFSDecrementTest2) {
+TEST(DFSDecrementTest, BasicCase2) {
   using t = tree<std::string>;
-
   t t0("0");
   t0.add_child("1");
   t& t1 = t0.get_child(0);
@@ -123,9 +112,8 @@ TEST_F(TreeFixture, DFSDecrementTest2) {
   ASSERT_EQ(correct, test);
 }
 
-TEST_F(TreeFixture, DFSDecrementTest3) {
+TEST(DFSDecrementTest, MediumCase) {
   using t = tree<int>;
-
   t t0(0);
   t0.add_child(1);
   t0.add_child(5);
@@ -154,18 +142,16 @@ TEST_F(TreeFixture, DFSDecrementTest3) {
   ASSERT_EQ(correct, test);
 }
 
-TEST_F(TreeFixture, DFSEqualityTest1) {
+TEST(DFSEquality, BeginEqualsBegin) {
   using t = tree<int>;
-
   t t0(32);
   auto it1 = t0.begin_dfs();
   auto it2 = t0.begin_dfs();
   ASSERT_TRUE(it1 == it2);
 }
 
-TEST_F(TreeFixture, DFSEqualityTest2) {
+TEST(DFSEquality, BasicCase) {
   using t = tree<int>;
-
   t t0(3);
   t0.add_child(4);
 
@@ -176,7 +162,7 @@ TEST_F(TreeFixture, DFSEqualityTest2) {
   ASSERT_TRUE(it1 == it2);
 }
 
-TEST_F(TreeFixture, DFSEqualityTest3) {
+TEST(DFSEquality, EndEqualsEnd) {
   using t = tree<int>;
   t t0(4);
   auto it1 = t0.end_dfs();
@@ -184,7 +170,7 @@ TEST_F(TreeFixture, DFSEqualityTest3) {
   ASSERT_TRUE(it1 == it2);
 }
 
-TEST_F(TreeFixture, DFSEqualityTest4) {
+TEST(DFSEquality, MediumCase) {
   using t = tree<int>;
   t t0(0);
   t0.add_child(1);
@@ -201,7 +187,7 @@ TEST_F(TreeFixture, DFSEqualityTest4) {
   ASSERT_TRUE(it1 == it2);
 }
 
-TEST_F(TreeFixture, DFSInequalityTest1) {
+TEST(DFSEInequality, SeparateTreeBeginsUnequal1) {
   using t = tree<int>;
   t t0(0);
   t t1(1);
@@ -211,7 +197,7 @@ TEST_F(TreeFixture, DFSInequalityTest1) {
   ASSERT_TRUE(it1 != it2);
 }
 
-TEST_F(TreeFixture, DFSInequalityTest2) {
+TEST(DFSInequality, SeparateTreeBeginsUnequal2) {
   using t = tree<int>;
   t t0(0);
   t t1(0);
@@ -221,7 +207,7 @@ TEST_F(TreeFixture, DFSInequalityTest2) {
   ASSERT_TRUE(it1 != it2);
 }
 
-TEST_F(TreeFixture, DFSInequalityTest3) {
+TEST(DFSInequality, SeparateTreeEndsUnequal) {
   using t = tree<int>;
   t t0(0);
   t t1(0);
@@ -230,7 +216,7 @@ TEST_F(TreeFixture, DFSInequalityTest3) {
   ASSERT_TRUE(it1 != it2);
 }
 
-TEST_F(TreeFixture, DFSInequalityTest4) {
+TEST(DFSInequality, BasicCase) {
   using t = tree<int>;
   t t0(0);
   t0.add_child(0);
@@ -241,9 +227,8 @@ TEST_F(TreeFixture, DFSInequalityTest4) {
   ASSERT_TRUE(it1 != it2);
 }
 
-TEST_F(TreeFixture, BFSIncrementTest1) {
+TEST(BFSIncrement, BasicCase1) {
   using t = tree<std::string>;
-
   t t0("0");
   t0.add_child("1");
   t0.add_child("4");
@@ -261,9 +246,8 @@ TEST_F(TreeFixture, BFSIncrementTest1) {
   ASSERT_EQ(correct, test);
 }
 
-TEST_F(TreeFixture, BFSIncrementTest2) {
+TEST(BFSIncrement, BasicCase2) {
   using t = tree<std::string>;
-
   t t0("0");
   t0.add_child("1");
   t& t1 = t0.get_child(0);
@@ -280,9 +264,8 @@ TEST_F(TreeFixture, BFSIncrementTest2) {
   ASSERT_EQ(correct, test);
 }
 
-TEST_F(TreeFixture, BFSIncrementTest3) {
+TEST(BFSIncrement, MediumCase) {
   using t = tree<int>;
-
   t t0(0);
   t0.add_child(1);
   t0.add_child(5);
@@ -307,9 +290,8 @@ TEST_F(TreeFixture, BFSIncrementTest3) {
   ASSERT_EQ(correct, test);
 }
 
-TEST_F(TreeFixture, BFSDecrementTest1) {
+TEST(BFSDecrement, BasicCase1) {
   using t = tree<std::string>;
-
   t t0("0");
   t0.add_child("1");
   t0.add_child("4");
@@ -330,9 +312,8 @@ TEST_F(TreeFixture, BFSDecrementTest1) {
   ASSERT_EQ(correct, test);
 }
 
-TEST_F(TreeFixture, BFSDecrementTest2) {
+TEST(BFSDecrement, BasicCase2) {
   using t = tree<std::string>;
-
   t t0("0");
   t0.add_child("1");
   t& t1 = t0.get_child(0);
@@ -353,9 +334,8 @@ TEST_F(TreeFixture, BFSDecrementTest2) {
   ASSERT_EQ(correct, test);
 }
 
-TEST_F(TreeFixture, BFSDecrementTest3) {
+TEST(BFSDecrement, MediumCase) {
   using t = tree<int>;
-
   t t0(0);
   t0.add_child(1);
   t0.add_child(5);
@@ -384,18 +364,16 @@ TEST_F(TreeFixture, BFSDecrementTest3) {
   ASSERT_EQ(correct, test);
 }
 
-TEST_F(TreeFixture, BFSEqualityTest1) {
+TEST(BFSEquality, SameTreeBeginsEqual) {
   using t = tree<int>;
-
   t t0(32);
   auto it1 = t0.begin_bfs();
   auto it2 = t0.begin_bfs();
   ASSERT_TRUE(it1 == it2);
 }
 
-TEST_F(TreeFixture, BFSEqualityTest2) {
+TEST(BFSEquality, BasicCase) {
   using t = tree<int>;
-
   t t0(3);
   t0.add_child(4);
 
@@ -406,7 +384,7 @@ TEST_F(TreeFixture, BFSEqualityTest2) {
   ASSERT_TRUE(it1 == it2);
 }
 
-TEST_F(TreeFixture, BFSEqualityTest3) {
+TEST(BFSEquality, SameTreeEndsEqual) {
   using t = tree<int>;
   t t0(4);
   auto it1 = t0.end_bfs();
@@ -414,7 +392,7 @@ TEST_F(TreeFixture, BFSEqualityTest3) {
   ASSERT_TRUE(it1 == it2);
 }
 
-TEST_F(TreeFixture, BFSEqualityTest4) {
+TEST(DFSEquality, BasicCase2) {
   using t = tree<int>;
   t t0(0);
   t0.add_child(1);
@@ -431,7 +409,7 @@ TEST_F(TreeFixture, BFSEqualityTest4) {
   ASSERT_TRUE(it1 == it2);
 }
 
-TEST_F(TreeFixture, BFSInequalityTest1) {
+TEST(BFSInequality, SeparateTreeBeginsUnequal1) {
   using t = tree<int>;
   t t0(0);
   t t1(1);
@@ -441,7 +419,7 @@ TEST_F(TreeFixture, BFSInequalityTest1) {
   ASSERT_TRUE(it1 != it2);
 }
 
-TEST_F(TreeFixture, BFSInequalityTest2) {
+TEST(BFSInequality, SeparateTreeBeginsUnequal2) {
   using t = tree<int>;
   t t0(0);
   t t1(0);
@@ -451,7 +429,7 @@ TEST_F(TreeFixture, BFSInequalityTest2) {
   ASSERT_TRUE(it1 != it2);
 }
 
-TEST_F(TreeFixture, BFSInequalityTest3) {
+TEST(BFSInequality, SeparateTreeEndsUnequal) {
   using t = tree<int>;
   t t0(0);
   t t1(0);
@@ -460,7 +438,7 @@ TEST_F(TreeFixture, BFSInequalityTest3) {
   ASSERT_TRUE(it1 != it2);
 }
 
-TEST_F(TreeFixture, BFSInequalityTest4) {
+TEST(BFSInequality, BasicCase) {
   using t = tree<int>;
   t t0(0);
   t0.add_child(0);
