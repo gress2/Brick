@@ -4,8 +4,85 @@
 #include "gtest/gtest.h"
 
 template <class T>
-using tree = brick::AST::tree<T>;
+using tree = brick::tree::tree<T>;
 
+// ITERATOR
+
+TEST(DFSIncrementSemantics, IncrementPostfixCase1) {
+  using t = tree<float>;
+  t t0(0);
+  t0.add_child(1);
+  auto it = t0.begin_dfs();
+  float x = (it++)->get_value();
+  ASSERT_TRUE(x == 0);
+}
+
+TEST(DFSIncrementSemantics, IncrementPostfixCase2) {
+  using t = tree<float>;
+  t t0(0);
+  t0.add_child(1);
+  auto it = t0.begin_dfs();
+  it++;
+  float x = (it++)->get_value();
+  ASSERT_TRUE(x == 1);
+}
+
+TEST(DFSIncrementSemantics, IncrementPrefixCase1) {
+  using t = tree<float>;
+  t t0(0);
+  t0.add_child(1);
+  auto it = t0.begin_dfs();
+  float x = (++it)->get_value();
+  ASSERT_TRUE(x == 1);
+}
+
+TEST(DFSIncrementSemantics, IncrementPrefixCase2) {
+  using t = tree<float>;
+  t t0(0);
+  t0.add_child(1);
+  auto it = t0.begin_dfs();
+  ++it;
+  auto end_it = ++it;
+  ASSERT_TRUE(end_it == t0.end_dfs());
+}
+
+TEST(DFSIncrementSemantics, DecrementPostfixCase1) {
+  using t = tree<float>;
+  t t0(0);
+  t0.add_child(1);
+  auto it = t0.end_dfs();
+  auto end_it = it--;
+  ASSERT_TRUE(t0.end_dfs() == end_it);
+}
+
+TEST(DFSDecrementSemantics, DecrementPostfixCase2) {
+  using t = tree<float>;
+  t t0(0);
+  t0.add_child(1);
+  auto it = t0.end_dfs();
+  it--;
+  float x = (it--)->get_value();
+  ASSERT_TRUE(x == 1);
+}
+
+TEST(DFSDecrementSemantics, DecrementPrefixCase1) {
+  using t = tree<float>;
+  t t0(0);
+  t0.add_child(1);
+  auto it = t0.end_dfs();
+  float x = (--it)->get_value();
+  ASSERT_TRUE(x == 1);
+}
+
+TEST(DFSDecrementSemantics, DecrementPrefixCase2) {
+  using t = tree<float>;
+  t t0(0);
+  t0.add_child(1);
+  auto it = t0.end_dfs();
+  --it;
+  float x = (--it)->get_value();
+  ASSERT_TRUE(x == 0);
+}
 
 TEST(DFSIncrementTest, BasicCase1) {
   using t = tree<std::string>;
@@ -225,6 +302,82 @@ TEST(DFSInequality, BasicCase) {
   it2++;
 
   ASSERT_TRUE(it1 != it2);
+}
+
+TEST(BFSIncrementSemantics, IncrementPostfixCase1) {
+  using t = tree<float>;
+  t t0(0);
+  t0.add_child(1);
+  auto it = t0.begin_bfs();
+  float x = (it++)->get_value();
+  ASSERT_TRUE(x == 0);
+}
+
+TEST(BFSIncrementSemantics, IncrementPostfixCase2) {
+  using t = tree<float>;
+  t t0(0);
+  t0.add_child(1);
+  auto it = t0.begin_bfs();
+  it++;
+  float x = (it++)->get_value();
+  ASSERT_TRUE(x == 1);
+}
+
+TEST(BFSIncrementSemantics, IncrementPrefixCase1) {
+  using t = tree<float>;
+  t t0(0);
+  t0.add_child(1);
+  auto it = t0.begin_bfs();
+  float x = (++it)->get_value();
+  ASSERT_TRUE(x == 1);
+}
+
+TEST(BFSIncrementSemantics, IncrementPrefixCase2) {
+  using t = tree<float>;
+  t t0(0);
+  t0.add_child(1);
+  auto it = t0.begin_bfs();
+  ++it;
+  auto end_it = ++it;
+  ASSERT_TRUE(end_it == t0.end_dfs());
+}
+
+TEST(BFSIncrementSemantics, DecrementPostfixCase1) {
+  using t = tree<float>;
+  t t0(0);
+  t0.add_child(1);
+  auto it = t0.end_bfs();
+  auto end_it = it--;
+  ASSERT_TRUE(t0.end_dfs() == end_it);
+}
+
+TEST(BFSDecrementSemantics, DecrementPostfixCase2) {
+  using t = tree<float>;
+  t t0(0);
+  t0.add_child(1);
+  auto it = t0.end_bfs();
+  it--;
+  float x = (it--)->get_value();
+  ASSERT_TRUE(x == 1);
+}
+
+TEST(BFSDecrementSemantics, DecrementPrefixCase1) {
+  using t = tree<float>;
+  t t0(0);
+  t0.add_child(1);
+  auto it = t0.end_bfs();
+  float x = (--it)->get_value();
+  ASSERT_TRUE(x == 1);
+}
+
+TEST(BFSDecrementSemantics, DecrementPrefixCase2) {
+  using t = tree<float>;
+  t t0(0);
+  t0.add_child(1);
+  auto it = t0.end_bfs();
+  --it;
+  float x = (--it)->get_value();
+  ASSERT_TRUE(x == 0);
 }
 
 TEST(BFSIncrement, BasicCase1) {

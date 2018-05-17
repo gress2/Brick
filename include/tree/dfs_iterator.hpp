@@ -1,15 +1,15 @@
-#ifndef BRICK_AST_DFS_ITERATOR_HPP
-#define BRICK_AST_DFS_ITERATOR_HPP
+#ifndef BRICK_TREE_DFS_ITERATOR_HPP
+#define BRICK_TREE_DFS_ITERATOR_HPP
 
-#include "AST/iterator.hpp"
+#include "tree/iterator.hpp"
 
-namespace brick::AST
+namespace brick::tree
 {
   template <class Tree>
-  class dfs_iterator : public brick::AST::iterator<Tree> {
+  class dfs_iterator : public brick::tree::iterator<Tree> {
     protected:
-      using brick::AST::iterator<Tree>::tree_;
-      using brick::AST::iterator<Tree>::root_;
+      using brick::tree::iterator<Tree>::tree_;
+      using brick::tree::iterator<Tree>::root_;
     public:
       dfs_iterator(Tree*, Tree*);
       dfs_iterator operator++(int);
@@ -20,7 +20,7 @@ namespace brick::AST
 
   template <class Tree>
   dfs_iterator<Tree>::dfs_iterator(Tree* tree, Tree* root)
-    : brick::AST::iterator<Tree>(tree, root)
+    : brick::tree::iterator<Tree>(tree, root)
   {}
 
   template <class Tree>

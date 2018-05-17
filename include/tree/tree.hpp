@@ -1,15 +1,15 @@
-#ifndef BRICK_AST_TREE_HPP_
-#define BRICK_AST_TREE_HPP_
+#ifndef BRICK_TREE_TREE_HPP_
+#define BRICK_TREE_TREE_HPP_
 
 #include <iostream>
 #include <memory>
 #include <vector>
 
-#include "AST/hashed.hpp"
-#include "AST/bfs_iterator.hpp"
-#include "AST/dfs_iterator.hpp"
+#include "tree/hashed.hpp"
+#include "tree/bfs_iterator.hpp"
+#include "tree/dfs_iterator.hpp"
 
-namespace brick::AST
+namespace brick::tree
 {
 
 template <class T, template <class...> class Children = std::vector>

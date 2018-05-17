@@ -1,14 +1,13 @@
-#ifndef BRICK_AST_ITERATOR_HPP
-#define BRICK_AST_ITERATOR_HPP
+#ifndef BRICK_TREE_ITERATOR_HPP
+#define BRICK_TREE_ITERATOR_HPP
 
 #include <memory>
 
-namespace brick::AST
+namespace brick::tree
 {
   template <class Tree>
   class iterator {
     public:
-      // TODO: typedefs
       using difference_type = std::ptrdiff_t;
       using value_type = Tree;
     protected:
