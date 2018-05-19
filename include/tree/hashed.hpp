@@ -22,6 +22,7 @@ namespace brick::tree
       explicit constexpr operator T() const;
       constexpr hash_type operator()() const noexcept;
       hash_type operator()(const T&);
+      //hash_type operator()(const std::string&);
   };
 
   template <class T, class H>
@@ -59,7 +60,7 @@ namespace brick::tree
   template <class T, class H>
   typename hashed<T, H>::hash_type hashed<T, H>::operator()(const T& value) {
     value_ = value;
-    hash_ = std::hash<T>(value);
+    hash_ = std::hash<T>{}(value_);
     return hash_;
   }
 }
