@@ -39,10 +39,11 @@ class tree {
     // modifiers
     void set_hashed(hashed_type) noexcept;
     void set_value(const value_type&);
+    void set_value(value_type&&);
     void set_parent(tree*) noexcept;
-    void add_child(tree);
-    void add_child(const T&);
-    void add_child(T&&);
+    tree& add_child(tree);
+    tree& add_child(const T&);
+    tree& add_child(T&&);
     // iterators
     dfs_iterator_type begin_dfs();
     dfs_iterator_type end_dfs();
@@ -98,6 +99,11 @@ void tree<T, C>::set_hashed(tree<T, C>::hashed_type hashed) noexcept {
 }
 
 template <class T, template <class...> class C>
+void tree<T, C>::set_value(tree<T, C>::value_type&& value) {
+  hashed_ = std::move(value);
+}
+
+template <class T, template <class...> class C>
 void tree<T, C>::set_value(const tree<T, C>::value_type& value) {
   hashed_ = value;
 }
@@ -108,19 +114,22 @@ void tree<T, C>::set_parent(tree<T, C>* parent) noexcept {
 }
 
 template <class T, template <class...> class C>
-void tree<T, C>::add_child(tree<T, C> child) {
+tree<T, C>& tree<T, C>::add_child(tree<T, C> child) {
   child.set_parent(this);
   children_.push_back(child);
+  return *this;
 }
 
 template <class T, template <class...> class C>
-void tree<T, C>::add_child(const T& child_value) {
+tree<T, C>& tree<T, C>::add_child(const T& child_value) {
   children_.push_back(tree{child_value, this});
+  return *this;
 }
 
 template <class T, template <class...> class C>
-void tree<T, C>::add_child(T&& child_value) {
+tree<T, C>& tree<T, C>::add_child(T&& child_value) {
   children_.push_back(tree{std::move(child_value), this});
+  return *this; 
 }
 
 template <class T, template <class...> class C>

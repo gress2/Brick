@@ -38,13 +38,15 @@ namespace brick::tree
   template <class T, class H>
   hashed<T, H>& hashed<T, H>::operator=(const T& value) {
     value_ = value;
-    hash_ = std::hash<T>(value);
+    hash_ = std::hash<T>{}(value);
+    return *this;
   }
 
   template <class T, class H>
   hashed<T, H>& hashed<T, H>::operator=(T&& value) {
     value_ = std::move(value);
-    hash_ = std::hash<T>()(std::move(value));
+    hash_ = std::hash<T>{}(value_);
+    return *this;
   }
 
   template <class T, class H>

@@ -6,14 +6,14 @@
 template <class T>
 using hashed = brick::tree::hashed<T>;
 
-TEST(ParenOperator, ReturnsHashOfValueTypeCase1) {
+TEST(ParenOperator, CanBeUsedAsGetterCase1) {
   std::string s("test"); 
   hashed<std::string> h(s); 
   auto t = h();
   ASSERT_TRUE(t == std::hash<std::string>{}(s));
 }
 
-TEST(ParenOperator, ReturnsHashOfValueTypeCase2) {
+TEST(ParenOperator, CanBeUsedAsGetterCase2) {
   float s(32); 
   hashed<float> h(s); 
   auto t = h();
