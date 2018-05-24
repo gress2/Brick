@@ -36,6 +36,7 @@ class tree {
     const children_type& children() const;
     tree& get_child(std::size_t);
     const tree& get_child(std::size_t) const;
+    std::size_t get_level() const;
     // modifiers
     void set_hashed(hashed_type) noexcept;
     void set_value(const value_type&);
@@ -94,6 +95,17 @@ const tree<T, C>& tree<T, C>::get_child(std::size_t idx) const {
 }
 
 template <class T, template <class...> class C>
+std::size_t tree<T, C>::get_level() const {
+  std::size_t level = 0;
+  auto* tmp = this;
+  while(tmp->get_parent() != nullptr) {
+    tmp = tmp->get_parent();
+    level++;
+  }
+  return level;
+}
+
+template <class T, template <class...> class C>
 void tree<T, C>::set_hashed(tree<T, C>::hashed_type hashed) noexcept {
   hashed_ = hashed;
 }
@@ -129,7 +141,7 @@ tree<T, C>& tree<T, C>::add_child(const T& child_value) {
 template <class T, template <class...> class C>
 tree<T, C>& tree<T, C>::add_child(T&& child_value) {
   children_.push_back(tree{std::move(child_value), this});
-  return *this; 
+  return *this;
 }
 
 template <class T, template <class...> class C>

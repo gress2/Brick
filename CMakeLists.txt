@@ -1,5 +1,4 @@
 cmake_minimum_required (VERSION 3.5.1)
-enable_testing()
 
 project (BRICK VERSION 0.1 LANGUAGES CXX)
 set (CMAKE_CXX_STANDARD 17)
@@ -24,6 +23,9 @@ set (include_dir "${CMAKE_CURRENT_SOURCE_DIR}/include")
 option (MAKE_TESTS "MAKE_TESTS" OFF)
 
 if (MAKE_TESTS)
+    enable_testing()
+    set (test_data_dir "${CMAKE_CURRENT_SOURCE_DIR}/test/data")
+    set (test_include_dir "${CMAKE_CURRENT_SOURCE_DIR}/test/include")
     add_subdirectory("./deps/googletest")
     add_subdirectory("./test")
 endif()
