@@ -6,7 +6,7 @@
 
 namespace brick::test
 {
-  bool compare_files(const std::string& filename1, const std::string& filename2)
+  bool files_identical(const std::string& filename1, const std::string& filename2)
   {
     std::ifstream file1(filename1, std::ifstream::ate | std::ifstream::binary);
     std::ifstream file2(filename2, std::ifstream::ate | std::ifstream::binary);
