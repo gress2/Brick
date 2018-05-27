@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 3.5.1)
 
 project (BRICK VERSION 0.1 LANGUAGES CXX)
+LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+
 set (CMAKE_CXX_STANDARD 17)
 
 set (CMAKE_CXX_FLAGS "-Wall -O3")
@@ -20,7 +22,20 @@ set (TEST_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TY
 
 set (include_dir "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
+set(ANTLR4CPP_JAR_LOCATION ${PROJECT_SOURCE_DIR}/jars/antlr-4.7.1-complete.jar)
+
 option (MAKE_TESTS "MAKE_TESTS" OFF)
+
+include(ExternalAntlr4Cpp)
+link_directories( ${ANTLR4CPP_LIBS} )
+message(STATUS "Found antlr4cpp libs: ${ANTLR4CPP_LIBS} and includes: ${ANTLR4CPP_INCLUDE_DIRS} ")
+
+antlr4cpp_process_grammar(algebra brick
+  ${CMAKE_CURRENT_SOURCE_DIR}/TLexer.g4
+  ${CMAKE_CURRENT_SOURCE_DIR}/TParser.g4
+)
+# include generated files in project environment
+include_directories(${antlr4cpp_include_dirs_brick})
 
 if (MAKE_TESTS)
     enable_testing()
