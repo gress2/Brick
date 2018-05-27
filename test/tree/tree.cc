@@ -36,7 +36,7 @@ TEST(GetParent, ReturnsCorrectParentIfExists) {
 
 TEST(EqualityOperator, IsCorrectCase1) {
   tree<int> t1(0);
-  t1.add_child(1); 
+  t1.add_child(1);
 
   tree<int> t2(0); t2.add_child(1);
 
@@ -56,7 +56,7 @@ TEST(EqualityOperator, IsCorrectCase2) {
   auto& child2 = t1.get_child(1);
   child1.add_child(1).add_child(2).add_child(3);
   child2.add_child(4).add_child(5).add_child(6);
-  
+
   tree<int> t2(0);
   t2.add_child(1).add_child(2);
   auto& child3 = t2.get_child(0);
@@ -65,7 +65,13 @@ TEST(EqualityOperator, IsCorrectCase2) {
   child4.add_child(4).add_child(5).add_child(6);
 
   ASSERT_TRUE(t1 == t2);
-} 
+}
+
+TEST(ToString, Case1) {
+  tree<std::string> t("+");
+  t.add_child("1").add_child("2");
+  ASSERT_TRUE(t.to_string() == "1+2");
+}
 
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);

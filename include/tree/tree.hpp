@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <memory>
+#include <sstream>
 #include <vector>
 
 #include "tree/hashed.hpp"
@@ -34,6 +35,7 @@ class tree {
     constexpr tree* get_parent() const noexcept;
     children_type& children();
     const children_type& children() const;
+    bool has_children() const;
     tree& get_child(std::size_t);
     const tree& get_child(std::size_t) const;
     std::size_t get_level() const;
@@ -52,6 +54,8 @@ class tree {
     bfs_iterator_type end_bfs();
     // operators
     bool operator==(const tree& other) const;
+    // misc
+    std::string to_string() const;
 };
 
 template <class T, template <class...> class C>
@@ -82,6 +86,11 @@ typename tree<T, C>::children_type& tree<T, C>::children() {
 template <class T, template <class...> class C>
 const typename tree<T, C>::children_type& tree<T, C>::children() const {
   return children_;
+}
+
+template <class T, template <class...> class C>
+bool tree<T, C>::has_children() const {
+  return children_.size() > 0;
 }
 
 template <class T, template <class...> class C>
@@ -170,6 +179,20 @@ bool tree<T, C>::operator==(const tree<T, C>& other) const {
     return false;
   }
   return children() == other.children();
+}
+
+// TODO: this only works for two children
+template <class T, template <class...> class C>
+std::string tree<T, C>::to_string() const {
+  std::ostringstream stream;
+  if (children().size() > 0) {
+    stream << children()[0].to_string();
+  }
+  stream << get_value();
+  if (children().size() > 1){
+    stream << children()[1].to_string();
+  }
+  return stream.str();
 }
 
 }

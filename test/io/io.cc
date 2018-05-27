@@ -1,6 +1,7 @@
 #include <fstream>
 
 #include "brick.hpp"
+#include "test_utils.hpp"
 #include "gtest/gtest.h"
 
 template <class T>
@@ -16,12 +17,16 @@ TEST(ReadAST, WhoCares) {
   ASSERT_TRUE(t == correct);
 }
 
-TEST(WriteAST, WhoCares) {
-  std::ofstream output_file(test_data_dir + "/tmp.ast");
+TEST(WriteAST, SimpleCase) {
+  std::string tmp_file = test_data_dir + "/tmp.ast";
+  std::string correct_file = test_data_dir + "/a.ast";
+  std::ofstream output_file(tmp_file);
   tree<std::string> t("+");
   t.add_child("1").add_child("2");
   bool write_success = brick::io::write_ast(t, output_file);
   ASSERT_TRUE(write_success);
+  bool identical = brick::test::files_identical(correct_file, tmp_file);
+  ASSERT_TRUE(identical);
 }
 
 int main(int argc, char** argv) {

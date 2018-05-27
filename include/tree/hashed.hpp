@@ -22,7 +22,6 @@ namespace brick::tree
       explicit constexpr operator T() const;
       constexpr hash_type operator()() const noexcept;
       hash_type operator()(const T&);
-      //hash_type operator()(const std::string&);
   };
 
   template <class T, class H>
