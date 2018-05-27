@@ -191,6 +191,8 @@ macro(antlr4cpp_process_grammar
     message(FATAL_ERROR "Unable to find antlr tool. ANTLR4CPP_JAR_LOCATION:${ANTLR4CPP_JAR_LOCATION}")
   endif()
 
+  message(STATUS "SHIT: ${antlr4cpp_grammar_lexer}")
+
   add_custom_target("antlr4cpp_generation_${antlr4cpp_project_namespace}"
     COMMAND
     ${CMAKE_COMMAND} -E make_directory ${ANTLR4CPP_GENERATED_SRC_DIR}

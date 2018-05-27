@@ -1,4 +1,4 @@
-#include <antlr4-runtime.h>
+#include "antlr4-runtime.h"
 #include "brick.hpp"
 #include "gtest/gtest.h"
 
