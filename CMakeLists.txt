@@ -27,9 +27,10 @@ set(ANTLR4CPP_JAR_LOCATION ${PROJECT_SOURCE_DIR}/jars/antlr-4.7.1-complete.jar)
 option (MAKE_TESTS "MAKE_TESTS" OFF)
 
 include(ExternalAntlr4Cpp)
+
 include_directories(${ANTLR4CPP_INCLUDE_DIRS})
-link_directories(${ANTLR4CPP_LIBS})
 message(STATUS "Found antlr4cpp libs: ${ANTLR4CPP_LIBS} and includes: ${ANTLR4CPP_INCLUDE_DIRS} ")
+link_directories(${ANTLR4CPP_LIBS})
 
 antlr4cpp_process_grammar(algebra brick
   ${CMAKE_CURRENT_SOURCE_DIR}/grammar/Math.g4
