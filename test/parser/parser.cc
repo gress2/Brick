@@ -9,7 +9,7 @@ using listener = brick::AST::tree_shape_listener;
 
 TEST(BasicShit, Idk) {
   std::stringstream stream;
-  stream << "2+3" << std::endl;
+  stream << "2/3" << std::endl;
   antlr4::ANTLRInputStream input(stream);
   lexer lex(&input);
   antlr4::CommonTokenStream tokens(&lex);

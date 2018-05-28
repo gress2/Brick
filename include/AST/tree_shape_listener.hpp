@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "antlr4-runtime.h"
+#include "brick.hpp"
 #include "MathBaseListener.h"
 #include "MathParser.h"
 
@@ -16,8 +17,20 @@ public:
     std::cout << __PRETTY_FUNCTION__ << std::endl;
   }
 
-  void enterInfixExpr(MathParser::InfixExprContext * /*ctx*/) override {
+  void enterInfixExpr(MathParser::InfixExprContext* ctx) override {
     std::cout << __PRETTY_FUNCTION__ << std::endl;
+
+    if (ctx->OP_ADD()) {
+
+    } else if (ctx->OP_SUB()) {
+
+    } else if (ctx->OP_MUL()) {
+
+    } else if (ctx->OP_DIV()) {
+
+    } else {
+
+    }
   }
 
   void enterUnaryExpr(MathParser::UnaryExprContext * /*ctx*/) override {
@@ -28,8 +41,9 @@ public:
     std::cout << __PRETTY_FUNCTION__ << std::endl;
   }
 
-  void enterNumberExp(MathParser::NumberExpContext * /*ctx*/) override {
+  void enterNumberExp(MathParser::NumberExpContext* ctx) override {
     std::cout << __PRETTY_FUNCTION__ << std::endl;
+    std::cout << ctx->value->getText() << std::endl;
   }
 
   void enterParensExpr(MathParser::ParensExprContext * /*ctx*/) override {
