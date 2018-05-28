@@ -1,12 +1,12 @@
-#ifndef BRICK_MATH_AST_NODE_HPP_
-#define BRICK_MATH_AST_NODE_HPP_
+#ifndef BRICK_AST_NODE_HPP_
+#define BRICK_AST_NODE_HPP_
 
-namespace brick::math::AST 
+namespace brick::AST
 {
 
 class expression_node {};
 
-class infix_expression_node : public expression_node {}; 
+class infix_expression_node : public expression_node {};
 
 class addition_node : public infix_expression_node {};
 

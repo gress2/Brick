@@ -1,5 +1,5 @@
-#ifndef BRICK_MATH_AST_BUILD_AST_VISITOR_HPP_
-#define BRICK_MATH_AST_BUILD_AST_VISITOR_HPP_
+#ifndef BRICK_AST_BUILD_AST_VISITOR_HPP_
+#define BRICK_AST_BUILD_AST_VISITOR_HPP_
 
 #include <iostream>
 
@@ -7,9 +7,9 @@
 
 class build_ast_visitor : public brick::MathBaseVisitor {
   antlrcpp::Any visitMath(brick::MathParser::MathContext *ctx) override {
-    std::cout << "FUCK" << std::endl; 
+    std::cout << "FUCK" << std::endl;
     return visitChildren(ctx);
-  } 
+  }
 };
 
 #endif
