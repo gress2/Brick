@@ -32,8 +32,8 @@ link_directories(${ANTLR4CPP_LIBS})
 message(STATUS "Found antlr4cpp libs: ${ANTLR4CPP_LIBS} and includes: ${ANTLR4CPP_INCLUDE_DIRS} ")
 
 antlr4cpp_process_grammar(algebra brick
-  ${CMAKE_CURRENT_SOURCE_DIR}/grammar/MathLexerGrammar.g4
-  ${CMAKE_CURRENT_SOURCE_DIR}/grammar/MathParserGrammar.g4
+  ${CMAKE_CURRENT_SOURCE_DIR}/grammar/Math.g4
+  ""
 )
 # include generated files in project environment
 include_directories(${antlr4cpp_include_dirs_brick})
