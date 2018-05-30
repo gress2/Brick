@@ -1,11 +1,11 @@
-#ifndef BRICK_AST_BUILD_AST_VISITOR_HPP_
-#define BRICK_AST_BUILD_AST_VISITOR_HPP_
+#ifndef BRICK_AST_AST_EVALUATOR_HPP_
+#define BRICK_AST_AST_EVALUATOR_HPP_
 
 #include <iostream>
 
 #include "MathBaseVisitor.h"
 
-class build_ast_visitor : public brick::MathBaseVisitor {
+class ast_evalutator : public brick::MathBaseVisitor {
   antlrcpp::Any visitMath(brick::MathParser::MathContext *ctx) override {
     std::cout << "FUCK" << std::endl;
     return visitChildren(ctx);

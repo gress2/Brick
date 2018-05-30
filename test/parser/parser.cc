@@ -5,20 +5,19 @@
 
 using lexer = brick::MathLexer;
 using parser = brick::MathParser;
-using listener = brick::AST::tree_shape_listener;
+using ast_builder = brick::AST::ast_builder;
 
 TEST(BasicShit, Idk) {
   std::stringstream stream;
-  stream << "2/3" << std::endl;
+  stream << "2+4/3" << std::endl;
   antlr4::ANTLRInputStream input(stream);
   lexer lex(&input);
   antlr4::CommonTokenStream tokens(&lex);
   parser par(&tokens);
 
   antlr4::tree::ParseTree *tree = par.math();
-  listener lis;
-  antlr4::tree::ParseTreeWalker::DEFAULT.walk(&lis, tree);
-
+  ast_builder builder;
+  antlr4::tree::ParseTreeWalker::DEFAULT.walk(&builder, tree);
 }
 
 

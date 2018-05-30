@@ -1,5 +1,5 @@
-#ifndef BRICK_AST_TREE_SHAPE_LISTENER_
-#define BRICK_AST_TREE_SHAPE_LISTENER_
+#ifndef BRICK_AST_AST_BUILDER_
+#define BRICK_AST_AST_BUILDER_
 
 #include <iostream>
 
@@ -11,42 +11,53 @@
 namespace brick::AST
 {
 
-class tree_shape_listener : public MathBaseListener {
+class ast_builder : public MathBaseListener {
+private:
+  brick::tree::tree2 tree_;
+
 public:
-  void enterMath(brick::MathParser::MathContext *) override {
-    std::cout << __PRETTY_FUNCTION__ << std::endl;
-  }
+
+  ast_builder()
+    : tree_(nullptr)
+  {}
 
   void enterInfixExpr(MathParser::InfixExprContext* ctx) override {
     std::cout << __PRETTY_FUNCTION__ << std::endl;
 
+    brick::AST::infix_expression_node* infix_expr = nullptr;
+
     if (ctx->OP_ADD()) {
-
+      infix_expr = new brick::AST::addition_node();
     } else if (ctx->OP_SUB()) {
-
+      infix_expr = new brick::AST::subtraction_node();
     } else if (ctx->OP_MUL()) {
-
+      infix_expr = new brick::AST::subtraction_node();
     } else if (ctx->OP_DIV()) {
-
+      infix_expr = new brick::AST::division_node();
     } else {
-
+      // exp
     }
   }
 
-  void enterUnaryExpr(MathParser::UnaryExprContext * /*ctx*/) override {
+  void enterUnaryExpr(MathParser::UnaryExprContext* ctx) override {
     std::cout << __PRETTY_FUNCTION__ << std::endl;
+
+    if (ctx->OP_ADD()) {
+      // skip?
+    }
+
   }
 
   void enterFuncExpr(MathParser::FuncExprContext * /*ctx*/) override {
     std::cout << __PRETTY_FUNCTION__ << std::endl;
   }
 
-  void enterNumberExp(MathParser::NumberExpContext* ctx) override {
+  void enterNumberExpr(MathParser::NumberExprContext* ctx) override {
     std::cout << __PRETTY_FUNCTION__ << std::endl;
     std::cout << ctx->value->getText() << std::endl;
   }
 
-  void enterParensExpr(MathParser::ParensExprContext * /*ctx*/) override {
+  void enterIdExpr(MathParser::IdExprContext* ctx) override {
     std::cout << __PRETTY_FUNCTION__ << std::endl;
   }
 };

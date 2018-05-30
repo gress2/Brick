@@ -8,7 +8,8 @@ expr
   | left=expr op=(OP_MUL|OP_DIV) right=expr   # infixExpr 
   | left=expr op=(OP_ADD|OP_SUB) right=expr   # infixExpr
   | func=ID OPEN_PAREN expr CLOSE_PAREN       # funcExpr
-  | value=NUM                                 # numberExp
+  | value=NUM                                 # numberExpr
+  | id=ID                                     # idExpr
   ;
 
 OPEN_PAREN: '(';
