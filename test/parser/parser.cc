@@ -18,7 +18,7 @@ TEST(BasicShit, Idk) {
   antlr4::tree::ParseTree *tree = par.math();
   ast_builder builder;
   antlr4::tree::ParseTreeWalker::DEFAULT.walk(&builder, tree);
-  brick::tree::tree2 = builder.build();
+  brick::tree::tree2* t = builder.build();
 }
 
 

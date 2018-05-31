@@ -27,10 +27,10 @@ class ast_builder : public MathBaseListener {
 };
 
 ast_builder::ast_builder()
-  : tree_(nullptr)
+  : cur_(nullptr)
 {}
 
-void ast_builder::enterInfixExpr(MathParser::InfixExprContext* ctx) override {
+void ast_builder::enterInfixExpr(MathParser::InfixExprContext* ctx) {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
 
   brick::AST::infix_expression_node* infix_expr = nullptr;
@@ -52,16 +52,16 @@ void ast_builder::enterUnaryExpr(MathParser::UnaryExprContext* ctx) {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
-void ast_builder::enterFuncExpr(MathParser::FuncExprContext * /*ctx*/) {
+void ast_builder::enterFuncExpr(MathParser::FuncExprContext* ctx) {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
-void ast_builder::enterNumberExpr(MathParser::NumberExprContext* ctx) override {
+void ast_builder::enterNumberExpr(MathParser::NumberExprContext* ctx) {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
   std::cout << ctx->value->getText() << std::endl;
 }
 
-void ast_builder::enterIdExpr(MathParser::IdExprContext* ctx) override {
+void ast_builder::enterIdExpr(MathParser::IdExprContext* ctx) {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
@@ -73,8 +73,6 @@ void ast_builder::reset() {
   root_ = nullptr;
   cur_ = nullptr;
 }
-
-};
 
 }
 

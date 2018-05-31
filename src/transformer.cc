@@ -4,16 +4,5 @@
 #include "cxxopts.hpp"
 
 int main(int argc, const char** argv) {
-
-    cxxopts::Options options("Transformer", "Find potential AST transformations.");
-    options.add_options()
-      ("input", "Path to an AST file to be transformed", cxxopts::value<std::string>())
-    ;
-    auto args = options.parse(argc, argv);
-    std::string input_file = args["input"].as<std::string>();
-
-    brick::tree::tree<std::string> tree(std::string{""});
-
-    brick::tree_base::tree_base tree_base;
-    brick::transformer::transformer<decltype(tree), decltype(tree_base)> transformer(tree, tree_base);
+  return 0;
 }
