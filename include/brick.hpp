@@ -9,6 +9,7 @@
 #include "AST/ast_builder.hpp"
 #include "AST/ast_evaluator.hpp"
 #include "AST/node.hpp"
+#include "AST/parse.hpp"
 
 namespace Brick {}
 

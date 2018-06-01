@@ -9,19 +9,10 @@ using ast_builder = brick::AST::ast_builder;
 
 TEST(BasicShit, Idk) {
   std::stringstream stream;
-  stream << "3+4" << std::endl;
-  antlr4::ANTLRInputStream input(stream);
-  lexer lex(&input);
-  antlr4::CommonTokenStream tokens(&lex);
-  parser par(&tokens);
-
-  antlr4::tree::ParseTree *tree = par.math();
-  ast_builder builder;
-  antlr4::tree::ParseTreeWalker::DEFAULT.walk(&builder, tree);
-  brick::tree::tree2* t = builder.build();
+  stream << "3+4-6" << std::endl;
+  brick::tree::tree2* t = brick::AST::parse(stream); 
   t->print();
 }
-
 
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);

@@ -33,6 +33,7 @@ ast_builder::ast_builder()
 {}
 
 void ast_builder::enterInfixExpr(MathParser::InfixExprContext* ctx) {
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
   brick::AST::expression_node* infix_expr = nullptr;
 
   if (ctx->OP_ADD()) {
@@ -66,6 +67,7 @@ void ast_builder::enterFuncExpr(MathParser::FuncExprContext* ctx) {
 }
 
 void ast_builder::enterNumberExpr(MathParser::NumberExprContext* ctx) {
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
   float num = std::stof(ctx->value->getText());
   brick::AST::expression_node* number_expr = new brick::AST::number_node(num);
   append_node(number_expr);
