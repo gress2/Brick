@@ -23,6 +23,7 @@ namespace brick::tree
       bool add_child(expr_node*);
       void set_parent(tree2*);
       tree2* get_parent() const;
+      void print_helper() const;
       void print() const;
   };
 
@@ -35,8 +36,6 @@ namespace brick::tree
   }
 
   bool tree2::is_full() const {
-    std::cout << __PRETTY_FUNCTION__ << std::endl;
-    std::cout << expr_->num_children() << std::endl;
     return expr_->num_children() == children_.size();
   }
 
@@ -71,18 +70,22 @@ namespace brick::tree
     return parent_;
   }
 
-  void tree2::print() const {
-    std::cout << children_.size() << std::endl;
+  void tree2::print_helper() const {
     if (children_.size() == 0) {
-      std::cout << expr_->to_string() << std::endl;
+      std::cout << expr_->to_string();
     } else if (children_.size() == 1) {
-      std::cout << expr_->to_string() << std::endl;
-      children_[0]->print();
+      std::cout << expr_->to_string();
+      children_[0]->print_helper();
     } else {
-      children_[0]->print();
-      std::cout << expr_->to_string() << std::endl;
-      children_[1]->print();
+      children_[0]->print_helper();
+      std::cout << expr_->to_string();
+      children_[1]->print_helper();
     }
+  }
+
+  void tree2::print() const {
+    print_helper();
+    std::cout << std::endl;
   }
 
 }

@@ -13,6 +13,25 @@ class expression_node {
     virtual bool is_terminal() const = 0;
 };
 
+class paren_node : public expression_node {
+  public:
+    std::string to_string() const override;
+    short num_children() const override;
+    bool is_terminal() const override;
+};
+
+std::string paren_node::to_string() const {
+  return "";
+}
+
+short paren_node::num_children() const {
+  return 1;
+}
+
+bool paren_node::is_terminal() const {
+  return false;
+}
+
 class unary_expression_node : public expression_node {
   public:
     short num_children() const override;
@@ -33,18 +52,16 @@ class posit_node : public unary_expression_node {
 };
 
 std::string posit_node::to_string() const {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-  return "{unary +}";
+  return "+";
 }
 
-class negate_node : public expression_node {
+class negate_node : public unary_expression_node {
   public:
     std::string to_string() const override;
 };
 
 std::string negate_node::to_string() const {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-  return "{unary -}";
+  return "-";
 }
 
 class infix_expression_node : public expression_node {
@@ -67,8 +84,7 @@ class addition_node : public infix_expression_node {
 };
 
 std::string addition_node::to_string() const {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-  return "{infix +}";
+  return "+";
 }
 
 class subtraction_node : public infix_expression_node {
@@ -77,8 +93,7 @@ class subtraction_node : public infix_expression_node {
 };
 
 std::string subtraction_node::to_string() const {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-  return "{infix -}";
+  return "-";
 }
 
 class multiplication_node : public infix_expression_node {
@@ -87,8 +102,7 @@ class multiplication_node : public infix_expression_node {
 };
 
 std::string multiplication_node::to_string() const {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-  return "{infix *}";
+  return "*";
 }
 
 class division_node : public infix_expression_node {
@@ -97,8 +111,7 @@ class division_node : public infix_expression_node {
 };
 
 std::string division_node::to_string() const {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-  return "{infix /}";
+  return "/";
 }
 
 class function_node : public expression_node {
@@ -106,13 +119,18 @@ class function_node : public expression_node {
     const std::string name_;
   public:
     function_node(std::string);
+    std::string to_string() const override;
     short num_children() const override;
     bool is_terminal() const override;
 };
 
 function_node::function_node(std::string name)
-  : name_(name) 
+  : name_(name)
 {}
+
+std::string function_node::to_string() const {
+  return name_;
+}
 
 short function_node::num_children() const {
   return 1;
@@ -137,7 +155,7 @@ number_node::number_node(float num)
 {}
 
 short number_node::num_children() const {
-  return 0;  
+  return 0;
 }
 
 bool number_node::is_terminal() const {
@@ -145,8 +163,7 @@ bool number_node::is_terminal() const {
 }
 
 std::string number_node::to_string() const {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-  return "{" + std::to_string(num_) + "}";
+  return std::to_string(num_);
 }
 
 class id_node : public expression_node {
@@ -159,7 +176,7 @@ class id_node : public expression_node {
     bool is_terminal() const override;
 };
 
-id_node::id_node(std::string id) 
+id_node::id_node(std::string id)
   : id_(id)
 {}
 

@@ -33,8 +33,6 @@ ast_builder::ast_builder()
 {}
 
 void ast_builder::enterInfixExpr(MathParser::InfixExprContext* ctx) {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-
   brick::AST::expression_node* infix_expr = nullptr;
 
   if (ctx->OP_ADD()) {
@@ -48,28 +46,35 @@ void ast_builder::enterInfixExpr(MathParser::InfixExprContext* ctx) {
   } else {
     // exp
   }
-
   append_node(infix_expr);
 }
 
 void ast_builder::enterUnaryExpr(MathParser::UnaryExprContext* ctx) {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  brick::AST::expression_node* unary_expr = nullptr;
+  if (ctx->OP_ADD()) {
+    unary_expr = new brick::AST::posit_node();
+  } else if (ctx->OP_SUB()) {
+    unary_expr = new brick::AST::negate_node();
+  }
+  append_node(unary_expr);
 }
 
 void ast_builder::enterFuncExpr(MathParser::FuncExprContext* ctx) {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  std::string fname = ctx->func->getText();
+  brick::AST::expression_node* func_expr = new brick::AST::function_node(fname);
+  append_node(func_expr);
 }
 
 void ast_builder::enterNumberExpr(MathParser::NumberExprContext* ctx) {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-
   float num = std::stof(ctx->value->getText());
   brick::AST::expression_node* number_expr = new brick::AST::number_node(num);
   append_node(number_expr);
 }
 
 void ast_builder::enterIdExpr(MathParser::IdExprContext* ctx) {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  std::string id = ctx->id->getText();
+  brick::AST::expression_node* id_expr = new brick::AST::id_node(id);
+  append_node(id_expr);
 }
 
 brick::tree::tree2* ast_builder::build() const {
@@ -82,7 +87,6 @@ void ast_builder::reset() {
 }
 
 bool ast_builder::append_node(brick::AST::expression_node* expr) {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
   if (!root_) {
     root_ = new brick::tree::tree2(expr);
     cur_ = root_;
