@@ -96,11 +96,14 @@ bool ast_builder::append_node(brick::AST::expression_node* expr) {
   }
 
   while (cur_) {
-    if (cur_->add_child(expr)) {
+    auto* added_child = cur_->add_child(expr);
+    if (added_child) {
+      cur_ = added_child;
       return true;
     }
     cur_ = cur_->get_parent();
   }
+
   return false;
 }
 

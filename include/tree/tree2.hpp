@@ -19,8 +19,8 @@ namespace brick::tree
       void set_expr(expr_node*);
       bool is_full() const;
       bool is_terminal() const;
-      bool add_child(tree2*);
-      bool add_child(expr_node*);
+      tree2* add_child(tree2*);
+      tree2* add_child(expr_node*);
       void set_parent(tree2*);
       tree2* get_parent() const;
       void print_helper() const;
@@ -43,23 +43,24 @@ namespace brick::tree
     return expr_->is_terminal();
   }
 
-  bool tree2::add_child(tree2* child) {
+  tree2* tree2::add_child(tree2* child) {
     if (is_full() || is_terminal()) {
-      return false;
+      return nullptr;
     }
     children_.push_back(child);
     child->set_parent(this);
-    return true;
+    return child;
   }
 
-  bool tree2::add_child(expr_node* expr) {
+  tree2* tree2::add_child(expr_node* expr) {
     if (is_full() || is_terminal()) {
-      return false;
+      return nullptr;
     }
     tree2* child = new tree2(expr);
     children_.push_back(child);
+
     child->set_parent(this);
-    return true;
+    return child;
   }
 
   void tree2::set_parent(tree2* parent) {
