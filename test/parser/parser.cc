@@ -9,8 +9,8 @@ using ast_builder = brick::AST::ast_builder;
 
 TEST(BasicShit, Idk) {
   std::stringstream stream;
-  stream << "3+4-6" << std::endl;
-  brick::tree::tree2* t = brick::AST::parse(stream); 
+  stream << "fn(3+4)-6" << std::endl;
+  brick::tree::tree2* t = brick::AST::parse(stream);
   t->print();
 }
 

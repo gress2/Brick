@@ -7,29 +7,73 @@ namespace brick::AST
 {
 
 class expression_node {
+  // note to self: these need to be declared virtual in order to dispatch to
+  // correct derived class functions when using base class pointers
   public:
-    virtual std::string to_string() const = 0;
-    virtual short num_children() const = 0;
-    virtual bool is_terminal() const = 0;
+    virtual std::string to_string() const;
+    virtual short num_children() const;
+    virtual bool is_terminal() const;
+    virtual bool wraps() const;
+    virtual std::string wrap_left() const;
+    virtual std::string wrap_right() const;
 };
 
-class paren_node : public expression_node {
+std::string expression_node::to_string() const {
+  return "";
+}
+
+short expression_node::num_children() const {
+  return 0;
+}
+
+bool expression_node::is_terminal() const {
+  return false;
+}
+
+bool expression_node::wraps() const {
+  return false;
+}
+
+std::string expression_node::wrap_left() const {
+  return "";
+}
+
+std::string expression_node::wrap_right() const {
+  return "";
+}
+
+class parens_node : public expression_node {
   public:
     std::string to_string() const override;
     short num_children() const override;
     bool is_terminal() const override;
+    bool wraps() const override;
+    std::string wrap_left() const override;
+    std::string wrap_right() const override;
 };
 
-std::string paren_node::to_string() const {
+std::string parens_node::to_string() const {
   return "";
 }
 
-short paren_node::num_children() const {
+short parens_node::num_children() const {
   return 1;
 }
 
-bool paren_node::is_terminal() const {
+bool parens_node::is_terminal() const {
   return false;
+}
+
+bool parens_node::wraps() const {
+  return true;
+}
+
+std::string parens_node::wrap_left() const {
+  return "(";
+}
+
+std::string parens_node::wrap_right() const {
+  return ")";
 }
 
 class unary_expression_node : public expression_node {

@@ -75,8 +75,14 @@ namespace brick::tree
     if (children_.size() == 0) {
       std::cout << expr_->to_string();
     } else if (children_.size() == 1) {
-      std::cout << expr_->to_string();
-      children_[0]->print_helper();
+      if (expr_->wraps()) {
+        std::cout << expr_->wrap_left();
+        children_[0]->print_helper();
+        std::cout << expr_->wrap_right();
+      } else {
+        std::cout << expr_->to_string();
+        children_[0]->print_helper();
+      }
     } else {
       children_[0]->print_helper();
       std::cout << expr_->to_string();
