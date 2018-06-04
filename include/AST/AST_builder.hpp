@@ -16,7 +16,7 @@ class AST_builder : public MathBaseListener {
   private:
     brick::AST::AST* root_;
     brick::AST::AST* cur_;
-    bool append_node(brick::AST::expression_node*);
+    bool append_node(brick::AST::node*);
   public:
     AST_builder();
     void enterParensExpr(MathParser::ParensExprContext*) override;
@@ -35,17 +35,17 @@ AST_builder::AST_builder()
 {}
 
 void AST_builder::enterParensExpr(MathParser::ParensExprContext* ctx) {
-  brick::AST::expression_node* parens_expr = new brick::AST::parens_node();
+  brick::AST::node* parens_expr = new brick::AST::parens_node();
   append_node(parens_expr);
 }
 
 void AST_builder::enterBracketsExpr(MathParser::BracketsExprContext* ctx) {
-  brick::AST::expression_node* brackets_expr = new brick::AST::brackets_node();
+  brick::AST::node* brackets_expr = new brick::AST::brackets_node();
   append_node(brackets_expr);
 }
 
 void AST_builder::enterInfixExpr(MathParser::InfixExprContext* ctx) {
-  brick::AST::expression_node* infix_expr = nullptr;
+  brick::AST::node* infix_expr = nullptr;
 
   if (ctx->OP_ADD()) {
     infix_expr = new brick::AST::addition_node();
@@ -62,7 +62,7 @@ void AST_builder::enterInfixExpr(MathParser::InfixExprContext* ctx) {
 }
 
 void AST_builder::enterUnaryExpr(MathParser::UnaryExprContext* ctx) {
-  brick::AST::expression_node* unary_expr = nullptr;
+  brick::AST::node* unary_expr = nullptr;
   if (ctx->OP_ADD()) {
     unary_expr = new brick::AST::posit_node();
   } else if (ctx->OP_SUB()) {
@@ -73,19 +73,19 @@ void AST_builder::enterUnaryExpr(MathParser::UnaryExprContext* ctx) {
 
 void AST_builder::enterFuncExpr(MathParser::FuncExprContext* ctx) {
   std::string fname = ctx->func->getText();
-  brick::AST::expression_node* func_expr = new brick::AST::function_node(fname);
+  brick::AST::node* func_expr = new brick::AST::function_node(fname);
   append_node(func_expr);
 }
 
 void AST_builder::enterNumberExpr(MathParser::NumberExprContext* ctx) {
   float num = std::stof(ctx->value->getText());
-  brick::AST::expression_node* number_expr = new brick::AST::number_node(num);
+  brick::AST::node* number_expr = new brick::AST::number_node(num);
   append_node(number_expr);
 }
 
 void AST_builder::enterIdExpr(MathParser::IdExprContext* ctx) {
   std::string id = ctx->id->getText();
-  brick::AST::expression_node* id_expr = new brick::AST::id_node(id);
+  brick::AST::node* id_expr = new brick::AST::id_node(id);
   append_node(id_expr);
 }
 
@@ -98,7 +98,7 @@ void AST_builder::reset() {
   cur_ = nullptr;
 }
 
-bool AST_builder::append_node(brick::AST::expression_node* expr) {
+bool AST_builder::append_node(brick::AST::node* expr) {
   if (!root_) {
     root_ = new brick::AST::AST(expr);
     cur_ = root_;

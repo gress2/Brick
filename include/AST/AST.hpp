@@ -8,20 +8,20 @@
 
 namespace brick::AST
 {
-  using expr_node = brick::AST::expression_node;
+  using node = brick::AST::node;
 
   class AST {
     private:
-      expr_node* expr_;
+      node* node_;
       std::vector<AST*> children_; // TODO: unnecessary?
       AST* parent_ = nullptr;
     public:
-      AST(expr_node*);
-      void set_expr(expr_node*);
+      AST(node*);
+      void set_node(node*);
       bool is_full() const;
       bool is_terminal() const;
       AST* add_child(AST*);
-      AST* add_child(expr_node*);
+      AST* add_child(node*);
       void set_parent(AST*);
       AST* get_parent() const;
       std::string to_string() const;
@@ -29,20 +29,20 @@ namespace brick::AST
       double eval(std::map<std::string, double>* = nullptr) const;
   };
 
-  AST::AST(expr_node* expr)
-    : expr_(expr)
+  AST::AST(node* node)
+    : node_(node)
   {}
 
-  void AST::set_expr(expr_node* expr) {
-    expr_ = expr;
+  void AST::set_node(node* node) {
+    node_ = node;
   }
 
   bool AST::is_full() const {
-    return expr_->num_children() == children_.size();
+    return node_->num_children() == children_.size();
   }
 
   bool AST::is_terminal() const {
-    return expr_->is_terminal();
+    return node_->is_terminal();
   }
 
   AST* AST::add_child(AST* child) {
@@ -54,11 +54,11 @@ namespace brick::AST
     return child;
   }
 
-  AST* AST::add_child(expr_node* expr) {
+  AST* AST::add_child(node* node) {
     if (is_full() || is_terminal()) {
       return nullptr;
     }
-    AST* child = new AST(expr);
+    AST* child = new AST(node);
     children_.push_back(child);
 
     child->set_parent(this);
@@ -75,19 +75,19 @@ namespace brick::AST
 
   std::string AST::to_string() const {
     if (children_.size() == 0) {
-      return expr_->to_string();
+      return node_->to_string();
     } else if (children_.size() == 1) {
-      if (expr_->wraps()) {
-        return expr_->wrap_left() +
+      if (node_->wraps()) {
+        return node_->wrap_left() +
           children_[0]->to_string() +
-          expr_->wrap_right();
+          node_->wrap_right();
       } else {
-        return expr_->to_string() +
+        return node_->to_string() +
           children_[0]->to_string();
       }
     } else {
       return children_[0]->to_string() +
-        expr_->to_string() + 
+        node_->to_string() + 
         children_[1]->to_string();
     } 
   }

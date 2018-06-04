@@ -6,7 +6,7 @@
 namespace brick::AST
 {
 
-class expression_node {
+class node {
   // note to self: these need to be declared virtual in order to dispatch to
   // correct derived class functions when using base class pointers
   public:
@@ -18,31 +18,31 @@ class expression_node {
     virtual std::string wrap_right() const;
 };
 
-std::string expression_node::to_string() const {
+std::string node::to_string() const {
   return "";
 }
 
-short expression_node::num_children() const {
+short node::num_children() const {
   return 0;
 }
 
-bool expression_node::is_terminal() const {
+bool node::is_terminal() const {
   return false;
 }
 
-bool expression_node::wraps() const {
+bool node::wraps() const {
   return false;
 }
 
-std::string expression_node::wrap_left() const {
+std::string node::wrap_left() const {
   return "";
 }
 
-std::string expression_node::wrap_right() const {
+std::string node::wrap_right() const {
   return "";
 }
 
-class parens_node : public expression_node {
+class parens_node : public node {
   public:
     std::string to_string() const override;
     short num_children() const override;
@@ -76,7 +76,7 @@ std::string parens_node::wrap_right() const {
   return ")";
 }
 
-class brackets_node : public expression_node {
+class brackets_node : public node {
   public:
     std::string to_string() const override;
     short num_children() const override;
@@ -110,21 +110,21 @@ std::string brackets_node::wrap_right() const {
   return "]";
 }
 
-class unary_expression_node : public expression_node {
+class unary_node : public node {
   public:
     short num_children() const override;
     bool is_terminal() const override;
 };
 
-short unary_expression_node::num_children() const {
+short unary_node::num_children() const {
   return 1;
 }
 
-bool unary_expression_node::is_terminal() const {
+bool unary_node::is_terminal() const {
   return false;
 }
 
-class posit_node : public unary_expression_node {
+class posit_node : public unary_node {
   public:
     std::string to_string() const override;
 };
@@ -133,7 +133,7 @@ std::string posit_node::to_string() const {
   return "+";
 }
 
-class negate_node : public unary_expression_node {
+class negate_node : public unary_node {
   public:
     std::string to_string() const override;
 };
@@ -142,21 +142,21 @@ std::string negate_node::to_string() const {
   return "-";
 }
 
-class infix_expression_node : public expression_node {
+class infix_node : public node {
   public:
     short num_children() const override;
     bool is_terminal() const override;
 };
 
-short infix_expression_node::num_children() const {
+short infix_node::num_children() const {
   return 2;
 }
 
-bool infix_expression_node::is_terminal() const {
+bool infix_node::is_terminal() const {
   return false;
 }
 
-class addition_node : public infix_expression_node {
+class addition_node : public infix_node {
   public:
     std::string to_string() const override;
 };
@@ -165,7 +165,7 @@ std::string addition_node::to_string() const {
   return "+";
 }
 
-class subtraction_node : public infix_expression_node {
+class subtraction_node : public infix_node {
   public:
     std::string to_string() const override;
 };
@@ -174,7 +174,7 @@ std::string subtraction_node::to_string() const {
   return "-";
 }
 
-class multiplication_node : public infix_expression_node {
+class multiplication_node : public infix_node {
   public:
     std::string to_string() const override;
 };
@@ -183,7 +183,7 @@ std::string multiplication_node::to_string() const {
   return "*";
 }
 
-class division_node : public infix_expression_node {
+class division_node : public infix_node {
   public:
     std::string to_string() const override;
 };
@@ -192,7 +192,7 @@ std::string division_node::to_string() const {
   return "/";
 }
 
-class function_node : public expression_node {
+class function_node : public node {
   private:
     const std::string name_;
   public:
@@ -233,7 +233,7 @@ std::string function_node::wrap_right() const {
   return ")";
 }
 
-class number_node : public expression_node {
+class number_node : public node {
   private:
     const float num_;
   public:
@@ -259,7 +259,7 @@ std::string number_node::to_string() const {
   return std::to_string(num_);
 }
 
-class id_node : public expression_node {
+class id_node : public node {
   private:
     const std::string id_;
   public:
