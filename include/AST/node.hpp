@@ -76,6 +76,40 @@ std::string parens_node::wrap_right() const {
   return ")";
 }
 
+class brackets_node : public expression_node {
+  public:
+    std::string to_string() const override;
+    short num_children() const override;
+    bool is_terminal() const override;
+    bool wraps() const override;
+    std::string wrap_left() const override;
+    std::string wrap_right() const override;
+};
+
+std::string brackets_node::to_string() const {
+  return "";
+}
+
+short brackets_node::num_children() const {
+  return 1;
+}
+
+bool brackets_node::is_terminal() const {
+  return false;
+}
+
+bool brackets_node::wraps() const {
+  return true;
+}
+
+std::string brackets_node::wrap_left() const {
+  return "[";
+}
+
+std::string brackets_node::wrap_right() const {
+  return "]";
+}
+
 class unary_expression_node : public expression_node {
   public:
     short num_children() const override;
@@ -166,6 +200,9 @@ class function_node : public expression_node {
     std::string to_string() const override;
     short num_children() const override;
     bool is_terminal() const override;
+    bool wraps() const override;
+    std::string wrap_left() const override;
+    std::string wrap_right() const override;
 };
 
 function_node::function_node(std::string name)
@@ -173,7 +210,7 @@ function_node::function_node(std::string name)
 {}
 
 std::string function_node::to_string() const {
-  return name_;
+  return "";
 }
 
 short function_node::num_children() const {
@@ -182,6 +219,18 @@ short function_node::num_children() const {
 
 bool function_node::is_terminal() const {
   return false;
+}
+
+bool function_node::wraps() const {
+  return true;
+}
+
+std::string function_node::wrap_left() const {
+  return name_ + "(";
+}
+
+std::string function_node::wrap_right() const {
+  return ")";
 }
 
 class number_node : public expression_node {

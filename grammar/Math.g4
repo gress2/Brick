@@ -9,12 +9,15 @@ expr
   | left=expr op=(OP_ADD|OP_SUB) right=expr   # infixExpr
   | func=ID OPEN_PAREN expr CLOSE_PAREN       # funcExpr
   | OPEN_PAREN expr CLOSE_PAREN               # parensExpr
+  | OPEN_BRACK expr CLOSE_BRACK               # bracketsExpr
   | value=NUM                                 # numberExpr
   | id=ID                                     # idExpr
   ;
 
 OPEN_PAREN: '(';
 CLOSE_PAREN: ')';
+OPEN_BRACK: '[';
+CLOSE_BRACK: ']';
 OP_ADD: '+';
 OP_SUB: '-';
 OP_MUL: '*';

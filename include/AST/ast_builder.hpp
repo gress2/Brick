@@ -20,6 +20,7 @@ class ast_builder : public MathBaseListener {
   public:
     ast_builder();
     void enterParensExpr(MathParser::ParensExprContext*) override;
+    void enterBracketsExpr(MathParser::BracketsExprContext*) override;
     void enterInfixExpr(MathParser::InfixExprContext*) override;
     void enterUnaryExpr(MathParser::UnaryExprContext*) override;
     void enterFuncExpr(MathParser::FuncExprContext*) override;
@@ -37,6 +38,12 @@ void ast_builder::enterParensExpr(MathParser::ParensExprContext* ctx) {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
   brick::AST::expression_node* parens_expr = new brick::AST::parens_node();
   append_node(parens_expr);
+}
+
+void ast_builder::enterBracketsExpr(MathParser::BracketsExprContext* ctx) {
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  brick::AST::expression_node* brackets_expr = new brick::AST::brackets_node();
+  append_node(brackets_expr);
 }
 
 void ast_builder::enterInfixExpr(MathParser::InfixExprContext* ctx) {
