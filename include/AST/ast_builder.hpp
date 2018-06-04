@@ -55,7 +55,7 @@ void ast_builder::enterInfixExpr(MathParser::InfixExprContext* ctx) {
   } else if (ctx->OP_SUB()) {
     infix_expr = new brick::AST::subtraction_node();
   } else if (ctx->OP_MUL()) {
-    infix_expr = new brick::AST::subtraction_node();
+    infix_expr = new brick::AST::multiplication_node();
   } else if (ctx->OP_DIV()) {
     infix_expr = new brick::AST::division_node();
   } else {
