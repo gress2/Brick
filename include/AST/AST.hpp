@@ -1,49 +1,51 @@
-#ifndef BRICK_TREE_TREE2_HPP_
-#define BRICK_TREE_TREE2_HPP_
+#ifndef BRICK_AST_AST_HPP_
+#define BRICK_AST_AST_HPP_
 
+#include <map>
 #include <vector>
 
 #include "AST/node.hpp"
 
-namespace brick::tree
+namespace brick::AST
 {
   using expr_node = brick::AST::expression_node;
 
-  class tree2 {
+  class AST {
     private:
       expr_node* expr_;
-      std::vector<tree2*> children_; // TODO: unnecessary?
-      tree2* parent_ = nullptr;
+      std::vector<AST*> children_; // TODO: unnecessary?
+      AST* parent_ = nullptr;
     public:
-      tree2(expr_node*);
+      AST(expr_node*);
       void set_expr(expr_node*);
       bool is_full() const;
       bool is_terminal() const;
-      tree2* add_child(tree2*);
-      tree2* add_child(expr_node*);
-      void set_parent(tree2*);
-      tree2* get_parent() const;
+      AST* add_child(AST*);
+      AST* add_child(expr_node*);
+      void set_parent(AST*);
+      AST* get_parent() const;
       std::string to_string() const;
       void print() const;
+      double eval(std::map<std::string, double>* = nullptr) const;
   };
 
-  tree2::tree2(expr_node* expr)
+  AST::AST(expr_node* expr)
     : expr_(expr)
   {}
 
-  void tree2::set_expr(expr_node* expr) {
+  void AST::set_expr(expr_node* expr) {
     expr_ = expr;
   }
 
-  bool tree2::is_full() const {
+  bool AST::is_full() const {
     return expr_->num_children() == children_.size();
   }
 
-  bool tree2::is_terminal() const {
+  bool AST::is_terminal() const {
     return expr_->is_terminal();
   }
 
-  tree2* tree2::add_child(tree2* child) {
+  AST* AST::add_child(AST* child) {
     if (is_full() || is_terminal()) {
       return nullptr;
     }
@@ -52,26 +54,26 @@ namespace brick::tree
     return child;
   }
 
-  tree2* tree2::add_child(expr_node* expr) {
+  AST* AST::add_child(expr_node* expr) {
     if (is_full() || is_terminal()) {
       return nullptr;
     }
-    tree2* child = new tree2(expr);
+    AST* child = new AST(expr);
     children_.push_back(child);
 
     child->set_parent(this);
     return child;
   }
 
-  void tree2::set_parent(tree2* parent) {
+  void AST::set_parent(AST* parent) {
     parent_ = parent;
   }
 
-  tree2* tree2::get_parent() const {
+  AST* AST::get_parent() const {
     return parent_;
   }
 
-  std::string tree2::to_string() const {
+  std::string AST::to_string() const {
     if (children_.size() == 0) {
       return expr_->to_string();
     } else if (children_.size() == 1) {
@@ -90,8 +92,12 @@ namespace brick::tree
     } 
   }
 
-  void tree2::print() const {
+  void AST::print() const {
     std::cout << to_string() << std::endl;
+  }
+
+  double AST::eval(std::map<std::string, double>* symbol_table) const {
+    return 0;
   }
 
 }

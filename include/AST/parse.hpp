@@ -4,20 +4,26 @@
 #include "antlr4-runtime.h"
 #include "MathLexer.h"
 #include "MathParser.h"
-#include "AST/ast_builder.hpp"
-#include "tree/tree2.hpp"
+#include "AST/AST_builder.hpp"
+#include "AST/AST.hpp"
 
 namespace brick::AST
 {
-  brick::tree::tree2* parse(std::istream& stream) {
+  brick::AST::AST* parse(std::istream& stream) {
     antlr4::ANTLRInputStream input(stream);
     brick::MathLexer lexer(&input); 
     antlr4::CommonTokenStream tokens(&lexer);
     brick::MathParser parser(&tokens);
     antlr4::tree::ParseTree *tree = parser.math();
-    brick::AST::ast_builder builder;
+    brick::AST::AST_builder builder;
     antlr4::tree::ParseTreeWalker::DEFAULT.walk(&builder, tree);
     return builder.build();
+  }
+
+  brick::AST::AST* parse(std::string math_str) {
+    std::stringstream stream;
+    stream << math_str << std::endl;
+    return parse(stream);
   }
 }
 

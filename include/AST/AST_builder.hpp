@@ -1,5 +1,5 @@
-#ifndef BRICK_AST_AST_BUILDER_
-#define BRICK_AST_AST_BUILDER_
+#ifndef BRICK_AST_AST_builder_
+#define BRICK_AST_AST_builder_
 
 #include <iostream>
 #include <string>
@@ -12,13 +12,13 @@
 namespace brick::AST
 {
 
-class ast_builder : public MathBaseListener {
+class AST_builder : public MathBaseListener {
   private:
-    brick::tree::tree2* root_;
-    brick::tree::tree2* cur_;
+    brick::AST::AST* root_;
+    brick::AST::AST* cur_;
     bool append_node(brick::AST::expression_node*);
   public:
-    ast_builder();
+    AST_builder();
     void enterParensExpr(MathParser::ParensExprContext*) override;
     void enterBracketsExpr(MathParser::BracketsExprContext*) override;
     void enterInfixExpr(MathParser::InfixExprContext*) override;
@@ -26,28 +26,25 @@ class ast_builder : public MathBaseListener {
     void enterFuncExpr(MathParser::FuncExprContext*) override;
     void enterNumberExpr(MathParser::NumberExprContext*) override;
     void enterIdExpr(MathParser::IdExprContext*) override;
-    brick::tree::tree2* build() const;
+    brick::AST::AST* build() const;
     void reset();
 };
 
-ast_builder::ast_builder()
+AST_builder::AST_builder()
   : root_(nullptr), cur_(nullptr)
 {}
 
-void ast_builder::enterParensExpr(MathParser::ParensExprContext* ctx) {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
+void AST_builder::enterParensExpr(MathParser::ParensExprContext* ctx) {
   brick::AST::expression_node* parens_expr = new brick::AST::parens_node();
   append_node(parens_expr);
 }
 
-void ast_builder::enterBracketsExpr(MathParser::BracketsExprContext* ctx) {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
+void AST_builder::enterBracketsExpr(MathParser::BracketsExprContext* ctx) {
   brick::AST::expression_node* brackets_expr = new brick::AST::brackets_node();
   append_node(brackets_expr);
 }
 
-void ast_builder::enterInfixExpr(MathParser::InfixExprContext* ctx) {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
+void AST_builder::enterInfixExpr(MathParser::InfixExprContext* ctx) {
   brick::AST::expression_node* infix_expr = nullptr;
 
   if (ctx->OP_ADD()) {
@@ -64,7 +61,7 @@ void ast_builder::enterInfixExpr(MathParser::InfixExprContext* ctx) {
   append_node(infix_expr);
 }
 
-void ast_builder::enterUnaryExpr(MathParser::UnaryExprContext* ctx) {
+void AST_builder::enterUnaryExpr(MathParser::UnaryExprContext* ctx) {
   brick::AST::expression_node* unary_expr = nullptr;
   if (ctx->OP_ADD()) {
     unary_expr = new brick::AST::posit_node();
@@ -74,37 +71,36 @@ void ast_builder::enterUnaryExpr(MathParser::UnaryExprContext* ctx) {
   append_node(unary_expr);
 }
 
-void ast_builder::enterFuncExpr(MathParser::FuncExprContext* ctx) {
+void AST_builder::enterFuncExpr(MathParser::FuncExprContext* ctx) {
   std::string fname = ctx->func->getText();
   brick::AST::expression_node* func_expr = new brick::AST::function_node(fname);
   append_node(func_expr);
 }
 
-void ast_builder::enterNumberExpr(MathParser::NumberExprContext* ctx) {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
+void AST_builder::enterNumberExpr(MathParser::NumberExprContext* ctx) {
   float num = std::stof(ctx->value->getText());
   brick::AST::expression_node* number_expr = new brick::AST::number_node(num);
   append_node(number_expr);
 }
 
-void ast_builder::enterIdExpr(MathParser::IdExprContext* ctx) {
+void AST_builder::enterIdExpr(MathParser::IdExprContext* ctx) {
   std::string id = ctx->id->getText();
   brick::AST::expression_node* id_expr = new brick::AST::id_node(id);
   append_node(id_expr);
 }
 
-brick::tree::tree2* ast_builder::build() const {
+brick::AST::AST* AST_builder::build() const {
   return root_;
 }
 
-void ast_builder::reset() {
+void AST_builder::reset() {
   root_ = nullptr;
   cur_ = nullptr;
 }
 
-bool ast_builder::append_node(brick::AST::expression_node* expr) {
+bool AST_builder::append_node(brick::AST::expression_node* expr) {
   if (!root_) {
-    root_ = new brick::tree::tree2(expr);
+    root_ = new brick::AST::AST(expr);
     cur_ = root_;
     return true;
   }

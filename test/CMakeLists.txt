@@ -1,3 +1,3 @@
 add_subdirectory("./io")
-add_subdirectory("./parser")
+add_subdirectory("./AST")
 add_subdirectory("./tree")

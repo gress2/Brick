@@ -5,7 +5,7 @@
 
 #include "MathBaseVisitor.h"
 
-class ast_evalutator : public brick::MathBaseVisitor {
+class AST_evalutator : public brick::MathBaseVisitor {
   antlrcpp::Any visitMath(brick::MathParser::MathContext *ctx) override {
     std::cout << "FUCK" << std::endl;
     return visitChildren(ctx);
