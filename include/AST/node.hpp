@@ -407,7 +407,7 @@ class id_node : public node {
     std::string to_string() const override;
     short num_children() const override;
     bool is_terminal() const override;
-    bool is_number() const override;
+    bool is_id() const override;
     std::string get_id() const override;
 };
 
@@ -427,7 +427,7 @@ bool id_node::is_terminal() const {
   return true;
 }
 
-bool id_node::is_number() const {
+bool id_node::is_id() const {
   return true;
 }
 

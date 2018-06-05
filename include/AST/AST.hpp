@@ -26,7 +26,7 @@ namespace brick::AST
       AST* get_parent() const;
       std::string to_string() const;
       void print() const;
-      double eval(std::map<std::string, double>* = nullptr) const;
+      double eval(std::unordered_map<std::string, double>* = nullptr) const;
   };
 
   AST::AST(node* node)
@@ -96,7 +96,7 @@ namespace brick::AST
     std::cout << to_string() << std::endl;
   }
 
-  double AST::eval(std::map<std::string, double>* sym_tbl) const {
+  double AST::eval(std::unordered_map<std::string, double>* sym_tbl) const {
     if (node_->is_parens() || node_->is_brackets() || node_->is_posit()) {
       return children_[0]->eval(sym_tbl);
     } else if (node_->is_negate()) {
@@ -114,8 +114,21 @@ namespace brick::AST
     } else if (node_->is_number()) {
       return node_->get_number(); 
     } else if (node_->is_id()) {
+      std::string id = node_->get_id();
+      if (sym_tbl) {
+        if (sym_tbl->count(id)) {
+          return sym_tbl->operator[](id);
+        } else {
+          std::cerr << "Symbol with undefined value in AST: " << id << " not found in symbol table" << std::endl;
+        }
+      } else {
+        std::cerr << "Symbol encountered in AST but no symbol table was passed" << std::endl;
+      }
+      std::cerr << "Using a value of 0 for this symbol..." << std::endl;
       return 0;
     } else {
+      std::cerr << "Something went wrong: unhandled node type in AST evaluation" << std::endl;
+      std::cerr << "Using a value of 0 for this node..." << std::endl;
       return 0;
     }
   }
