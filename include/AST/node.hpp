@@ -1,6 +1,7 @@
 #ifndef BRICK_AST_NODE_HPP_
 #define BRICK_AST_NODE_HPP_
 
+#include <cmath>
 #include <string>
 
 namespace brick::AST
@@ -31,6 +32,7 @@ class node {
     virtual bool is_id() const;
     virtual float get_number() const;
     virtual std::string get_id() const;
+    virtual double operator()(double) const;
 };
 
 std::string node::to_string() const {
@@ -115,6 +117,10 @@ float node::get_number() const {
 
 std::string node::get_id() const {
   return "";
+}
+
+double node::operator()(double d) const {
+  return d;
 }
 
 class parens_node : public node {
@@ -361,6 +367,51 @@ std::string function_node::wrap_right() const {
 
 bool function_node::is_function() const {
   return true;
+}
+
+class sin_function_node : public function_node {
+  private:
+    const std::string name_;
+  public:
+    sin_function_node();
+    double operator()(double) const override;
+};
+
+sin_function_node::sin_function_node() 
+  : function_node("sin"), name_("sin") {}
+
+double sin_function_node::operator()(double d) const {
+  return std::sin(d);
+}
+
+class cos_function_node : public function_node {
+  private:
+    const std::string name_;
+  public:
+    cos_function_node();
+    double operator()(double) const override;
+};
+
+cos_function_node::cos_function_node() 
+  : function_node("cos"), name_("cos") {}
+
+double cos_function_node::operator()(double d) const {
+  return std::cos(d);
+}
+
+class log_function_node : public function_node {
+  private:
+    const std::string name_;
+  public:
+    log_function_node();
+    double operator()(double) const override;
+};
+
+log_function_node::log_function_node() 
+  : function_node("log"), name_("log") {}
+
+double log_function_node::operator()(double d) const {
+  return std::log(d);
 }
 
 class number_node : public node {

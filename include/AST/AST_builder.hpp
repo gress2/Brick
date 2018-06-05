@@ -73,7 +73,17 @@ void AST_builder::enterUnaryExpr(MathParser::UnaryExprContext* ctx) {
 
 void AST_builder::enterFuncExpr(MathParser::FuncExprContext* ctx) {
   std::string fname = ctx->func->getText();
-  brick::AST::node* func_expr = new brick::AST::function_node(fname);
+  brick::AST::node* func_expr = nullptr;
+  if (fname == "sin") {
+    func_expr = new brick::AST::sin_function_node();
+  } else if (fname == "cos") {
+    func_expr = new brick::AST::cos_function_node();
+  } else if (fname == "log") {
+    func_expr = new brick::AST::log_function_node();
+  } else {
+    func_expr = new brick::AST::function_node(fname);
+  } 
+
   append_node(func_expr);
 }
 

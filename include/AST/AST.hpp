@@ -1,7 +1,7 @@
 #ifndef BRICK_AST_AST_HPP_
 #define BRICK_AST_AST_HPP_
 
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 #include "AST/node.hpp"
@@ -110,7 +110,7 @@ namespace brick::AST
     } else if (node_->is_division()) {
       return children_[0]->eval(sym_tbl) / children_[1]->eval(sym_tbl);
     } else if (node_->is_function()) {
-      return children_[0]->eval(sym_tbl);
+      return node_->operator()(children_[0]->eval(sym_tbl));
     } else if (node_->is_number()) {
       return node_->get_number(); 
     } else if (node_->is_id()) {
