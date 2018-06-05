@@ -97,7 +97,7 @@ namespace brick::AST
   }
 
   double AST::eval(std::map<std::string, double>* symbol_table) const {
-    return 0;
+
   }
 
 }

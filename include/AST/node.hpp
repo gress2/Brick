@@ -16,6 +16,19 @@ class node {
     virtual bool wraps() const;
     virtual std::string wrap_left() const;
     virtual std::string wrap_right() const;
+    virtual bool is_parens() const;
+    virtual bool is_brackets() const;
+    virtual bool is_unary() const;
+    virtual bool is_infix() const;
+    virtual bool is_posit() const;
+    virtual bool is_negate() const;
+    virtual bool is_addition() const;
+    virtual bool is_subtraction() const;
+    virtual bool is_multiplication() const;
+    virtual bool is_division() const;
+    virtual bool is_function() const;
+    virtual bool is_number() const;
+    virtual bool is_id() const;
 };
 
 std::string node::to_string() const {
@@ -42,6 +55,58 @@ std::string node::wrap_right() const {
   return "";
 }
 
+bool node::is_parens() const {
+  return false;
+}
+
+bool node::is_brackets() const {
+  return false;
+}
+
+bool node::is_unary() const {
+  return false;
+}
+
+bool node::is_infix() const {
+  return false;
+}
+
+bool node::is_posit() const {
+  return false;
+}
+
+bool node::is_negate() const {
+  return false;
+}
+
+bool node::is_addition() const {
+  return false;
+}
+
+bool node::is_subtraction() const {
+  return false;
+}
+
+bool node::is_multiplication() const {
+  return false;
+}
+
+bool node::is_division() const {
+  return false;
+}
+
+bool node::is_function() const {
+  return false;
+}
+
+bool node::is_number() const {
+  return false;
+}
+
+bool node::is_id() const {
+  return false;
+}
+
 class parens_node : public node {
   public:
     std::string to_string() const override;
@@ -50,6 +115,7 @@ class parens_node : public node {
     bool wraps() const override;
     std::string wrap_left() const override;
     std::string wrap_right() const override;
+    bool is_parens() const override;
 };
 
 std::string parens_node::to_string() const {
@@ -76,6 +142,10 @@ std::string parens_node::wrap_right() const {
   return ")";
 }
 
+bool parens_node::is_parens() const {
+  return true;
+}
+
 class brackets_node : public node {
   public:
     std::string to_string() const override;
@@ -84,6 +154,7 @@ class brackets_node : public node {
     bool wraps() const override;
     std::string wrap_left() const override;
     std::string wrap_right() const override;
+    bool is_brackets() const override;
 };
 
 std::string brackets_node::to_string() const {
@@ -110,10 +181,15 @@ std::string brackets_node::wrap_right() const {
   return "]";
 }
 
+bool brackets_node::is_brackets() const {
+  return true;
+}
+
 class unary_node : public node {
   public:
     short num_children() const override;
     bool is_terminal() const override;
+    bool is_unary() const override;
 };
 
 short unary_node::num_children() const {
@@ -124,22 +200,36 @@ bool unary_node::is_terminal() const {
   return false;
 }
 
+bool unary_node::is_unary() const {
+  return true;
+}
+
 class posit_node : public unary_node {
   public:
     std::string to_string() const override;
+    bool is_posit() const override;
 };
 
 std::string posit_node::to_string() const {
   return "+";
 }
 
+bool posit_node::is_posit() const {
+  return true;
+}
+
 class negate_node : public unary_node {
   public:
     std::string to_string() const override;
+    bool is_negate() const override;
 };
 
 std::string negate_node::to_string() const {
   return "-";
+}
+
+bool negate_node::is_negate() const {
+  return true;
 }
 
 class infix_node : public node {
