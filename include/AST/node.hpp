@@ -29,6 +29,8 @@ class node {
     virtual bool is_function() const;
     virtual bool is_number() const;
     virtual bool is_id() const;
+    virtual float get_number() const;
+    virtual std::string get_id() const;
 };
 
 std::string node::to_string() const {
@@ -105,6 +107,14 @@ bool node::is_number() const {
 
 bool node::is_id() const {
   return false;
+}
+
+float node::get_number() const {
+  return 0;
+}
+
+std::string node::get_id() const {
+  return "";
 }
 
 class parens_node : public node {
@@ -236,6 +246,7 @@ class infix_node : public node {
   public:
     short num_children() const override;
     bool is_terminal() const override;
+    bool is_infix() const override;
 };
 
 short infix_node::num_children() const {
@@ -246,40 +257,64 @@ bool infix_node::is_terminal() const {
   return false;
 }
 
+bool infix_node::is_infix() const {
+  return true;
+}
+
 class addition_node : public infix_node {
   public:
     std::string to_string() const override;
+    bool is_addition() const override;
 };
 
 std::string addition_node::to_string() const {
   return "+";
 }
 
+bool addition_node::is_addition() const {
+  return true;
+}
+
 class subtraction_node : public infix_node {
   public:
     std::string to_string() const override;
+    bool is_subtraction() const override;
 };
 
 std::string subtraction_node::to_string() const {
   return "-";
 }
 
+bool subtraction_node::is_subtraction() const {
+  return true;
+}
+
 class multiplication_node : public infix_node {
   public:
     std::string to_string() const override;
+    bool is_multiplication() const override;
 };
 
 std::string multiplication_node::to_string() const {
   return "*";
 }
 
+bool multiplication_node::is_multiplication() const {
+  return true;
+}
+
 class division_node : public infix_node {
   public:
     std::string to_string() const override;
+    bool is_division() const override;
 };
 
 std::string division_node::to_string() const {
   return "/";
+}
+
+bool division_node::is_division() const {
+  return true;
 }
 
 class function_node : public node {
@@ -293,6 +328,7 @@ class function_node : public node {
     bool wraps() const override;
     std::string wrap_left() const override;
     std::string wrap_right() const override;
+    bool is_function() const override;
 };
 
 function_node::function_node(std::string name)
@@ -323,6 +359,10 @@ std::string function_node::wrap_right() const {
   return ")";
 }
 
+bool function_node::is_function() const {
+  return true;
+}
+
 class number_node : public node {
   private:
     const float num_;
@@ -331,6 +371,8 @@ class number_node : public node {
     std::string to_string() const override;
     short num_children() const override;
     bool is_terminal() const override;
+    bool is_number() const override;
+    float get_number() const override;
 };
 
 number_node::number_node(float num)
@@ -349,6 +391,14 @@ std::string number_node::to_string() const {
   return std::to_string(num_);
 }
 
+bool number_node::is_number() const {
+  return true;
+}
+
+float number_node::get_number() const {
+  return num_;
+}
+
 class id_node : public node {
   private:
     const std::string id_;
@@ -357,6 +407,8 @@ class id_node : public node {
     std::string to_string() const override;
     short num_children() const override;
     bool is_terminal() const override;
+    bool is_number() const override;
+    std::string get_id() const override;
 };
 
 id_node::id_node(std::string id)
@@ -373,6 +425,14 @@ short id_node::num_children() const {
 
 bool id_node::is_terminal() const {
   return true;
+}
+
+bool id_node::is_number() const {
+  return true;
+}
+
+std::string id_node::get_id() const {
+  return id_;
 }
 
 }

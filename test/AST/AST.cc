@@ -2,7 +2,7 @@
 #include "gtest/gtest.h"
 
 TEST(ASTEvaluation, Case1) {
-  brick::AST::AST* ast = brick::AST::parse("3");
+  brick::AST::AST* ast = brick::AST::parse("(3*4)/2-12+55");
   std::cout << ast->eval() << std::endl;
   ASSERT_TRUE(ast->eval() == 3);
 }

@@ -96,8 +96,28 @@ namespace brick::AST
     std::cout << to_string() << std::endl;
   }
 
-  double AST::eval(std::map<std::string, double>* symbol_table) const {
-
+  double AST::eval(std::map<std::string, double>* sym_tbl) const {
+    if (node_->is_parens() || node_->is_brackets() || node_->is_posit()) {
+      return children_[0]->eval(sym_tbl);
+    } else if (node_->is_negate()) {
+      return -children_[0]->eval(sym_tbl);
+    } else if (node_->is_addition()) {
+      return children_[0]->eval(sym_tbl) + children_[1]->eval(sym_tbl);
+    } else if (node_->is_subtraction()) {
+      return children_[0]->eval(sym_tbl) - children_[1]->eval(sym_tbl);
+    } else if (node_->is_multiplication()) {
+      return children_[0]->eval(sym_tbl) * children_[1]->eval(sym_tbl);
+    } else if (node_->is_division()) {
+      return children_[0]->eval(sym_tbl) / children_[1]->eval(sym_tbl);
+    } else if (node_->is_function()) {
+      return children_[0]->eval(sym_tbl);
+    } else if (node_->is_number()) {
+      return node_->get_number(); 
+    } else if (node_->is_id()) {
+      return 0;
+    } else {
+      return 0;
+    }
   }
 
 }
