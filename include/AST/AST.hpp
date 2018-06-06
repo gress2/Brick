@@ -1,6 +1,7 @@
 #ifndef BRICK_AST_AST_HPP_
 #define BRICK_AST_AST_HPP_
 
+#include <sstream>
 #include <unordered_map>
 #include <vector>
 
@@ -27,6 +28,8 @@ namespace brick::AST
       std::string to_string() const;
       void print() const;
       double eval(std::unordered_map<std::string, double>* = nullptr) const;
+      std::string get_node_id() const;
+      std::string gv_helper() const;
       std::string to_gv() const;
   };
 
@@ -134,15 +137,27 @@ namespace brick::AST
     }
   }
 
+  std::string AST::get_node_id() const {
+    return node_->get_node_id();
+  }
+
   std::string AST::gv_helper() const {
-    return "";
+    std::stringstream ss;
+    auto node_id = get_node_id();
+    ss << node_id << " [label=\"" << node_->get_gv_label() << "\"]" << std::endl;
+    for (auto child : children_) {
+      ss << node_id << " -- " << child->get_node_id() << std::endl;
+      ss << child->gv_helper();
+    }
+    return ss.str();
   }
 
   std::string AST::to_gv() const {
-    std::cout << "graph {" << std::endl;
-    gv_helper();
-    std::cout << "}" << std::endl;    
-    return "";
+    std::stringstream ss;
+    ss << "graph {" << std::endl;
+    ss << gv_helper();
+    ss << "}" << std::endl;    
+    return ss.str();
   }
 
 }

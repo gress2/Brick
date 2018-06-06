@@ -4,13 +4,19 @@
 #include <cmath>
 #include <string>
 
+#include "utils.hpp"
+
 namespace brick::AST
 {
 
 class node {
   // note to self: these need to be declared virtual in order to dispatch to
   // correct derived class functions when using base class pointers
+  private:
+    const std::string node_id_;
   public:
+    node();
+    std::string get_node_id() const;
     virtual std::string to_string() const;
     virtual short num_children() const;
     virtual bool is_terminal() const;
@@ -33,7 +39,15 @@ class node {
     virtual float get_number() const;
     virtual std::string get_id() const;
     virtual double operator()(double) const;
+    virtual std::string get_gv_label() const;
 };
+
+node::node() 
+  : node_id_(brick::utils::random_string(8)) {}
+
+std::string node::get_node_id() const {
+  return node_id_;
+}
 
 std::string node::to_string() const {
   return "";
@@ -123,6 +137,10 @@ double node::operator()(double d) const {
   return d;
 }
 
+std::string node::get_gv_label() const {
+  return "";
+}
+
 class parens_node : public node {
   public:
     std::string to_string() const override;
@@ -132,6 +150,7 @@ class parens_node : public node {
     std::string wrap_left() const override;
     std::string wrap_right() const override;
     bool is_parens() const override;
+    std::string get_gv_label() const override;
 };
 
 std::string parens_node::to_string() const {
@@ -162,6 +181,10 @@ bool parens_node::is_parens() const {
   return true;
 }
 
+std::string parens_node::get_gv_label() const {
+  return "( )";
+}
+
 class brackets_node : public node {
   public:
     std::string to_string() const override;
@@ -171,6 +194,7 @@ class brackets_node : public node {
     std::string wrap_left() const override;
     std::string wrap_right() const override;
     bool is_brackets() const override;
+    std::string get_gv_label() const override;;
 };
 
 std::string brackets_node::to_string() const {
@@ -201,6 +225,10 @@ bool brackets_node::is_brackets() const {
   return true;
 }
 
+std::string brackets_node::get_gv_label() const {
+  return "[ ]";
+}
+
 class unary_node : public node {
   public:
     short num_children() const override;
@@ -224,6 +252,7 @@ class posit_node : public unary_node {
   public:
     std::string to_string() const override;
     bool is_posit() const override;
+    std::string get_gv_label() const override;
 };
 
 std::string posit_node::to_string() const {
@@ -234,10 +263,15 @@ bool posit_node::is_posit() const {
   return true;
 }
 
+std::string posit_node::get_gv_label() const {
+  return "+";
+}
+
 class negate_node : public unary_node {
   public:
     std::string to_string() const override;
     bool is_negate() const override;
+    std::string get_gv_label() const override;
 };
 
 std::string negate_node::to_string() const {
@@ -246,6 +280,10 @@ std::string negate_node::to_string() const {
 
 bool negate_node::is_negate() const {
   return true;
+}
+
+std::string negate_node::get_gv_label() const {
+  return "-";
 }
 
 class infix_node : public node {
@@ -271,6 +309,7 @@ class addition_node : public infix_node {
   public:
     std::string to_string() const override;
     bool is_addition() const override;
+    std::string get_gv_label() const override;
 };
 
 std::string addition_node::to_string() const {
@@ -281,10 +320,15 @@ bool addition_node::is_addition() const {
   return true;
 }
 
+std::string addition_node::get_gv_label() const {
+  return "+";
+}
+
 class subtraction_node : public infix_node {
   public:
     std::string to_string() const override;
     bool is_subtraction() const override;
+    std::string get_gv_label() const override;
 };
 
 std::string subtraction_node::to_string() const {
@@ -295,10 +339,15 @@ bool subtraction_node::is_subtraction() const {
   return true;
 }
 
+std::string subtraction_node::get_gv_label() const {
+  return "-";
+}
+
 class multiplication_node : public infix_node {
   public:
     std::string to_string() const override;
     bool is_multiplication() const override;
+    std::string get_gv_label() const override;
 };
 
 std::string multiplication_node::to_string() const {
@@ -309,10 +358,15 @@ bool multiplication_node::is_multiplication() const {
   return true;
 }
 
+std::string multiplication_node::get_gv_label() const {
+  return "*";
+}
+
 class division_node : public infix_node {
   public:
     std::string to_string() const override;
     bool is_division() const override;
+    std::string get_gv_label() const override;
 };
 
 std::string division_node::to_string() const {
@@ -321,6 +375,10 @@ std::string division_node::to_string() const {
 
 bool division_node::is_division() const {
   return true;
+}
+
+std::string division_node::get_gv_label() const {
+  return "/";
 }
 
 class function_node : public node {
@@ -335,6 +393,7 @@ class function_node : public node {
     std::string wrap_left() const override;
     std::string wrap_right() const override;
     bool is_function() const override;
+    std::string get_gv_label() const override;
 };
 
 function_node::function_node(std::string name)
@@ -367,6 +426,10 @@ std::string function_node::wrap_right() const {
 
 bool function_node::is_function() const {
   return true;
+}
+
+std::string function_node::get_gv_label() const {
+  return name_;
 }
 
 class sin_function_node : public function_node {
@@ -424,6 +487,7 @@ class number_node : public node {
     bool is_terminal() const override;
     bool is_number() const override;
     float get_number() const override;
+    std::string get_gv_label() const override;
 };
 
 number_node::number_node(float num)
@@ -450,6 +514,10 @@ float number_node::get_number() const {
   return num_;
 }
 
+std::string number_node::get_gv_label() const {
+  return std::to_string(num_);
+}
+
 class id_node : public node {
   private:
     const std::string id_;
@@ -460,6 +528,7 @@ class id_node : public node {
     bool is_terminal() const override;
     bool is_id() const override;
     std::string get_id() const override;
+    std::string get_gv_label() const override;
 };
 
 id_node::id_node(std::string id)
@@ -483,6 +552,10 @@ bool id_node::is_id() const {
 }
 
 std::string id_node::get_id() const {
+  return id_;
+}
+
+std::string id_node::get_gv_label() const {
   return id_;
 }
 
