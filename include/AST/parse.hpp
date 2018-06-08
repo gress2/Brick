@@ -9,7 +9,7 @@
 
 namespace brick::AST
 {
-  brick::AST::AST* parse(std::istream& stream) {
+  std::unique_ptr<brick::AST::AST> parse(std::istream& stream) {
     antlr4::ANTLRInputStream input(stream);
     brick::MathLexer lexer(&input); 
     antlr4::CommonTokenStream tokens(&lexer);
@@ -20,7 +20,7 @@ namespace brick::AST
     return builder.build();
   }
 
-  brick::AST::AST* parse(std::string math_str) {
+  std::unique_ptr<brick::AST::AST> parse(std::string math_str) {
     std::stringstream stream;
     stream << math_str << std::endl;
     return parse(stream);

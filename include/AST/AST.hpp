@@ -1,6 +1,7 @@
 #ifndef BRICK_AST_AST_HPP_
 #define BRICK_AST_AST_HPP_
 
+#include <memory>
 #include <sstream>
 #include <unordered_map>
 #include <vector>
@@ -13,16 +14,16 @@ namespace brick::AST
 
   class AST {
     private:
-      node* node_;
-      std::vector<AST*> children_; // TODO: unnecessary?
+      std::unique_ptr<node> node_;
+      std::vector<std::shared_ptr<AST>> children_; // TODO: unnecessary?
       AST* parent_ = nullptr;
     public:
-      AST(node*);
-      void set_node(node*);
+      AST(std::unique_ptr<node>&&);
+      void set_node(std::unique_ptr<node>&&);
       bool is_full() const;
       bool is_terminal() const;
-      AST* add_child(AST*);
-      AST* add_child(node*);
+      std::shared_ptr<AST> add_child(std::shared_ptr<AST>);
+      std::shared_ptr<AST> add_child(std::unique_ptr<node>&&);
       void set_parent(AST*);
       AST* get_parent() const;
       std::string to_string() const;
@@ -31,14 +32,17 @@ namespace brick::AST
       std::string get_node_id() const;
       std::string gv_helper() const;
       std::string to_gv() const;
+      ~AST();
   };
 
-  AST::AST(node* node)
-    : node_(node)
+  AST::AST(std::unique_ptr<node>&& node)
+    : node_(std::move(node))
   {}
 
-  void AST::set_node(node* node) {
-    node_ = node;
+  AST::~AST() {}
+
+  void AST::set_node(std::unique_ptr<node>&& node) {
+    node_ = std::move(node);
   }
 
   bool AST::is_full() const {
@@ -49,7 +53,7 @@ namespace brick::AST
     return node_->is_terminal();
   }
 
-  AST* AST::add_child(AST* child) {
+  std::shared_ptr<AST> AST::add_child(std::shared_ptr<AST> child) {
     if (is_full() || is_terminal()) {
       return nullptr;
     }
@@ -58,11 +62,11 @@ namespace brick::AST
     return child;
   }
 
-  AST* AST::add_child(node* node) {
+  std::shared_ptr<AST> AST::add_child(std::unique_ptr<node>&& node) {
     if (is_full() || is_terminal()) {
       return nullptr;
     }
-    AST* child = new AST(node);
+    std::shared_ptr<AST> child = std::make_shared<AST>(std::move(node));
     children_.push_back(child);
 
     child->set_parent(this);

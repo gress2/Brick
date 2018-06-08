@@ -2,7 +2,7 @@
 #include "gtest/gtest.h"
 
 TEST(ASTConstructionFromParse, Idk) {
-  brick::AST::AST* ast = brick::AST::parse("fn([3+4]*12)-6");
+  std::unique_ptr<brick::AST::AST> ast = brick::AST::parse("fn([3+4]*12)-6");
   ast->print();
 }
 
