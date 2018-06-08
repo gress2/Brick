@@ -1,8 +1,8 @@
-add_executable (tree_tests "tree.cc" ${antlr4cpp_src_files_brick})
-add_executable (iterator_tests "iterator.cc" ${antlr4cpp_src_files_brick})
-add_executable (bfs_iterator_tests "bfs_iterator.cc" ${antlr4cpp_src_files_brick})
-add_executable (dfs_iterator_tests "dfs_iterator.cc" ${antlr4cpp_src_files_brick})
-add_executable (hashed_tests "hashed.cc" ${antlr4cpp_src_files_brick})
+add_executable (tree_tests "tree.cc" ${grammar_dependencies})
+add_executable (iterator_tests "iterator.cc" ${grammar_dependencies})
+add_executable (bfs_iterator_tests "bfs_iterator.cc" ${grammar_dependencies})
+add_executable (dfs_iterator_tests "dfs_iterator.cc" ${grammar_dependencies})
+add_executable (hashed_tests "hashed.cc" ${grammar_dependencies})
 
 add_dependencies (tree_tests antlr4cpp antlr4cpp_generation_brick)
 add_dependencies (iterator_tests antlr4cpp antlr4cpp_generation_brick)

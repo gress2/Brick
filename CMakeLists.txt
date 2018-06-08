@@ -41,6 +41,22 @@ antlr4cpp_process_grammar(algebra brick
 # include generated files in project environment
 include_directories(${antlr4cpp_include_dirs_brick})
 
+# this block is one big terrible hack to deal with linking these grammar dependent sources on first cmake run
+set (grammar_dependencies_unpathed MathBaseListener.cpp MathLexer.cpp MathListener.cpp
+  MathParserGrammarBaseListener.cpp MathParserGrammar.cpp MathParserGrammarVisitor.cpp 
+  MathBaseVisitor.cpp MathLexerGrammar.cpp MathParser.cpp MathParserGrammerBaseVisitor.cpp
+  MathParserGrammarListener.cpp MathVisitor.cpp
+)
+set (grammar_dependencies)
+foreach (grammar_dep ${grammar_dependencies_unpathed})
+  list (APPEND grammar_dependencies ${CMAKE_CURRENT_BINARY_DIR}/antlr4cpp_generated_src/brick/${grammar_dep})
+endforeach()
+file (MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/antlr4cpp_generated_src)
+file (MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/antlr4cpp_generated_src/brick)
+foreach (gd ${grammar_dependencies})
+  file (WRITE ${gd} "")
+endforeach()
+
 if (MAKE_TESTS)
     enable_testing()
     set (test_data_dir "${CMAKE_CURRENT_SOURCE_DIR}/test/data")

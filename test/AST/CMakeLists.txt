@@ -1,5 +1,5 @@
-add_executable (AST_tests AST.cc ${antlr4cpp_src_files_brick})
-add_executable (parse_tests parse.cc ${antlr4cpp_src_files_brick})
+add_executable (AST_tests AST.cc ${grammar_dependencies})
+add_executable (parse_tests parse.cc ${grammar_dependencies})
 
 add_dependencies (AST_tests antlr4cpp antlr4cpp_generation_brick)
 add_dependencies (parse_tests antlr4cpp antlr4cpp_generation_brick)
