@@ -15,6 +15,7 @@ addons:
 install:
   - "[ $CXX = g++ ] && export CXX=g++-7 || true"
   - "[ $CXX = clang++ ] && export CXX=clang++-4.0 || true"
+  - "echo $CXX"
 
 before_script:
   - mkdir build
