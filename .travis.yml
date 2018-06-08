@@ -3,6 +3,18 @@ language: cpp
 compiler:
   - gcc
   - clang
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+      - llvm-toolchain-trusty-6.0
+    packages:
+      - g++-7
+      - clang-4.0
+
+install:
+  - "[ $CXX = g++ ] && export CXX=g++-7 || true"
+  - "[ $CXX = clang++ ] && export CXX=clang++-4.0 || true"
 
 before_script:
   - mkdir build
