@@ -32,11 +32,16 @@ namespace brick::AST
       std::string get_node_id() const;
       std::string gv_helper() const;
       std::string to_gv() const;
+      ~AST();
   };
 
   AST::AST(std::shared_ptr<node> node)
     : node_(node)
   {}
+
+  AST::~AST() {
+    std::cout << "destructor" << std::endl;
+  }
 
   void AST::set_node(std::shared_ptr<node> node) {
     node_ = node;

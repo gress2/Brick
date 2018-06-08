@@ -15,7 +15,7 @@ namespace brick::AST
 
 class AST_builder : public MathBaseListener {
   private:
-    brick::AST::AST* root_;
+    std::shared_ptr<brick::AST::AST> root_;
     brick::AST::AST* cur_;
     bool append_node(std::shared_ptr<brick::AST::node>);
   public:
@@ -27,7 +27,7 @@ class AST_builder : public MathBaseListener {
     void enterFuncExpr(MathParser::FuncExprContext*) override;
     void enterNumberExpr(MathParser::NumberExprContext*) override;
     void enterIdExpr(MathParser::IdExprContext*) override;
-    brick::AST::AST* build() const;
+    std::shared_ptr<brick::AST::AST> build() const;
     void reset();
 };
 
@@ -96,7 +96,7 @@ void AST_builder::enterIdExpr(MathParser::IdExprContext* ctx) {
   append_node(std::make_shared<brick::AST::id_node>(id));
 }
 
-brick::AST::AST* AST_builder::build() const {
+std::shared_ptr<brick::AST::AST> AST_builder::build() const {
   return root_;
 }
 
@@ -107,8 +107,8 @@ void AST_builder::reset() {
 
 bool AST_builder::append_node(std::shared_ptr<brick::AST::node> expr) {
   if (!root_) {
-    root_ = new brick::AST::AST(expr);
-    cur_ = root_;
+    root_ = std::make_shared<brick::AST::AST>(expr);
+    cur_ = root_.get();
     return true;
   }
 
