@@ -15,9 +15,9 @@ namespace brick::AST
 
 class AST_builder : public MathBaseListener {
   private:
-    std::shared_ptr<brick::AST::AST> root_;
+    std::unique_ptr<brick::AST::AST> root_;
     brick::AST::AST* cur_;
-    bool append_node(std::shared_ptr<brick::AST::node>);
+    bool append_node(std::unique_ptr<brick::AST::node>&&);
   public:
     AST_builder();
     void enterParensExpr(MathParser::ParensExprContext*) override;
@@ -27,7 +27,7 @@ class AST_builder : public MathBaseListener {
     void enterFuncExpr(MathParser::FuncExprContext*) override;
     void enterNumberExpr(MathParser::NumberExprContext*) override;
     void enterIdExpr(MathParser::IdExprContext*) override;
-    std::shared_ptr<brick::AST::AST> build() const;
+    std::unique_ptr<brick::AST::AST>&& build();
     void reset();
 };
 
@@ -36,68 +36,68 @@ AST_builder::AST_builder()
 {}
 
 void AST_builder::enterParensExpr(MathParser::ParensExprContext* ctx) {
-  append_node(std::make_shared<brick::AST::parens_node>());
+  append_node(std::make_unique<brick::AST::parens_node>());
 }
 
 void AST_builder::enterBracketsExpr(MathParser::BracketsExprContext* ctx) {
-  append_node(std::make_shared<brick::AST::brackets_node>());
+  append_node(std::make_unique<brick::AST::brackets_node>());
 }
 
 void AST_builder::enterInfixExpr(MathParser::InfixExprContext* ctx) {
-  std::shared_ptr<brick::AST::node> infix_expr = nullptr;
+  std::unique_ptr<brick::AST::node> infix_expr = nullptr;
 
   if (ctx->OP_ADD()) {
-    infix_expr = std::make_shared<brick::AST::addition_node>();
+    infix_expr = std::make_unique<brick::AST::addition_node>();
   } else if (ctx->OP_SUB()) {
-    infix_expr = std::make_shared<brick::AST::subtraction_node>();
+    infix_expr = std::make_unique<brick::AST::subtraction_node>();
   } else if (ctx->OP_MUL()) {
-    infix_expr = std::make_shared<brick::AST::multiplication_node>();
+    infix_expr = std::make_unique<brick::AST::multiplication_node>();
   } else if (ctx->OP_DIV()) {
-    infix_expr = std::make_shared<brick::AST::division_node>();
+    infix_expr = std::make_unique<brick::AST::division_node>();
   } else {
     // exp
   }
-  append_node(infix_expr);
+  append_node(std::move(infix_expr));
 }
 
 void AST_builder::enterUnaryExpr(MathParser::UnaryExprContext* ctx) {
-  std::shared_ptr<brick::AST::node> unary_expr = nullptr;
+  std::unique_ptr<brick::AST::node> unary_expr = nullptr;
   if (ctx->OP_ADD()) {
-    unary_expr = std::make_shared<brick::AST::posit_node>();
+    unary_expr = std::make_unique<brick::AST::posit_node>();
   } else if (ctx->OP_SUB()) {
-    unary_expr = std::make_shared<brick::AST::negate_node>();
+    unary_expr = std::make_unique<brick::AST::negate_node>();
   }
-  append_node(unary_expr);
+  append_node(std::move(unary_expr));
 }
 
 void AST_builder::enterFuncExpr(MathParser::FuncExprContext* ctx) {
   std::string fname = ctx->func->getText();
-  std::shared_ptr<brick::AST::node> func_expr = nullptr;
+  std::unique_ptr<brick::AST::node> func_expr = nullptr;
   if (fname == "sin") {
-    func_expr = std::make_shared<brick::AST::sin_function_node>();
+    func_expr = std::make_unique<brick::AST::sin_function_node>();
   } else if (fname == "cos") {
-    func_expr = std::make_shared<brick::AST::cos_function_node>();
+    func_expr = std::make_unique<brick::AST::cos_function_node>();
   } else if (fname == "log") {
-    func_expr = std::make_shared<brick::AST::log_function_node>();
+    func_expr = std::make_unique<brick::AST::log_function_node>();
   } else {
-    func_expr = std::make_shared<brick::AST::function_node>(fname);
+    func_expr = std::make_unique<brick::AST::function_node>(fname);
   } 
 
-  append_node(func_expr);
+  append_node(std::move(func_expr));
 }
 
 void AST_builder::enterNumberExpr(MathParser::NumberExprContext* ctx) {
   float num = std::stof(ctx->value->getText());
-  append_node(std::make_shared<brick::AST::number_node>(num));
+  append_node(std::make_unique<brick::AST::number_node>(num));
 }
 
 void AST_builder::enterIdExpr(MathParser::IdExprContext* ctx) {
   std::string id = ctx->id->getText();
-  append_node(std::make_shared<brick::AST::id_node>(id));
+  append_node(std::make_unique<brick::AST::id_node>(id));
 }
 
-std::shared_ptr<brick::AST::AST> AST_builder::build() const {
-  return root_;
+std::unique_ptr<brick::AST::AST>&& AST_builder::build() {
+  return std::move(root_);
 }
 
 void AST_builder::reset() {
@@ -105,15 +105,15 @@ void AST_builder::reset() {
   cur_ = nullptr;
 }
 
-bool AST_builder::append_node(std::shared_ptr<brick::AST::node> expr) {
+bool AST_builder::append_node(std::unique_ptr<brick::AST::node>&& expr) {
   if (!root_) {
-    root_ = std::make_shared<brick::AST::AST>(expr);
+    root_ = std::make_unique<brick::AST::AST>(std::move(expr));
     cur_ = root_.get();
     return true;
   }
 
   while (cur_) {
-    auto* added_child = cur_->add_child(expr);
+    auto* added_child = cur_->add_child(std::move(expr));
     if (added_child) {
       cur_ = added_child;
       return true;
