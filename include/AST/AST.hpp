@@ -15,15 +15,15 @@ namespace brick::AST
   class AST {
     private:
       std::unique_ptr<node> node_;
-      std::vector<AST*> children_; // TODO: unnecessary?
+      std::vector<std::shared_ptr<AST>> children_; // TODO: unnecessary?
       AST* parent_ = nullptr;
     public:
       AST(std::unique_ptr<node>&&);
       void set_node(std::unique_ptr<node>&&);
       bool is_full() const;
       bool is_terminal() const;
-      AST* add_child(AST*);
-      AST* add_child(std::unique_ptr<node>&&);
+      std::shared_ptr<AST> add_child(std::shared_ptr<AST>);
+      std::shared_ptr<AST> add_child(std::unique_ptr<node>&&);
       void set_parent(AST*);
       AST* get_parent() const;
       std::string to_string() const;
@@ -53,7 +53,7 @@ namespace brick::AST
     return node_->is_terminal();
   }
 
-  AST* AST::add_child(AST* child) {
+  std::shared_ptr<AST> AST::add_child(std::shared_ptr<AST> child) {
     if (is_full() || is_terminal()) {
       return nullptr;
     }
@@ -62,11 +62,11 @@ namespace brick::AST
     return child;
   }
 
-  AST* AST::add_child(std::unique_ptr<node>&& node) {
+  std::shared_ptr<AST> AST::add_child(std::unique_ptr<node>&& node) {
     if (is_full() || is_terminal()) {
       return nullptr;
     }
-    AST* child = new AST(std::move(node));
+    std::shared_ptr<AST> child = std::make_shared<AST>(std::move(node));
     children_.push_back(child);
 
     child->set_parent(this);

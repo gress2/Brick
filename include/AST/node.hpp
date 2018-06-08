@@ -40,10 +40,13 @@ class node {
     virtual std::string get_id() const;
     virtual double operator()(double) const;
     virtual std::string get_gv_label() const;
+    virtual ~node();
 };
 
 node::node() 
   : node_id_(brick::utils::random_string(8)) {}
+
+node::~node() {}
 
 std::string node::get_node_id() const {
   return node_id_;

@@ -113,9 +113,9 @@ bool AST_builder::append_node(std::unique_ptr<brick::AST::node>&& expr) {
   }
 
   while (cur_) {
-    auto* added_child = cur_->add_child(std::move(expr));
+    std::shared_ptr<brick::AST::AST> added_child = cur_->add_child(std::move(expr));
     if (added_child) {
-      cur_ = added_child;
+      cur_ = added_child.get();
       return true;
     }
     cur_ = cur_->get_parent();
