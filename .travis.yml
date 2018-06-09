@@ -16,4 +16,4 @@ before_script:
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=Release -DMAKE_TESTS=ON ..
 
-script: make -j8 && make test
+script: make -j8 && ctest -T memcheck
