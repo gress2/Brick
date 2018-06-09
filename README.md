@@ -1,5 +1,5 @@
 # Brick
-
+[![Build Status](https://travis-ci.org/gress2/Brick.svg?branch=master)](https://travis-ci.org/gress2/Brick)
 ## Setup
 
 ### Building
