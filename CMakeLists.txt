@@ -27,7 +27,6 @@ set(ANTLR4CPP_JAR_LOCATION ${PROJECT_SOURCE_DIR}/jars/antlr-4.7.1-complete.jar)
 
 option (MAKE_TESTS "MAKE_TESTS" OFF)
 
-include(CTest)
 include(ExternalAntlr4Cpp)
 
 include_directories(${ANTLR4CPP_INCLUDE_DIRS})

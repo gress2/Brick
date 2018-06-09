@@ -118,11 +118,12 @@ namespace brick::AST
     } else if (node_->is_division()) {
       return children_[0]->eval(sym_tbl) / children_[1]->eval(sym_tbl);
     } else if (node_->is_function()) {
-      return node_->operator()(children_[0]->eval(sym_tbl));
+      return dynamic_cast<function_node*>(node_.get())
+              ->operator()(children_[0]->eval(sym_tbl));
     } else if (node_->is_number()) {
-      return node_->get_number(); 
+      return dynamic_cast<number_node*>(node_.get())->get_number(); 
     } else if (node_->is_id()) {
-      std::string id = node_->get_id();
+      std::string id = dynamic_cast<id_node*>(node_.get())->get_id();
       if (sym_tbl) {
         if (sym_tbl->count(id)) {
           return sym_tbl->operator[](id);
