@@ -36,6 +36,7 @@ namespace brick::AST
       std::string get_node_id() const;
       std::string gv_helper() const;
       std::string to_gv() const;
+      std::size_t get_level() const;
       bool operator==(const AST&) const;
       ~AST();
   };
@@ -181,9 +182,19 @@ namespace brick::AST
   std::string AST::to_gv() const {
     std::stringstream ss;
     ss << "graph {" << std::endl;
-    ss << gv_helper();
+    ss << '\t' << gv_helper();
     ss << "}" << std::endl;
     return ss.str();
+  }
+
+  std::size_t AST::get_level() const {
+    std::size_t level = 0;
+    auto* tmp = this;
+    while(tmp->get_parent() != nullptr) {
+      tmp = tmp->get_parent();
+      level++;
+    }
+    return level;
   }
 
   bool AST::operator==(const AST& other) const {

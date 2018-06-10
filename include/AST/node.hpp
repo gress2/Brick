@@ -6,28 +6,28 @@
 
 #include "utils.hpp"
 
-enum node_type {
-  node,
-  parens,
-  brackets,
-  unary,
-  infix,
-  posit,
-  negate,
-  addition,
-  subtraction,
-  multiplication,
-  division,
-  function,
-  sin_function,
-  cos_function,
-  log_function,
-  number,
-  id
-};
-
 namespace brick::AST
 {
+
+enum node_type {
+  _node,
+  _parens,
+  _brackets,
+  _unary,
+  _infix,
+  _posit,
+  _negate,
+  _addition,
+  _subtraction,
+  _multiplication,
+  _division,
+  _function,
+  _sin_function,
+  _cos_function,
+  _log_function,
+  _number,
+  _id
+};
 
 class node {
   private:
@@ -41,7 +41,7 @@ class node {
     const std::string gv_label_;
   public:
     node(
-      node_type nt = node_type::node, 
+      node_type nt = node_type::_node, 
       short num_children = 0,
       std::string string_rep = "",
       bool wraps = false,
@@ -51,6 +51,7 @@ class node {
     );
     std::string get_node_id() const;
     std::string to_string() const;
+    node_type get_node_type() const;
     short num_children() const;
     bool is_terminal() const;
     bool wraps() const;
@@ -70,6 +71,7 @@ class node {
     bool is_number() const;
     bool is_id() const;
     std::string get_gv_label() const;
+    bool operator==(const node&);
     virtual ~node();
 };
 
@@ -95,6 +97,10 @@ std::string node::to_string() const {
   return string_rep_;
 }
 
+node_type node::get_node_type() const {
+  return node_type_;
+}
+
 short node::num_children() const {
   return num_children_;
 }
@@ -116,62 +122,67 @@ std::string node::wrap_right() const {
 }
 
 bool node::is_parens() const {
-  return node_type_ == node_type::parens;
+  return node_type_ == node_type::_parens;
 }
 
 bool node::is_brackets() const {
-  return node_type_ == node_type::brackets;
+  return node_type_ == node_type::_brackets;
 }
 
 bool node::is_unary() const {
-  return node_type_ == node_type::unary;
+  return node_type_ == node_type::_unary;
 }
 
 bool node::is_infix() const {
-  return node_type_ == node_type::infix;
+  return node_type_ == node_type::_infix;
 }
 
 bool node::is_posit() const {
-  return node_type_ == node_type::posit;
+  return node_type_ == node_type::_posit;
 }
 
 bool node::is_negate() const {
-  return node_type_ == node_type::negate;
+  return node_type_ == node_type::_negate;
 }
 
 bool node::is_addition() const {
-  return node_type_ == node_type::addition;
+  return node_type_ == node_type::_addition;
 }
 
 bool node::is_subtraction() const {
-  return node_type_ == node_type::subtraction;
+  return node_type_ == node_type::_subtraction;
 }
 
 bool node::is_multiplication() const {
-  return node_type_ == node_type::multiplication;
+  return node_type_ == node_type::_multiplication;
 }
 
 bool node::is_division() const {
-  return node_type_ == node_type::division;
+  return node_type_ == node_type::_division;
 }
 
 bool node::is_function() const {
-  return node_type_ == node_type::function ||
-    node_type_ == node_type::cos_function ||
-    node_type_ == node_type::sin_function ||
-    node_type_ == node_type::log_function;
+  return node_type_ == node_type::_function ||
+    node_type_ == node_type::_cos_function ||
+    node_type_ == node_type::_sin_function ||
+    node_type_ == node_type::_log_function;
 }
 
 bool node::is_number() const {
-  return node_type_ == node_type::number;
+  return node_type_ == node_type::_number;
 }
 
 bool node::is_id() const {
-  return node_type_ == node_type::id;
+  return node_type_ == node_type::_id;
 }
 
 std::string node::get_gv_label() const {
   return gv_label_;
+}
+
+bool node::operator==(const node& other) {
+  return node_type_ == other.get_node_type()
+    && string_rep_ == other.to_string();
 }
 
 class parens_node : public node {
@@ -181,7 +192,7 @@ class parens_node : public node {
 
 parens_node::parens_node() 
   : node(
-      node_type::parens,
+      node_type::_parens,
       1,
       "",
       true,
@@ -198,7 +209,7 @@ class brackets_node : public node {
 
 brackets_node::brackets_node() 
   : node(
-      node_type::brackets,
+      node_type::_brackets,
       1,
       "",
       true,
@@ -213,7 +224,7 @@ class unary_node : public node {
     unary_node(std::string, node_type);
 };
 
-unary_node::unary_node(std::string op, node_type nt = node_type::unary)
+unary_node::unary_node(std::string op, node_type nt = node_type::_unary)
   : node(
     nt,
     1,
@@ -231,7 +242,7 @@ class posit_node : public unary_node {
 };
 
 posit_node::posit_node()
-  : unary_node("+", node_type::posit) 
+  : unary_node("+", node_type::_posit) 
 {}
 
 class negate_node : public unary_node {
@@ -240,7 +251,7 @@ class negate_node : public unary_node {
 };
 
 negate_node::negate_node()
-  : unary_node("-", node_type::negate)
+  : unary_node("-", node_type::_negate)
 {}
 
 class infix_node : public node {
@@ -248,7 +259,7 @@ class infix_node : public node {
     infix_node(std::string, node_type);
 };
 
-infix_node::infix_node(std::string op, node_type nt = node_type::infix)
+infix_node::infix_node(std::string op, node_type nt = node_type::_infix)
   : node (
     nt,
     2,
@@ -266,7 +277,7 @@ class addition_node : public infix_node {
 };
 
 addition_node::addition_node() 
-  : infix_node("+", node_type::addition)
+  : infix_node("+", node_type::_addition)
 {}
 
 class subtraction_node : public infix_node {
@@ -275,7 +286,7 @@ class subtraction_node : public infix_node {
 };
 
 subtraction_node::subtraction_node()
-  : infix_node("-", node_type::subtraction)
+  : infix_node("-", node_type::_subtraction)
 {}
 
 class multiplication_node : public infix_node {
@@ -284,7 +295,7 @@ class multiplication_node : public infix_node {
 };
 
 multiplication_node::multiplication_node()
-  : infix_node("*", node_type::multiplication)
+  : infix_node("*", node_type::_multiplication)
 {}
 
 class division_node : public infix_node {
@@ -293,7 +304,7 @@ class division_node : public infix_node {
 };
 
 division_node::division_node()
-  : infix_node("/", node_type::division)
+  : infix_node("/", node_type::_division)
 {}
 
 class function_node : public node {
@@ -304,7 +315,7 @@ class function_node : public node {
     virtual double operator()(double) const;
 };
 
-function_node::function_node(std::string name, node_type nt = node_type::function)
+function_node::function_node(std::string name, node_type nt = node_type::_function)
   : node (
       nt,
       1,
@@ -328,7 +339,7 @@ class sin_function_node : public function_node {
 };
 
 sin_function_node::sin_function_node() 
-  : function_node("sin", node_type::sin_function)
+  : function_node("sin", node_type::_sin_function)
 {}
 
 double sin_function_node::operator()(double d) const {
@@ -342,7 +353,7 @@ class cos_function_node : public function_node {
 };
 
 cos_function_node::cos_function_node() 
-  : function_node("cos", node_type::cos_function)
+  : function_node("cos", node_type::_cos_function)
 {}
 
 double cos_function_node::operator()(double d) const {
@@ -356,7 +367,7 @@ class log_function_node : public function_node {
 };
 
 log_function_node::log_function_node() 
-  : function_node("log", node_type::log_function)
+  : function_node("log", node_type::_log_function)
 {}
 
 double log_function_node::operator()(double d) const {
@@ -373,7 +384,7 @@ class number_node : public node {
 
 number_node::number_node(float num)
   : node (
-      node_type::number,
+      node_type::_number,
       0,
       std::to_string(num),
       false,
@@ -398,7 +409,7 @@ class id_node : public node {
 
 id_node::id_node(std::string id)
   : node (
-      node_type::id,
+      node_type::_id,
       0,
       id,
       false,
