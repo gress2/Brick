@@ -19,11 +19,15 @@ namespace brick::AST
       AST* parent_ = nullptr;
     public:
       AST(std::unique_ptr<node>&&);
+      node* get_node() const;
       void set_node(std::unique_ptr<node>&&);
       bool is_full() const;
       bool is_terminal() const;
       std::shared_ptr<AST> add_child(std::shared_ptr<AST>);
       std::shared_ptr<AST> add_child(std::unique_ptr<node>&&);
+      bool has_children() const;
+      std::shared_ptr<AST> get_child(std::size_t) const;
+      const std::vector<std::shared_ptr<AST>>& get_children() const;
       void set_parent(AST*);
       AST* get_parent() const;
       std::string to_string() const;
@@ -32,6 +36,7 @@ namespace brick::AST
       std::string get_node_id() const;
       std::string gv_helper() const;
       std::string to_gv() const;
+      bool operator==(const AST&) const;
       ~AST();
   };
 
@@ -40,6 +45,10 @@ namespace brick::AST
   {}
 
   AST::~AST() {}
+
+  node* AST::get_node() const {
+    return node_.get();
+  }
 
   void AST::set_node(std::unique_ptr<node>&& node) {
     node_ = std::move(node);
@@ -71,6 +80,18 @@ namespace brick::AST
 
     child->set_parent(this);
     return child;
+  }
+
+  bool AST::has_children() const {
+    return children_.size() > 0;
+  }
+
+  const std::vector<std::shared_ptr<AST>>& AST::get_children() const {
+    return children_;
+  }
+
+  std::shared_ptr<AST> AST::get_child(std::size_t idx) const {
+    return children_[idx];
   }
 
   void AST::set_parent(AST* parent) {
@@ -161,8 +182,13 @@ namespace brick::AST
     std::stringstream ss;
     ss << "graph {" << std::endl;
     ss << gv_helper();
-    ss << "}" << std::endl;    
+    ss << "}" << std::endl;
     return ss.str();
+  }
+
+  bool AST::operator==(const AST& other) const {
+    return node_.get() == other.get_node()
+      && children_ == other.get_children();
   }
 
 }

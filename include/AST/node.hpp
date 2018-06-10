@@ -305,8 +305,7 @@ class function_node : public node {
 };
 
 function_node::function_node(std::string name, node_type nt = node_type::function)
-  : name_(name),
-    node (
+  : node (
       nt,
       1,
       name,
@@ -314,7 +313,8 @@ function_node::function_node(std::string name, node_type nt = node_type::functio
       name + "(",
       ")",
       name
-    )
+    ),
+    name_(name)
 {}
 
 double function_node::operator()(double d) const {
@@ -372,8 +372,7 @@ class number_node : public node {
 };
 
 number_node::number_node(float num)
-  : num_(num),
-    node (
+  : node (
       node_type::number,
       0,
       std::to_string(num),
@@ -381,7 +380,8 @@ number_node::number_node(float num)
       "",
       "",
       std::to_string(num)
-    )
+    ),
+    num_(num)
 {}
 
 float number_node::get_number() const {
@@ -397,8 +397,7 @@ class id_node : public node {
 };
 
 id_node::id_node(std::string id)
-  : id_(id),
-    node (
+  : node (
       node_type::id,
       0,
       id,
@@ -406,7 +405,8 @@ id_node::id_node(std::string id)
       "",
       "",
       id
-    )
+    ),
+    id_(id)
 {}
 
 std::string id_node::get_id() const {
