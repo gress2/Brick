@@ -3,7 +3,7 @@
 
 TEST(ASTConstructionFromParse, Idk) {
   std::unique_ptr<brick::AST::AST> ast = brick::AST::parse("fn([3+4]*12)-6");
-  ast->print();
+  std::cout << ast->to_string() << std::endl;
 }
 
 int main(int argc, char** argv) {

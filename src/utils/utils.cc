@@ -1,9 +1,6 @@
-#ifndef BRICK_UTILS_HPP_
-#define BRICK_UTILS_HPP_
+#include "utils/utils.hpp"
 
-#include <string>
-
-namespace brick::utils 
+namespace brick::utils
 {
   std::string random_string(size_t length) {
     auto randchar = []() -> char {
@@ -16,7 +13,5 @@ namespace brick::utils
     std::string str(length, 0);
     std::generate_n(str.begin(), length, randchar);
     return str;
-  }    
+  }
 }
-
-#endif
