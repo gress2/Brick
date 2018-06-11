@@ -70,7 +70,7 @@ class node {
     bool is_function() const;
     bool is_number() const;
     bool is_id() const;
-    std::string get_gv_label() const;
+    virtual std::string get_gv_label() const;
     bool operator==(const node&);
     virtual ~node();
 };
@@ -158,6 +158,7 @@ class number_node : public node {
     number_node(float);
     float get_number() const;
     std::string to_string() const override;
+    std::string get_gv_label() const override;
 };
 
 class id_node : public node {

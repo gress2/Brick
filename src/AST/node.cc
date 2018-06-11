@@ -251,6 +251,10 @@ std::string number_node::to_string() const {
   return ss.str();
 }
 
+std::string number_node::get_gv_label() const {
+  return to_string();
+}
+
 id_node::id_node(std::string id)
   : node (
       node_type::_id,
