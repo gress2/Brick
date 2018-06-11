@@ -135,9 +135,9 @@ namespace brick::AST
   std::string AST::gv_helper() const {
     std::stringstream ss;
     auto node_id = get_node_id();
-    ss << node_id << " [label=\"" << node_->get_gv_label() << "\"]" << std::endl;
+    ss << "  " << node_id << " [label=\"" << node_->get_gv_label() << "\"]" << std::endl;
     for (auto child : children_) {
-      ss << node_id << " -- " << child->get_node_id() << std::endl;
+      ss << "  " << node_id << " -- " << child->get_node_id() << std::endl;
       ss << child->gv_helper();
     }
     return ss.str();
@@ -146,7 +146,7 @@ namespace brick::AST
   std::string AST::to_gv() const {
     std::stringstream ss;
     ss << "graph {" << std::endl;
-    ss << '\t' << gv_helper();
+    ss << gv_helper();
     ss << "}" << std::endl;
     return ss.str();
   }

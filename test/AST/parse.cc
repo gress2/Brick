@@ -5,7 +5,7 @@ using AST = brick::AST::AST;
 using std::unique_ptr;
 using std::make_unique;
 
-TEST(ASTConstructionFromParse, Case1) {
+TEST(ConstructionFromParse, Case1) {
   unique_ptr<AST> ast = brick::AST::parse("3+4");
 
   AST correct(make_unique<brick::AST::addition_node>());
@@ -15,7 +15,7 @@ TEST(ASTConstructionFromParse, Case1) {
   ASSERT_TRUE(*ast == correct);
 }
 
-TEST(ASTConstructionFromParse, Case2) {
+TEST(ConstructionFromParse, Case2) {
   unique_ptr<AST> ast = brick::AST::parse("cos(x)");
 
   AST correct(make_unique<brick::AST::cos_function_node>());
@@ -24,20 +24,20 @@ TEST(ASTConstructionFromParse, Case2) {
   ASSERT_TRUE(*ast == correct);
 }
 
-TEST(ASTConstructionFromParse, Case3) {
+TEST(ConstructionFromParse, Case3) {
   unique_ptr<AST> ast = brick::AST::parse("");
 
   ASSERT_TRUE(ast == nullptr);
 }
 
-TEST(ASTConstructionFromParse, Case4) {
+TEST(ConstructionFromParse, Case4) {
   unique_ptr<AST> ast = brick::AST::parse("cos()");
   
   AST correct(make_unique<brick::AST::cos_function_node>());
   ASSERT_TRUE(*ast == correct);
 }
 
-TEST(ASTConstructionFromParse, Case5) {
+TEST(ConstructionFromParse, Case5) {
   unique_ptr<AST> ast = brick::AST::parse("([3+4]*12)-6");
   
   AST correct(make_unique<brick::AST::subtraction_node>());
