@@ -12,6 +12,9 @@
     "functional": "cpp",
     "tuple": "cpp",
     "utility": "cpp",
-    "memory": "cpp"
+    "memory": "cpp",
+    "unordered_map": "cpp",
+    "unordered_set": "cpp",
+    "string_view": "cpp"
   }
 }

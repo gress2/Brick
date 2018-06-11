@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "AST/node.hpp"
 
 namespace brick::AST
@@ -110,14 +112,14 @@ std::string node::get_gv_label() const {
 
 bool node::operator==(const node& other) {
   return node_type_ == other.get_node_type()
-    && string_rep_ == other.to_string();
+    && string_rep_ == other.string_rep_;
 }
 
 parens_node::parens_node() 
   : node(
       node_type::_parens,
       1,
-      "",
+      "( )",
       true,
       "(",
       ")",
@@ -129,7 +131,7 @@ brackets_node::brackets_node()
   : node(
       node_type::_brackets,
       1,
-      "",
+      "[ ]",
       true,
       "[",
       "]",
@@ -241,6 +243,12 @@ number_node::number_node(float num)
 
 float number_node::get_number() const {
   return num_;
+}
+
+std::string number_node::to_string() const {
+  std::stringstream ss;
+  ss << num_;
+  return ss.str();
 }
 
 id_node::id_node(std::string id)

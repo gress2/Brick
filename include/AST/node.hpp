@@ -50,7 +50,7 @@ class node {
       std::string gv_label = ""
     );
     std::string get_node_id() const;
-    std::string to_string() const;
+    virtual std::string to_string() const;
     node_type get_node_type() const;
     short num_children() const;
     bool is_terminal() const;
@@ -157,6 +157,7 @@ class number_node : public node {
   public:
     number_node(float);
     float get_number() const;
+    std::string to_string() const override;
 };
 
 class id_node : public node {

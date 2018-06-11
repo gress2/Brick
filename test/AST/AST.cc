@@ -74,34 +74,140 @@ TEST(IsFull, Case2) {
   ASSERT_FALSE(test.is_full());
 }
 
+TEST(IsTerminal, Case1) {
+  brick::AST::AST test(std::make_unique<brick::AST::number_node>(3));
+  ASSERT_TRUE(test.is_terminal());
+}
+
+TEST(IsTerminal, Case2) {
+  brick::AST::AST test(std::make_unique<brick::AST::brackets_node>());
+  ASSERT_FALSE(test.is_terminal());
+}
+
+TEST(IsTerminal, Case3) {
+  brick::AST::AST test(std::make_unique<brick::AST::brackets_node>());
+  auto child_ptr = test.add_child(std::make_unique<brick::AST::id_node>("hi44"));
+  ASSERT_FALSE(test.is_terminal());
+  ASSERT_TRUE(child_ptr->is_terminal());
+}
+
+TEST(HasChildren, Case1) {
+  brick::AST::AST test(std::make_unique<brick::AST::id_node>("test"));
+  ASSERT_FALSE(test.has_children());
+}
+
+TEST(HasChildren, Case2) {
+  brick::AST::AST test(std::make_unique<brick::AST::posit_node>());
+  auto child_ptr = test.add_child(std::make_unique<brick::AST::number_node>(890));
+  ASSERT_TRUE(test.has_children());
+  ASSERT_FALSE(child_ptr->has_children());
+}
+
+TEST(GetChild, Case1) {
+  brick::AST::AST test(std::make_unique<brick::AST::division_node>());
+  auto child_ptr = test.get_child(0);
+  ASSERT_TRUE(child_ptr == nullptr);
+}
+
+TEST(GetChild, Case2) {
+  brick::AST::AST test(std::make_unique<brick::AST::parens_node>());
+  std::shared_ptr<brick::AST::AST> child = 
+    std::make_shared<brick::AST::AST>(std::make_unique<brick::AST::number_node>(4));
+  test.add_child(child);
+  ASSERT_TRUE(*(test.get_child(0)) == *child);
+}
+
+TEST(GetChildren, Case1) {
+  brick::AST::AST test(std::make_unique<brick::AST::subtraction_node>());
+  test.add_child(std::make_unique<brick::AST::number_node>(5));
+  test.add_child(std::make_unique<brick::AST::number_node>(2));
+  auto& vec = test.get_children();
+  ASSERT_TRUE(vec.size() == 2);
+}
+
+TEST(ToString, Case1) {
+  brick::AST::AST test(std::make_unique<brick::AST::parens_node>());
+  ASSERT_TRUE(test.to_string() == "( )");
+}
+
+TEST(ToString, Case2) {
+  brick::AST::AST test(std::make_unique<brick::AST::number_node>(4));
+  ASSERT_TRUE(test.to_string() == "4");
+}
+
+TEST(ToString, Case3) {
+  brick::AST::AST test(std::make_unique<brick::AST::brackets_node>());
+  auto mul_ptr = test.add_child(std::make_unique<brick::AST::multiplication_node>());
+  auto log_ptr = mul_ptr->add_child(std::make_unique<brick::AST::log_function_node>());
+  log_ptr->add_child(std::make_unique<brick::AST::number_node>(100));
+  mul_ptr->add_child(std::make_unique<brick::AST::id_node>("x"));
+  ASSERT_TRUE(test.to_string() == "[log(100)*x]");
+}
+
 TEST(Evaluation, Case1) {
-  std::unique_ptr<brick::AST::AST> ast = brick::AST::parse("(3*4)/2-12+55");
-  ASSERT_TRUE(ast->eval() == 49);
+  // (3*4)/2-12+55
+  brick::AST::AST test(std::make_unique<brick::AST::addition_node>());
+  auto sub_ptr = test.add_child(std::make_unique<brick::AST::subtraction_node>());
+  test.add_child(std::make_unique<brick::AST::number_node>(55));
+  auto div_ptr = sub_ptr->add_child(std::make_unique<brick::AST::division_node>());
+  sub_ptr->add_child(std::make_unique<brick::AST::number_node>(12));
+  auto paren_ptr = div_ptr->add_child(std::make_unique<brick::AST::parens_node>());
+  div_ptr->add_child(std::make_unique<brick::AST::number_node>(2));
+  auto mul_ptr = paren_ptr->add_child(std::make_unique<brick::AST::multiplication_node>());
+  mul_ptr->add_child(std::make_unique<brick::AST::number_node>(3));
+  mul_ptr->add_child(std::make_unique<brick::AST::number_node>(4));
+  ASSERT_TRUE(test.eval() == 49);
 }
 
 TEST(Evaluation, Case2) {
-  std::unique_ptr<brick::AST::AST> ast = brick::AST::parse("x");
+  brick::AST::AST test(std::make_unique<brick::AST::id_node>("x"));
   std::unordered_map<std::string, double> sym_tbl = {{"x", 78}};
-  ASSERT_TRUE(ast->eval(&sym_tbl) == 78);
+  ASSERT_TRUE(test.eval(&sym_tbl) == 78);
 }
 
 TEST(Evaluation, Case3) {
-  std::unique_ptr<brick::AST::AST> ast = brick::AST::parse("cos(45)");
-  ASSERT_TRUE(ast->eval() == std::cos(45));
+  brick::AST::AST test(std::make_unique<brick::AST::cos_function_node>());
+  test.add_child(std::make_unique<brick::AST::number_node>(45));
+  ASSERT_TRUE(test.eval() == std::cos(45));
+}
+
+TEST(GetNodeID, Case1) {
+  brick::AST::AST test(std::make_unique<brick::AST::negate_node>());
+  auto node_id = test.get_node_id();
+  ASSERT_TRUE(node_id.length() == 8);
 }
 
 TEST(ToGV, Case1) {
-  std::unique_ptr<brick::AST::AST> ast = brick::AST::parse("4*(3+2)");
-  std::string gv_str = ast->to_gv();
+  // 4*(3+2)
+  brick::AST::AST test(std::make_unique<brick::AST::multiplication_node>());
+  test.add_child(std::make_unique<brick::AST::number_node>(4));
+  auto paren_ptr = test.add_child(std::make_unique<brick::AST::parens_node>());
+  auto add_ptr = paren_ptr->add_child(std::make_unique<brick::AST::addition_node>());
+  add_ptr->add_child(std::make_unique<brick::AST::number_node>(3));
+  add_ptr->add_child(std::make_unique<brick::AST::number_node>(2));
+
+  std::string gv_str = test.to_gv();
   std::size_t n = std::count(gv_str.begin(), gv_str.end(), '\n');
   ASSERT_TRUE(n == 13);
 }
 
-TEST(TOGV, Case2) {
-  std::unique_ptr<brick::AST::AST> ast = brick::AST::parse("fn(33*x)");
-  std::string gv_str = ast->to_gv();
+TEST(ToGV, Case2) {
+  brick::AST::AST test(std::make_unique<brick::AST::function_node>("fn"));
+  auto mul_node = test.add_child(std::make_unique<brick::AST::multiplication_node>());
+  mul_node->add_child(std::make_unique<brick::AST::number_node>(33));
+  mul_node->add_child(std::make_unique<brick::AST::id_node>("x"));
+  std::string gv_str = test.to_gv();
   std::size_t n = std::count(gv_str.begin(), gv_str.end(), '\n');
   ASSERT_TRUE(n == 9);
+}
+
+TEST(GetLevel, Case1) {
+  brick::AST::AST test(std::make_unique<brick::AST::parens_node>());
+  ASSERT_TRUE(test.get_level() == 0);
+  auto paren_ptr = test.add_child(std::make_unique<brick::AST::parens_node>());
+  ASSERT_TRUE(paren_ptr->get_level() == 1);
+  auto num_ptr = paren_ptr->add_child(std::make_unique<brick::AST::number_node>(4));
+  ASSERT_TRUE(num_ptr->get_level() == 2);
 }
 
 int main(int argc, char** argv) {

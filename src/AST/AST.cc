@@ -60,6 +60,11 @@ namespace brick::AST
   }
 
   std::shared_ptr<AST> AST::get_child(std::size_t idx) const {
+    if (idx >= children_.size()) {
+      std::cerr << "Tried to access child outside of vector bounds" << std::endl;
+      return nullptr;
+    }
+
     return children_[idx];
   }
 
