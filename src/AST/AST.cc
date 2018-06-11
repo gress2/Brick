@@ -165,8 +165,21 @@ namespace brick::AST
   // OPERATORS
   
   bool AST::operator==(const AST& other) const {
-    return node_.get() == other.get_node()
-      && children_ == other.get_children();
+    if (*node_ == *(other.get_node())) {
+      if (children_.size() == other.get_children().size()) {
+        for (std::size_t idx = 0; idx < children_.size(); idx++) {
+          if (*children_[idx] != *other.get_children()[idx]) {
+            return false;
+          }
+        }
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool AST::operator!=(const AST& other) const {
+    return !(operator==(other));
   }
 
 }

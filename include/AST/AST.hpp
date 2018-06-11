@@ -53,6 +53,7 @@ namespace brick::AST
       // OPERATORS
   
       bool operator==(const AST&) const;
+      bool operator!=(const AST&) const;
   };
 
 }
