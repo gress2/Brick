@@ -59,7 +59,7 @@ namespace brick::AST
 
   bfs_iterator bfs_iterator::operator--(int) {
     bfs_iterator copy = *this;
-    ++(*this);
+    --(*this);
     return copy;
   }
 
