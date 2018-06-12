@@ -1,6 +1,7 @@
 add_library(brick_ast
   AST_builder.cc
   AST.cc
+  bfs_iterator.cc
   dfs_iterator.cc
   iterator.cc
   node.cc

@@ -18,6 +18,8 @@ namespace brick::AST
       std::size_t position() const;
       bool is_first() const;
       bool is_last() const;
+      bool operator==(const iterator& other) const;
+      bool operator!=(const iterator& other) const;
   };
 }
 

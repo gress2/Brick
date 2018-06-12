@@ -193,4 +193,12 @@ namespace brick::AST
     return dfs_iterator(nullptr, this);
   }
 
+  bfs_iterator AST::begin_bfs() {
+    return bfs_iterator(this, this);
+  }
+
+  bfs_iterator AST::end_bfs() {
+    return bfs_iterator(nullptr, this);
+  }
+
 }

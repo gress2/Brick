@@ -40,4 +40,12 @@ namespace brick::AST
       ((position() + 1) == cur_->get_parent()->get_children().size());
   }
 
+  bool iterator::operator==(const iterator& other) const {
+    return root_ == other.root_ && cur_ == other.cur_;
+  }
+
+  bool iterator::operator!=(const iterator& other) const {
+    return !this->operator==(other);
+  }
+
 }

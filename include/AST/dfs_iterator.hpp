@@ -12,6 +12,8 @@ namespace brick::AST
       dfs_iterator(brick::AST::AST*, brick::AST::AST*);
       dfs_iterator& operator++();
       dfs_iterator operator++(int);
+      dfs_iterator& operator--();
+      dfs_iterator operator--(int);
   };
 }
 
