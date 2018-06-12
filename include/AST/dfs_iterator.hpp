@@ -5,8 +5,13 @@
 
 namespace brick::AST
 {
-  class bfs_iterator : public brick::AST::iterator {
+  class dfs_iterator : public brick::AST::iterator {
+    private:
 
+    public:
+      dfs_iterator(brick::AST::AST*, brick::AST::AST*);
+      dfs_iterator& operator++();
+      dfs_iterator operator++(int);
   };
 }
 

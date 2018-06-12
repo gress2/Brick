@@ -23,19 +23,16 @@ namespace brick::AST
       AST* parent_ = nullptr;
     public:
       // LIFECYCLE
-  
       AST(std::unique_ptr<node>&&);
       ~AST();
 
       // MODIFIERS
-  
       void set_node(std::unique_ptr<node>&&);
       std::shared_ptr<AST> add_child(std::shared_ptr<AST>);
       std::shared_ptr<AST> add_child(std::unique_ptr<node>&&);
       void set_parent(AST*);
       
       // ACCESSORS
-  
       node* get_node() const;
       bool is_full() const;
       bool is_terminal() const;
@@ -51,9 +48,12 @@ namespace brick::AST
       std::size_t get_level() const;
       
       // OPERATORS
-  
       bool operator==(const AST&) const;
       bool operator!=(const AST&) const;
+
+      // ITERATORS
+      dfs_iterator begin_dfs();
+      dfs_iterator end_dfs();
   };
 
 }

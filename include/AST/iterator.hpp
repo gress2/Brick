@@ -16,6 +16,8 @@ namespace brick::AST
       AST& operator*() const;
       AST* operator->() const;
       std::size_t position() const;
+      bool is_first() const;
+      bool is_last() const;
   };
 }
 

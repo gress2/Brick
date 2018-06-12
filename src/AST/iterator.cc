@@ -18,8 +18,26 @@ namespace brick::AST
   std::size_t iterator::position() const {
     if (cur_->get_parent()) {
       auto& parent_children = cur_->get_parent()->get_children();
+      std::size_t dist = 0;
+      for (auto& sp : parent_children) {
+        if (sp.get() == cur_) {
+          break;
+        }
+        dist++;
+      }
+      return dist;
+    } else {
       return 0;
     }
+  }
+
+  bool iterator::is_first() const {
+    return cur_->get_parent() == nullptr || position() == 0;
+  }
+
+  bool iterator::is_last() const {
+    return cur_->get_parent() == nullptr ||
+      ((position() + 1) == cur_->get_parent()->get_children().size());
   }
 
 }

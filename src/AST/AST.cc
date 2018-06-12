@@ -4,7 +4,6 @@ namespace brick::AST
 {
 
   // LIFECYCLE
-  
   AST::AST(std::unique_ptr<node>&& node)
     : node_(std::move(node))
   {}
@@ -12,7 +11,6 @@ namespace brick::AST
   AST::~AST() {}
 
   // MODIFIERS
-  
   void AST::set_node(std::unique_ptr<node>&& node) {
     node_ = std::move(node);
   }
@@ -168,7 +166,6 @@ namespace brick::AST
 
 
   // OPERATORS
-  
   bool AST::operator==(const AST& other) const {
     if (*node_ == *(other.get_node())) {
       if (children_.size() == other.get_children().size()) {
@@ -185,6 +182,15 @@ namespace brick::AST
 
   bool AST::operator!=(const AST& other) const {
     return !(operator==(other));
+  }
+
+  // ITERATORS
+  dfs_iterator AST::begin_dfs() {
+    return dfs_iterator(this, this);
+  }
+
+  dfs_iterator AST::end_dfs() {
+    return dfs_iterator(nullptr, this);
   }
 
 }
