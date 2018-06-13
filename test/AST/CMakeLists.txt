@@ -1,6 +1,6 @@
 macro (setup_test test_name test_file)
-  add_executable (${test_name} ${test_file} ${grammar_dependencies})
-  add_dependencies (${test_name} antlr4cpp antlr4cpp_generation_brick)
+  add_executable (${test_name} ${test_file})
+  add_dependencies (${test_name} brick_ast)
   target_include_directories (${test_name} PRIVATE ${include_dir})
   target_link_libraries (${test_name} brick_ast gtest_main)
   add_test (${test_name} ${TEST_RUNTIME_OUTPUT_DIRECTORY}/${test_name})
