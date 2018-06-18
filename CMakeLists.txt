@@ -32,6 +32,7 @@ include(ExternalAntlr4Cpp)
 include_directories(${ANTLR4CPP_INCLUDE_DIRS})
 message(STATUS "Found antlr4cpp libs: ${ANTLR4CPP_LIBS} and includes: ${ANTLR4CPP_INCLUDE_DIRS} ")
 link_directories(${ANTLR4CPP_LIBS})
+set(ANTLR4CPP_LIBS ${ANTLR4CPP_LIBS} PARENT_SCOPE)
 
 antlr4cpp_process_grammar(algebra brick
   ${CMAKE_CURRENT_SOURCE_DIR}/grammar/Math.g4
