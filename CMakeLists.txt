@@ -21,7 +21,11 @@ set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}/Release
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}/Release/bin")
 set (TEST_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/bin")
 
+SET(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> Scr <TARGET> <LINK_FLAGS> <OBJECTS>")
+SET(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
+
 set (include_dir "${CMAKE_CURRENT_SOURCE_DIR}/include")
+include_directories (${include_dir})
 
 set(ANTLR4CPP_JAR_LOCATION ${PROJECT_SOURCE_DIR}/jars/antlr-4.7.1-complete.jar)
 
@@ -49,7 +53,7 @@ set (grammar_dependencies_unpathed MathBaseListener.cpp MathLexer.cpp MathListen
 )
 set (grammar_dependencies)
 foreach (grammar_dep ${grammar_dependencies_unpathed})
-  list (APPEND grammar_dependencies ${CMAKE_CURRENT_BINARY_DIR}/antlr4cpp_generated_src/brick/${grammar_dep})
+  list (APPEND grammar_dependencies ${ANTLR4CPP_GENERATED_SRC_DIR}/brick/${grammar_dep})
 endforeach()
 file (MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/antlr4cpp_generated_src)
 file (MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/antlr4cpp_generated_src/brick)
