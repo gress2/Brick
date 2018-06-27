@@ -5,7 +5,6 @@ LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 set (CMAKE_CXX_STANDARD 17)
 
-
 set (CMAKE_CXX_FLAGS "-Wall -O3")
 set (CMAKE_CXX_FLAGS_DEBUG "-Wall -g")
 set (CMAKE_CXX_FLAGS_RELEASE "-O3")
@@ -21,8 +20,10 @@ set (CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}/Release
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}/Release/bin")
 set (TEST_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/bin")
 
-SET(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> Scr <TARGET> <LINK_FLAGS> <OBJECTS>")
-SET(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
+if (APPLE)
+  SET(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> Scr <TARGET> <LINK_FLAGS> <OBJECTS>")
+  SET(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
+endif()
 
 set (include_dir "${CMAKE_CURRENT_SOURCE_DIR}/include")
 include_directories (${include_dir})
@@ -36,6 +37,7 @@ include(ExternalAntlr4Cpp)
 include_directories(${ANTLR4CPP_INCLUDE_DIRS})
 message(STATUS "Found antlr4cpp libs: ${ANTLR4CPP_LIBS} and includes: ${ANTLR4CPP_INCLUDE_DIRS} ")
 link_directories(${ANTLR4CPP_LIBS})
+set(ANTLR4CPP_LIBS ${ANTLR4CPP_LIBS} PARENT_SCOPE)
 
 antlr4cpp_process_grammar(algebra brick
   ${CMAKE_CURRENT_SOURCE_DIR}/grammar/Math.g4
