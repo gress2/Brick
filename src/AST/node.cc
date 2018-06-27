@@ -19,6 +19,10 @@ node::node(node_type nt, short num_children, std::string string_rep,
 
 node::~node() {}
 
+node* node::clone() const {
+  return new node(*this);
+}
+
 std::string node::get_node_id() const {
   return node_id_;
 }
@@ -127,6 +131,10 @@ parens_node::parens_node()
     )
 {}
 
+node* parens_node::clone() const {
+  return new parens_node(*this);
+}
+
 brackets_node::brackets_node() 
   : node(
       node_type::_brackets,
@@ -138,6 +146,10 @@ brackets_node::brackets_node()
       "[ ]"
     )
 {}
+
+node* brackets_node::clone() const {
+  return new brackets_node(*this);
+}
 
 unary_node::unary_node(std::string op, node_type nt)
   : node(
@@ -151,13 +163,25 @@ unary_node::unary_node(std::string op, node_type nt)
   )
 {}
 
+node* unary_node::clone() const {
+  return new unary_node(*this);
+}
+
 posit_node::posit_node()
   : unary_node("+", node_type::_posit) 
 {}
 
+node* posit_node::clone() const {
+  return new posit_node(*this);
+}
+
 negate_node::negate_node()
   : unary_node("-", node_type::_negate)
 {}
+
+node* negate_node::clone() const {
+  return new negate_node(*this);
+}
 
 infix_node::infix_node(std::string op, node_type nt)
   : node (
@@ -171,21 +195,41 @@ infix_node::infix_node(std::string op, node_type nt)
   )
 {}
 
+node* infix_node::clone() const {
+  return new infix_node(*this);
+}
+
 addition_node::addition_node() 
   : infix_node("+", node_type::_addition)
 {}
+
+node* addition_node::clone() const {
+  return new addition_node(*this);
+}
 
 subtraction_node::subtraction_node()
   : infix_node("-", node_type::_subtraction)
 {}
 
+node* subtraction_node::clone() const {
+  return new subtraction_node(*this);
+}
+
 multiplication_node::multiplication_node()
   : infix_node("*", node_type::_multiplication)
 {}
 
+node* multiplication_node::clone() const {
+  return new multiplication_node(*this);
+}
+
 division_node::division_node()
   : infix_node("/", node_type::_division)
 {}
+
+node* division_node::clone() const {
+  return new division_node(*this);
+}
 
 function_node::function_node(std::string name, node_type nt)
   : node (
@@ -200,6 +244,10 @@ function_node::function_node(std::string name, node_type nt)
     name_(name)
 {}
 
+node* function_node::clone() const {
+  return new function_node(*this);
+}
+
 double function_node::operator()(double d) const {
   return d;
 }
@@ -207,6 +255,10 @@ double function_node::operator()(double d) const {
 sin_function_node::sin_function_node() 
   : function_node("sin", node_type::_sin_function)
 {}
+
+node* sin_function_node::clone() const {
+  return new sin_function_node(*this);
+}
 
 double sin_function_node::operator()(double d) const {
   return std::sin(d);
@@ -216,6 +268,10 @@ cos_function_node::cos_function_node()
   : function_node("cos", node_type::_cos_function)
 {}
 
+node* cos_function_node::clone() const {
+  return new cos_function_node(*this);
+}
+
 double cos_function_node::operator()(double d) const {
   return std::cos(d);
 }
@@ -223,6 +279,10 @@ double cos_function_node::operator()(double d) const {
 log_function_node::log_function_node() 
   : function_node("log", node_type::_log_function)
 {}
+
+node* log_function_node::clone() const {
+  return new log_function_node(*this);
+}
 
 double log_function_node::operator()(double d) const {
   return std::log(d);
@@ -240,6 +300,10 @@ number_node::number_node(float num)
     ),
     num_(num)
 {}
+
+node* number_node::clone() const {
+  return new number_node(*this);
+}
 
 float number_node::get_number() const {
   return num_;
@@ -267,6 +331,10 @@ id_node::id_node(std::string id)
     ),
     id_(id)
 {}
+
+node* id_node::clone() const {
+  return new id_node(*this);
+}
 
 std::string id_node::get_id() const {
   return id_;
