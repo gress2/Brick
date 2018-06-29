@@ -49,6 +49,10 @@ namespace brick::AST
     return node_->num_children() == children_.size();
   }
 
+  std::size_t AST::vacancy() const {
+    return node_->num_children() - children_.size();
+  }
+
   bool AST::is_terminal() const {
     return node_->is_terminal();
   }

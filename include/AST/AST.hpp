@@ -36,6 +36,7 @@ namespace brick::AST
       // ACCESSORS
       node* get_node() const;
       bool is_full() const;
+      std::size_t vacancy() const;
       bool is_terminal() const;
       bool has_children() const;
       std::shared_ptr<AST> get_child(std::size_t) const;
