@@ -74,6 +74,11 @@ namespace brick::AST
     return children_;
   }
 
+  std::vector<std::shared_ptr<AST>>& AST::get_children() {
+    return const_cast<std::vector<std::shared_ptr<AST>>&>
+      (const_cast<const AST*>(this)->get_children());
+  }
+
   AST* AST::get_parent() const {
     return parent_;
   }

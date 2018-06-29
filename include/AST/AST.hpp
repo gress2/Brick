@@ -41,6 +41,7 @@ namespace brick::AST
       bool has_children() const;
       std::shared_ptr<AST> get_child(std::size_t) const;
       const std::vector<std::shared_ptr<AST>>& get_children() const;
+      std::vector<std::shared_ptr<AST>>& get_children();
       AST* get_parent() const;
       std::string to_string() const;
       double eval(std::unordered_map<std::string, double>* = nullptr) const;
