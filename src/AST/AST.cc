@@ -39,10 +39,10 @@ namespace brick::AST
     parent_ = parent;
   }
 
-  void AST::set_depth(int depth) {
+  void AST::propagate_depth(int depth) {
     depth_ = depth;
     for (auto& child : children_) {
-      child->set_depth(depth + 1);
+      child->propagate_depth(depth + 1);
     }
   }
 
@@ -170,6 +170,7 @@ namespace brick::AST
     return ss.str();
   }
 
+  // TODO - get rid of this method
   std::size_t AST::get_level() const {
     std::size_t level = 0;
     auto* tmp = this;
@@ -180,6 +181,9 @@ namespace brick::AST
     return level;
   }
 
+  int AST::get_depth() const {
+    return depth_;
+  }
 
   // OPERATORS
   bool AST::operator==(const AST& other) const {

@@ -31,7 +31,7 @@ namespace brick::AST
       std::shared_ptr<AST> add_child(std::shared_ptr<AST>);
       std::shared_ptr<AST> add_child(std::unique_ptr<node>&&);
       void set_parent(AST*);
-      void set_depth(int);
+      void propagate_depth(int);
       
       // ACCESSORS
       node* get_node() const;
@@ -48,7 +48,9 @@ namespace brick::AST
       std::string get_node_id() const;
       std::string gv_helper() const;
       std::string to_gv() const;
+      // TODO - get rid of this method
       std::size_t get_level() const;
+      int get_depth() const;
       
       // OPERATORS
       bool operator==(const AST&) const;
