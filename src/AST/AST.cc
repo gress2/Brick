@@ -39,6 +39,13 @@ namespace brick::AST
     parent_ = parent;
   }
 
+  void AST::set_depth(int depth) {
+    depth_ = depth;
+    for (auto& child : children_) {
+      child->set_depth(depth + 1);
+    }
+  }
+
   // ACCESSORS
   
   node* AST::get_node() const {

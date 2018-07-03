@@ -16,12 +16,11 @@ namespace brick::AST
   using node = brick::AST::node;
 
   class AST {
-    public:
-
     private:
       std::unique_ptr<node> node_;
       std::vector<std::shared_ptr<AST>> children_;
       AST* parent_ = nullptr;
+      int depth_ = 0;
     public:
       // LIFECYCLE
       AST(std::unique_ptr<node>&&);
@@ -32,6 +31,7 @@ namespace brick::AST
       std::shared_ptr<AST> add_child(std::shared_ptr<AST>);
       std::shared_ptr<AST> add_child(std::unique_ptr<node>&&);
       void set_parent(AST*);
+      void set_depth(int);
       
       // ACCESSORS
       node* get_node() const;
