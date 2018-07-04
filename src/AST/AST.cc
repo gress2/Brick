@@ -185,6 +185,18 @@ namespace brick::AST
     return depth_;
   }
 
+  bool AST::is_valid() const {
+    if (!is_full()) {
+      return false;
+    } 
+    for (auto& child : children_) {
+      if (!child->is_valid()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   // OPERATORS
   bool AST::operator==(const AST& other) const {
     if (*node_ == *(other.get_node())) {

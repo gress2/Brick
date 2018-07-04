@@ -51,6 +51,7 @@ namespace brick::AST
       // TODO - get rid of this method
       std::size_t get_level() const;
       int get_depth() const;
+      bool is_valid() const;
       
       // OPERATORS
       bool operator==(const AST&) const;
