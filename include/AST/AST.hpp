@@ -47,6 +47,8 @@ namespace brick::AST
       std::string gv_helper() const;
       std::string to_gv() const;
       std::size_t get_level() const;
+      std::size_t get_size() const;
+      std::size_t get_num_unconnected() const;
       
       // OPERATORS
       bool operator==(const AST&) const;
