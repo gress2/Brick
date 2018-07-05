@@ -39,6 +39,13 @@ namespace brick::AST
     parent_ = parent;
   }
 
+  void AST::propagate_depth(int depth) {
+    depth_ = depth;
+    for (auto& child : children_) {
+      child->propagate_depth(depth + 1);
+    }
+  }
+
   // ACCESSORS
   
   node* AST::get_node() const {
@@ -47,6 +54,10 @@ namespace brick::AST
 
   bool AST::is_full() const {
     return node_->num_children() == children_.size();
+  }
+
+  std::size_t AST::vacancy() const {
+    return node_->num_children() - children_.size();
   }
 
   bool AST::is_terminal() const {
@@ -68,6 +79,11 @@ namespace brick::AST
 
   const std::vector<std::shared_ptr<AST>>& AST::get_children() const {
     return children_;
+  }
+
+  std::vector<std::shared_ptr<AST>>& AST::get_children() {
+    return const_cast<std::vector<std::shared_ptr<AST>>&>
+      (const_cast<const AST*>(this)->get_children());
   }
 
   AST* AST::get_parent() const {
@@ -154,6 +170,7 @@ namespace brick::AST
     return ss.str();
   }
 
+  // TODO - get rid of this method
   std::size_t AST::get_level() const {
     std::size_t level = 0;
     auto* tmp = this;
@@ -178,6 +195,22 @@ namespace brick::AST
       unconnected = child->get_num_unconnected();
     }
     return unconnected;
+  }
+
+  int AST::get_depth() const {
+    return depth_;
+  }
+
+  bool AST::is_valid() const {
+    if (!is_full()) {
+      return false;
+    } 
+    for (auto& child : children_) {
+      if (!child->is_valid()) {
+        return false;
+      }
+    }
+    return true;
   }
 
   // OPERATORS

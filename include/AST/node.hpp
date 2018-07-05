@@ -72,57 +72,68 @@ class node {
     bool is_id() const;
     virtual std::string get_gv_label() const;
     bool operator==(const node&);
+    virtual node* clone() const;
     virtual ~node();
 };
 
 class parens_node : public node {
   public:
     parens_node();
+    node* clone() const override;
 };
 
 class brackets_node : public node {
   public:
     brackets_node();
+    node* clone() const override;
 };
 
 class unary_node : public node {
   public:
     unary_node(std::string, node_type = node_type::_unary);
+    node* clone() const override;
 };
 
 class posit_node : public unary_node {
   public:
     posit_node();
+    node* clone() const override;
 };
 
 class negate_node : public unary_node {
   public:
     negate_node();
+    node* clone() const override;
 };
 
 class infix_node : public node {
   public:
     infix_node(std::string, node_type = node_type::_infix);
+    node* clone() const override;
 };
 
 class addition_node : public infix_node {
   public:
     addition_node();
+    node* clone() const override;
 };
 
 class subtraction_node : public infix_node {
   public:
     subtraction_node();
+    node* clone() const override;
 };
 
 class multiplication_node : public infix_node {
   public:
     multiplication_node();
+    node* clone() const override;
 };
 
 class division_node : public infix_node {
   public:
     division_node();
+    node* clone() const override;
 };
 
 class function_node : public node {
@@ -131,24 +142,28 @@ class function_node : public node {
   public:
     function_node(std::string, node_type = node_type::_function);
     virtual double operator()(double) const;
+    node* clone() const override;
 };
 
 class sin_function_node : public function_node {
   public:
     sin_function_node();
     double operator()(double) const override;
+    node* clone() const override;
 };
 
 class cos_function_node : public function_node {
   public:
     cos_function_node();
     double operator()(double) const override;
+    node* clone() const override;
 };
 
 class log_function_node : public function_node {
   public:
     log_function_node();
     double operator()(double) const override;
+    node* clone() const override;
 };
 
 class number_node : public node {
@@ -159,6 +174,7 @@ class number_node : public node {
     float get_number() const;
     std::string to_string() const override;
     std::string get_gv_label() const override;
+    node* clone() const override;
 };
 
 class id_node : public node {
@@ -167,6 +183,7 @@ class id_node : public node {
   public:
     id_node(std::string);
     std::string get_id() const;
+    node* clone() const override;
 };
 
 }

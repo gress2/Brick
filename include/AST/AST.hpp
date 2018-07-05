@@ -16,12 +16,11 @@ namespace brick::AST
   using node = brick::AST::node;
 
   class AST {
-    public:
-
     private:
       std::unique_ptr<node> node_;
       std::vector<std::shared_ptr<AST>> children_;
       AST* parent_ = nullptr;
+      int depth_ = 0;
     public:
       // LIFECYCLE
       AST(std::unique_ptr<node>&&);
@@ -32,23 +31,29 @@ namespace brick::AST
       std::shared_ptr<AST> add_child(std::shared_ptr<AST>);
       std::shared_ptr<AST> add_child(std::unique_ptr<node>&&);
       void set_parent(AST*);
+      void propagate_depth(int);
       
       // ACCESSORS
       node* get_node() const;
       bool is_full() const;
+      std::size_t vacancy() const;
       bool is_terminal() const;
       bool has_children() const;
       std::shared_ptr<AST> get_child(std::size_t) const;
       const std::vector<std::shared_ptr<AST>>& get_children() const;
+      std::vector<std::shared_ptr<AST>>& get_children();
       AST* get_parent() const;
       std::string to_string() const;
       double eval(std::unordered_map<std::string, double>* = nullptr) const;
       std::string get_node_id() const;
       std::string gv_helper() const;
       std::string to_gv() const;
+      // TODO - get rid of this method
       std::size_t get_level() const;
       std::size_t get_size() const;
       std::size_t get_num_unconnected() const;
+      int get_depth() const;
+      bool is_valid() const;
       
       // OPERATORS
       bool operator==(const AST&) const;
