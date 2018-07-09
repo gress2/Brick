@@ -147,6 +147,14 @@ namespace brick::AST
     }
   }
 
+  double AST::eval(std::vector<double> vec) const {
+    std::unordered_map<std::string, double> map;
+    for (std::size_t i = 0; i < vec.size(); i++) {
+      map.insert({"_x" + std::to_string(i), vec[i]});
+    }
+    return eval(&map);
+  }
+
   std::string AST::get_node_id() const {
     return node_->get_node_id();
   }

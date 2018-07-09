@@ -45,6 +45,7 @@ namespace brick::AST
       AST* get_parent() const;
       std::string to_string() const;
       double eval(std::unordered_map<std::string, double>* = nullptr) const;
+      double eval(std::vector<double>) const;
       std::string get_node_id() const;
       std::string gv_helper() const;
       std::string to_gv() const;
