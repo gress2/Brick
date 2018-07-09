@@ -51,6 +51,8 @@ namespace brick::AST
       std::string to_gv() const;
       // TODO - get rid of this method
       std::size_t get_level() const;
+      std::size_t get_size() const;
+      std::size_t get_num_unconnected() const;
       int get_depth() const;
       bool is_valid() const;
       

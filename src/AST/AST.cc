@@ -189,6 +189,22 @@ namespace brick::AST
     return level;
   }
 
+  std::size_t AST::get_size() const {
+    std::size_t size = 1;
+    for (auto child : children_) {
+      size += child->get_size();
+    }
+    return size;
+  }
+
+  std::size_t AST::get_num_unconnected() const {
+    std::size_t unconnected = node_->num_children() - children_.size(); 
+    for (auto child : children_) {
+      unconnected = child->get_num_unconnected();
+    }
+    return unconnected;
+  }
+
   int AST::get_depth() const {
     return depth_;
   }
