@@ -155,6 +155,11 @@ namespace brick::AST
     return eval(&map);
   }
 
+  double AST::eval(double x0) const {
+    std::unordered_map<std::string, double> map = {{"_x0", x0}};
+    return eval(&map);
+  }
+
   std::string AST::get_node_id() const {
     return node_->get_node_id();
   }
