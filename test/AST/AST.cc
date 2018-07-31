@@ -144,6 +144,20 @@ TEST(ToString, Case3) {
   ASSERT_TRUE(test.to_string() == "[log(100)*x]");
 }
 
+TEST(ToString, Hard) {
+  brick::AST::AST root(std::make_unique<brick::AST::posit_node>());
+  auto mul_ptr = root.add_child(std::make_unique<brick::AST::multiplication_node>()); 
+  mul_ptr->add_child(std::make_unique<brick::AST::id_node>("_x0"));
+  auto mul_ptr2 = mul_ptr->add_child(std::make_unique<brick::AST::multiplication_node>());
+  mul_ptr2->add_child(std::make_unique<brick::AST::id_node>("_x0"));
+  auto add_ptr = mul_ptr2->add_child(std::make_unique<brick::AST::addition_node>());
+  add_ptr->add_child(std::make_unique<brick::AST::id_node>("_x0"));
+  add_ptr->add_child(std::make_unique<brick::AST::number_node>(1));
+  std::cout << root.to_string() << std::endl;
+
+  ASSERT_EQ(root.eval(9), 730);
+}
+
 TEST(Evaluation, Case1) {
   // (3*4)/2-12+55
   brick::AST::AST test(std::make_unique<brick::AST::addition_node>());
