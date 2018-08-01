@@ -103,14 +103,8 @@ namespace brick::AST
           children_[0]->to_string();
       }
     } else {
-      if (node_->is_addition() || node_->is_subtraction()) {
-        return "(" + children_[0]->to_string() + node_->to_string()
-          + children_[1]->to_string() + ")";
-      } else {
-        return children_[0]->to_string() +
-          node_->to_string() + 
-          children_[1]->to_string();
-      }
+      return "(" + children_[0]->to_string()
+        + node_->to_string() + children_[1]->to_string() + ")";
     } 
   }
 

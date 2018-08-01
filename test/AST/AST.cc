@@ -141,7 +141,7 @@ TEST(ToString, Case3) {
   auto log_ptr = mul_ptr->add_child(std::make_unique<brick::AST::log_function_node>());
   log_ptr->add_child(std::make_unique<brick::AST::number_node>(100));
   mul_ptr->add_child(std::make_unique<brick::AST::id_node>("x"));
-  ASSERT_TRUE(test.to_string() == "[log(100)*x]");
+  ASSERT_EQ(test.to_string(), "[(log(100)*x)]");
 }
 
 TEST(ToString, Hard) {
@@ -153,9 +153,7 @@ TEST(ToString, Hard) {
   auto add_ptr = mul_ptr2->add_child(std::make_unique<brick::AST::addition_node>());
   add_ptr->add_child(std::make_unique<brick::AST::id_node>("_x0"));
   add_ptr->add_child(std::make_unique<brick::AST::number_node>(1));
-  std::cout << root.to_string() << std::endl;
-
-  ASSERT_EQ(root.eval(9), 730);
+  ASSERT_EQ(root.to_string(), "+(_x0*(_x0*(_x0+1)))");
 }
 
 TEST(Evaluation, Case1) {
