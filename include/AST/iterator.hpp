@@ -1,5 +1,4 @@
-#ifndef BRICK_AST_ITERATOR_HPP_
-#define BRICK_AST_ITERATOR_HPP_
+#pragma once
 
 #include <iterator>
 
@@ -22,5 +21,3 @@ namespace brick::AST
       bool operator!=(const iterator& other) const;
   };
 }
-
-#endif

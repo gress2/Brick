@@ -1,5 +1,4 @@
-#ifndef BRICK_AST_AST_HPP_
-#define BRICK_AST_AST_HPP_
+#pragma once
 
 #include <iostream>
 #include <memory>
@@ -69,5 +68,3 @@ namespace brick::AST
   };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef BRICK_AST_PARSE_HPP_
-#define BRICK_AST_PARSE_HPP_
+#pragma once
 
 #include "antlr4-runtime.h"
 #include "MathLexer.h"
@@ -12,5 +11,3 @@ namespace brick::AST
   std::unique_ptr<brick::AST::AST> parse(std::istream&);
   std::unique_ptr<brick::AST::AST> parse(std::string);
 }
-
-#endif
