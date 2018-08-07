@@ -1,5 +1,4 @@
-#ifndef BRICK_AST_AST_BUILDER_
-#define BRICK_AST_AST_BUILDER_
+#pragma once
 
 #include <iostream>
 #include <memory>
@@ -32,4 +31,3 @@ class AST_builder : public MathBaseListener {
 };
 
 }
-#endif

@@ -1,5 +1,4 @@
-#ifndef BRICK_AST_NODE_HPP_
-#define BRICK_AST_NODE_HPP_
+#pragma once 
 
 #include <cmath>
 #include <string>
@@ -189,4 +188,3 @@ class id_node : public node {
 };
 
 }
-#endif

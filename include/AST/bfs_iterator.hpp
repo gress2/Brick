@@ -1,5 +1,4 @@
-#ifndef BRICK_AST_BFS_ITERATOR_HPP_
-#define BRICK_AST_BFS_ITERATOR_HPP_
+#pragma once
 
 #include "AST/iterator.hpp"
 
@@ -16,5 +15,3 @@ namespace brick::AST
       std::vector<AST*> traversal();
   };
 }
-
-#endif
