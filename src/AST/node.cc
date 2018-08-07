@@ -27,6 +27,10 @@ std::string node::get_node_id() const {
   return node_id_;
 }
 
+void node::set_node_id(std::string id) {
+  node_id_ = id;
+}
+
 std::string node::to_string() const {
   return string_rep_;
 }
@@ -117,6 +121,12 @@ std::string node::get_gv_label() const {
 bool node::operator==(const node& other) {
   return node_type_ == other.get_node_type()
     && string_rep_ == other.string_rep_;
+}
+
+node* node::copy() const {
+  node* cpy = this->clone();
+  cpy->set_node_id(brick::utils::random_string(8));
+  return cpy;
 }
 
 parens_node::parens_node() 

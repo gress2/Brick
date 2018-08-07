@@ -31,7 +31,7 @@ enum node_type {
 
 class node {
   private:
-    const std::string node_id_;
+    std::string node_id_;
     const node_type node_type_;
     const short num_children_;
     const std::string string_rep_;
@@ -50,6 +50,7 @@ class node {
       std::string gv_label = ""
     );
     std::string get_node_id() const;
+    void set_node_id(std::string id);
     virtual std::string to_string() const;
     node_type get_node_type() const;
     short num_children() const;
@@ -73,6 +74,7 @@ class node {
     virtual std::string get_gv_label() const;
     bool operator==(const node&);
     virtual node* clone() const;
+    node* copy() const;
     virtual ~node();
 };
 
