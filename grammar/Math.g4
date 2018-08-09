@@ -23,7 +23,7 @@ OP_SUB: '-';
 OP_MUL: '*';
 OP_DIV: '/';
 OP_EXP: '^';
-ID: [A-z][A-z0-9]*;
+ID: [_a-zA-Z]*[a-zA-Z][a-zA-Z0-9]*;
 NUM: [0-9]+ ('.' [0-9]+)? ([eE] [+-]? [0-9]+)?;
 WS: [ \t] -> channel(HIDDEN);
 END: [\r\n]+;
