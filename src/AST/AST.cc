@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "AST/AST.hpp"
 
 namespace brick::AST
@@ -108,6 +110,7 @@ namespace brick::AST
     } 
   }
 
+  // TODO: this can be made faster if needed
   double AST::eval(std::unordered_map<std::string, double>* sym_tbl) const {
     if (node_->is_parens() || node_->is_brackets() || node_->is_posit()) {
       return children_[0]->eval(sym_tbl);
@@ -121,6 +124,8 @@ namespace brick::AST
       return children_[0]->eval(sym_tbl) * children_[1]->eval(sym_tbl);
     } else if (node_->is_division()) {
       return children_[0]->eval(sym_tbl) / children_[1]->eval(sym_tbl);
+    } else if (node_->is_exponentiation()) {
+      return std::pow(children_[0]->eval(sym_tbl), children_[1]->eval(sym_tbl)); 
     } else if (node_->is_function()) {
       return dynamic_cast<function_node*>(node_.get())
               ->operator()(children_[0]->eval(sym_tbl));
