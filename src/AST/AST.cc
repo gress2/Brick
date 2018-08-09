@@ -154,8 +154,8 @@ namespace brick::AST
     return eval(&map);
   }
 
-  double AST::eval(double x0) const {
-    std::unordered_map<std::string, double> map = {{"_x0", x0}};
+  double AST::eval(double x) const {
+    std::unordered_map<std::string, double> map = {{"x", x}};
     return eval(&map);
   }
 
