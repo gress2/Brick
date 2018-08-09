@@ -99,6 +99,10 @@ bool node::is_division() const {
   return node_type_ == node_type::_division;
 }
 
+bool node::is_exponentiation() const {
+  return node_type_ == node_type::_exponentiation;
+}
+
 bool node::is_function() const {
   return node_type_ == node_type::_function ||
     node_type_ == node_type::_cos_function ||
@@ -239,6 +243,14 @@ division_node::division_node()
 
 node* division_node::clone() const {
   return new division_node(*this);
+}
+
+exponentiation_node::exponentiation_node()
+  : infix_node("^", node_type::_exponentiation)
+{}
+
+node* exponentiation_node::clone() const {
+  return new exponentiation_node(*this);
 }
 
 function_node::function_node(std::string name, node_type nt)

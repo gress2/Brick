@@ -26,8 +26,8 @@ void AST_builder::enterInfixExpr(MathParser::InfixExprContext* ctx) {
     infix_expr = std::make_unique<brick::AST::multiplication_node>();
   } else if (ctx->OP_DIV()) {
     infix_expr = std::make_unique<brick::AST::division_node>();
-  } else {
-    // exp
+  } else if (ctx->OP_EXP()) {
+    infix_expr = std::make_unique<brick::AST::exponentiation_node>();
   }
   append_node(std::move(infix_expr));
 }

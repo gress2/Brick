@@ -19,6 +19,7 @@ enum node_type {
   _addition,
   _subtraction,
   _multiplication,
+  _exponentiation,
   _division,
   _function,
   _sin_function,
@@ -67,6 +68,7 @@ class node {
     bool is_subtraction() const;
     bool is_multiplication() const;
     bool is_division() const;
+    bool is_exponentiation() const;
     bool is_function() const;
     bool is_number() const;
     bool is_id() const;
@@ -134,6 +136,12 @@ class multiplication_node : public infix_node {
 class division_node : public infix_node {
   public:
     division_node();
+    node* clone() const override;
+};
+
+class exponentiation_node : public infix_node {
+  public:
+    exponentiation_node();
     node* clone() const override;
 };
 
