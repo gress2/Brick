@@ -3,7 +3,9 @@
 #include "AST/AST.hpp"
 #include "AST/bfs_iterator.hpp"
 
-namespace brick::AST
+namespace brick
+{
+namespace AST
 {
   bfs_iterator::bfs_iterator(brick::AST::AST* cur, brick::AST::AST* root)
     : brick::AST::iterator(cur, root)
@@ -82,4 +84,5 @@ namespace brick::AST
     }
     return ordering;
   }
+}
 }

@@ -3,7 +3,10 @@
 #include <algorithm>
 #include <string>
 
-namespace brick::utils 
+namespace brick
+{
+namespace utils 
 {
   std::string random_string(size_t);    
+}
 }

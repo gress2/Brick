@@ -1,7 +1,9 @@
 #include "AST/AST.hpp"
 #include "AST/dfs_iterator.hpp"
 
-namespace brick::AST
+namespace brick
+{
+namespace AST
 {
   dfs_iterator::dfs_iterator(brick::AST::AST* cur, brick::AST::AST* root) 
     : brick::AST::iterator(cur, root)
@@ -60,5 +62,5 @@ namespace brick::AST
     --(*this);
     return copy;
   }
-
+}
 }

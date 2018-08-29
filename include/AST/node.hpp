@@ -5,7 +5,9 @@
 
 #include "utils/utils.hpp"
 
-namespace brick::AST
+namespace brick
+{
+namespace AST
 {
 
 enum node_type {
@@ -195,4 +197,5 @@ class id_node : public node {
     node* clone() const override;
 };
 
+}
 }

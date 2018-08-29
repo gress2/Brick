@@ -6,8 +6,11 @@
 #include "AST/AST_builder.hpp"
 #include "AST/AST.hpp"
 
-namespace brick::AST
+namespace brick
+{
+namespace AST
 {
   std::unique_ptr<brick::AST::AST> parse(std::istream&);
   std::unique_ptr<brick::AST::AST> parse(std::string);
+}
 }

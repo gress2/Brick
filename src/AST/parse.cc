@@ -1,6 +1,8 @@
 #include "AST/parse.hpp"
 
-namespace brick::AST
+namespace brick
+{
+namespace AST
 {
   std::unique_ptr<brick::AST::AST> parse(std::istream& stream) {
     antlr4::ANTLRInputStream input(stream);
@@ -18,4 +20,6 @@ namespace brick::AST
     stream << math_str << std::endl;
     return parse(stream);
   }
+
+}
 }

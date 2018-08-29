@@ -1,7 +1,9 @@
 #include "AST/AST.hpp"
 #include "AST/iterator.hpp"
 
-namespace brick::AST
+namespace brick
+{
+namespace AST
 {
   iterator::iterator(AST* cur, AST* root)
     : cur_(cur), root_(root)
@@ -48,4 +50,5 @@ namespace brick::AST
     return !this->operator==(other);
   }
 
+}
 }

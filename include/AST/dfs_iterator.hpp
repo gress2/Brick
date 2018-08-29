@@ -2,7 +2,9 @@
 
 #include "AST/iterator.hpp"
 
-namespace brick::AST
+namespace brick
+{
+namespace AST
 {
   class dfs_iterator : public brick::AST::iterator {
     private:
@@ -14,4 +16,5 @@ namespace brick::AST
       dfs_iterator& operator--();
       dfs_iterator operator--(int);
   };
+}
 }

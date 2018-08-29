@@ -9,7 +9,9 @@
 #include "MathBaseListener.h"
 #include "MathParser.h"
 
-namespace brick::AST
+namespace brick
+{
+namespace AST
 {
 
 class AST_builder : public MathBaseListener {
@@ -30,4 +32,6 @@ class AST_builder : public MathBaseListener {
     void reset();
 };
 
+
+}
 }

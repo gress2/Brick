@@ -10,7 +10,9 @@
 #include "AST/dfs_iterator.hpp"
 #include "AST/bfs_iterator.hpp"
 
-namespace brick::AST
+namespace brick
+{
+namespace AST 
 {
   using node = brick::AST::node;
 
@@ -66,5 +68,5 @@ namespace brick::AST
       bfs_iterator begin_bfs();
       bfs_iterator end_bfs();
   };
-
+}
 }

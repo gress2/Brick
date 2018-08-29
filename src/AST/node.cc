@@ -2,7 +2,9 @@
 
 #include "AST/node.hpp"
 
-namespace brick::AST
+namespace brick
+{
+namespace AST
 {
 
 node::node(node_type nt, short num_children, std::string string_rep,
@@ -361,5 +363,5 @@ node* id_node::clone() const {
 std::string id_node::get_id() const {
   return id_;
 }
-
+}
 }

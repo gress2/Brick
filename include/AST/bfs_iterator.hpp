@@ -2,7 +2,9 @@
 
 #include "AST/iterator.hpp"
 
-namespace brick::AST
+namespace brick
+{
+namespace AST
 {
   class bfs_iterator : public brick::AST::iterator {
     public:
@@ -14,4 +16,5 @@ namespace brick::AST
     private:
       std::vector<AST*> traversal();
   };
+}
 }

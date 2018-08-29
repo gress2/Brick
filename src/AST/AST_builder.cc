@@ -1,6 +1,8 @@
 #include "AST/AST_builder.hpp"
 
-namespace brick::AST
+namespace brick
+{
+namespace AST
 {
 
 AST_builder::AST_builder()
@@ -95,5 +97,5 @@ bool AST_builder::append_node(std::unique_ptr<brick::AST::node>&& expr) {
 
   return false;
 }
-
+}
 }

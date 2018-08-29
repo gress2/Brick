@@ -2,7 +2,9 @@
 
 #include <iterator>
 
-namespace brick::AST
+namespace brick
+{
+namespace AST
 {
   class AST;
 
@@ -20,4 +22,5 @@ namespace brick::AST
       bool operator==(const iterator& other) const;
       bool operator!=(const iterator& other) const;
   };
+}
 }

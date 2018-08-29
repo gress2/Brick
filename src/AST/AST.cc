@@ -2,7 +2,9 @@
 
 #include "AST/AST.hpp"
 
-namespace brick::AST
+namespace brick
+{
+namespace AST
 {
 
   // LIFECYCLE
@@ -265,5 +267,5 @@ namespace brick::AST
   bfs_iterator AST::end_bfs() {
     return bfs_iterator(nullptr, this);
   }
-
+}
 }
