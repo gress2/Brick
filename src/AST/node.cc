@@ -312,6 +312,18 @@ double log_function_node::operator()(double d) const {
   return std::log(d);
 }
 
+sqrt_function_node::sqrt_function_node()
+  : function_node("sqrt", node_type::_sqrt_function)
+{}
+
+node* sqrt_function_node::clone() const {
+  return new sqrt_function_node(*this);
+}
+
+double sqrt_function_node::operator()(double d) const {
+  return std::sqrt(d);
+}
+
 number_node::number_node(float num)
   : node (
       node_type::_number,

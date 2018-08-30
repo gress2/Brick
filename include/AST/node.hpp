@@ -27,6 +27,7 @@ enum node_type {
   _sin_function,
   _cos_function,
   _log_function,
+  _sqrt_function,
   _number,
   _id
 };
@@ -173,6 +174,13 @@ class cos_function_node : public function_node {
 class log_function_node : public function_node {
   public:
     log_function_node();
+    double operator()(double) const override;
+    node* clone() const override;
+};
+
+class sqrt_function_node : public function_node {
+  public:
+    sqrt_function_node();
     double operator()(double) const override;
     node* clone() const override;
 };
