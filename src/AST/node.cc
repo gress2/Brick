@@ -109,7 +109,8 @@ bool node::is_function() const {
   return node_type_ == node_type::_function ||
     node_type_ == node_type::_cos_function ||
     node_type_ == node_type::_sin_function ||
-    node_type_ == node_type::_log_function;
+    node_type_ == node_type::_log_function ||
+    node_type_ == node_type::_sqrt_function; 
 }
 
 bool node::is_number() const {
